@@ -1,0 +1,663 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6293C94C2CECCFFD00D69153 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C94B2CECCFFD00D69153 /* FirebaseAnalytics */; };
+		6293C94E2CECCFFD00D69153 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C94D2CECCFFD00D69153 /* FirebaseAuth */; };
+		6293C9502CECCFFD00D69153 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C94F2CECCFFD00D69153 /* FirebaseCore */; };
+		6293C9522CECCFFD00D69153 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C9512CECCFFD00D69153 /* FirebaseCrashlytics */; };
+		6293C9542CECCFFD00D69153 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C9532CECCFFD00D69153 /* FirebaseDatabase */; };
+		6293C9562CECCFFD00D69153 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C9552CECCFFD00D69153 /* FirebaseFirestore */; };
+		6293C9582CECCFFD00D69153 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C9572CECCFFD00D69153 /* FirebaseFunctions */; };
+		6293C95A2CECCFFD00D69153 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C9592CECCFFD00D69153 /* FirebaseMessaging */; };
+		6293C95C2CECCFFD00D69153 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C95B2CECCFFD00D69153 /* FirebaseStorage */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		622E99C22CA445EE00C5C66F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 622E99A92CA445EC00C5C66F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 622E99B02CA445EC00C5C66F;
+			remoteInfo = MidnightGolf;
+		};
+		622E99CC2CA445EE00C5C66F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 622E99A92CA445EC00C5C66F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 622E99B02CA445EC00C5C66F;
+			remoteInfo = MidnightGolf;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		622E99B12CA445EC00C5C66F /* MidnightGolf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MidnightGolf.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		622E99C12CA445EE00C5C66F /* MidnightGolfTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MidnightGolfTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		622E99CB2CA445EE00C5C66F /* MidnightGolfUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MidnightGolfUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		622E99B32CA445EC00C5C66F /* MidnightGolf */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MidnightGolf;
+			sourceTree = "<group>";
+		};
+		622E99C42CA445EE00C5C66F /* MidnightGolfTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MidnightGolfTests;
+			sourceTree = "<group>";
+		};
+		622E99CE2CA445EE00C5C66F /* MidnightGolfUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MidnightGolfUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		622E99AE2CA445EC00C5C66F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6293C95A2CECCFFD00D69153 /* FirebaseMessaging in Frameworks */,
+				6293C9542CECCFFD00D69153 /* FirebaseDatabase in Frameworks */,
+				6293C95C2CECCFFD00D69153 /* FirebaseStorage in Frameworks */,
+				6293C9582CECCFFD00D69153 /* FirebaseFunctions in Frameworks */,
+				6293C94C2CECCFFD00D69153 /* FirebaseAnalytics in Frameworks */,
+				6293C9522CECCFFD00D69153 /* FirebaseCrashlytics in Frameworks */,
+				6293C9502CECCFFD00D69153 /* FirebaseCore in Frameworks */,
+				6293C94E2CECCFFD00D69153 /* FirebaseAuth in Frameworks */,
+				6293C9562CECCFFD00D69153 /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		622E99BE2CA445EE00C5C66F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		622E99C82CA445EE00C5C66F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		622E99A82CA445EC00C5C66F = {
+			isa = PBXGroup;
+			children = (
+				622E99B32CA445EC00C5C66F /* MidnightGolf */,
+				622E99C42CA445EE00C5C66F /* MidnightGolfTests */,
+				622E99CE2CA445EE00C5C66F /* MidnightGolfUITests */,
+				622E99B22CA445EC00C5C66F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		622E99B22CA445EC00C5C66F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				622E99B12CA445EC00C5C66F /* MidnightGolf.app */,
+				622E99C12CA445EE00C5C66F /* MidnightGolfTests.xctest */,
+				622E99CB2CA445EE00C5C66F /* MidnightGolfUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		622E99B02CA445EC00C5C66F /* MidnightGolf */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 622E99D52CA445EE00C5C66F /* Build configuration list for PBXNativeTarget "MidnightGolf" */;
+			buildPhases = (
+				622E99AD2CA445EC00C5C66F /* Sources */,
+				622E99AE2CA445EC00C5C66F /* Frameworks */,
+				622E99AF2CA445EC00C5C66F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				622E99B32CA445EC00C5C66F /* MidnightGolf */,
+			);
+			name = MidnightGolf;
+			packageProductDependencies = (
+				6293C94B2CECCFFD00D69153 /* FirebaseAnalytics */,
+				6293C94D2CECCFFD00D69153 /* FirebaseAuth */,
+				6293C94F2CECCFFD00D69153 /* FirebaseCore */,
+				6293C9512CECCFFD00D69153 /* FirebaseCrashlytics */,
+				6293C9532CECCFFD00D69153 /* FirebaseDatabase */,
+				6293C9552CECCFFD00D69153 /* FirebaseFirestore */,
+				6293C9572CECCFFD00D69153 /* FirebaseFunctions */,
+				6293C9592CECCFFD00D69153 /* FirebaseMessaging */,
+				6293C95B2CECCFFD00D69153 /* FirebaseStorage */,
+			);
+			productName = MidnightGolf;
+			productReference = 622E99B12CA445EC00C5C66F /* MidnightGolf.app */;
+			productType = "com.apple.product-type.application";
+		};
+		622E99C02CA445EE00C5C66F /* MidnightGolfTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 622E99D82CA445EE00C5C66F /* Build configuration list for PBXNativeTarget "MidnightGolfTests" */;
+			buildPhases = (
+				622E99BD2CA445EE00C5C66F /* Sources */,
+				622E99BE2CA445EE00C5C66F /* Frameworks */,
+				622E99BF2CA445EE00C5C66F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				622E99C32CA445EE00C5C66F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				622E99C42CA445EE00C5C66F /* MidnightGolfTests */,
+			);
+			name = MidnightGolfTests;
+			packageProductDependencies = (
+			);
+			productName = MidnightGolfTests;
+			productReference = 622E99C12CA445EE00C5C66F /* MidnightGolfTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		622E99CA2CA445EE00C5C66F /* MidnightGolfUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 622E99DB2CA445EE00C5C66F /* Build configuration list for PBXNativeTarget "MidnightGolfUITests" */;
+			buildPhases = (
+				622E99C72CA445EE00C5C66F /* Sources */,
+				622E99C82CA445EE00C5C66F /* Frameworks */,
+				622E99C92CA445EE00C5C66F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				622E99CD2CA445EE00C5C66F /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				622E99CE2CA445EE00C5C66F /* MidnightGolfUITests */,
+			);
+			name = MidnightGolfUITests;
+			packageProductDependencies = (
+			);
+			productName = MidnightGolfUITests;
+			productReference = 622E99CB2CA445EE00C5C66F /* MidnightGolfUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		622E99A92CA445EC00C5C66F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					622E99B02CA445EC00C5C66F = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					622E99C02CA445EE00C5C66F = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 622E99B02CA445EC00C5C66F;
+					};
+					622E99CA2CA445EE00C5C66F = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 622E99B02CA445EC00C5C66F;
+					};
+				};
+			};
+			buildConfigurationList = 622E99AC2CA445EC00C5C66F /* Build configuration list for PBXProject "MidnightGolf" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 622E99A82CA445EC00C5C66F;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 622E99B22CA445EC00C5C66F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				622E99B02CA445EC00C5C66F /* MidnightGolf */,
+				622E99C02CA445EE00C5C66F /* MidnightGolfTests */,
+				622E99CA2CA445EE00C5C66F /* MidnightGolfUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		622E99AF2CA445EC00C5C66F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		622E99BF2CA445EE00C5C66F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		622E99C92CA445EE00C5C66F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		622E99AD2CA445EC00C5C66F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		622E99BD2CA445EE00C5C66F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		622E99C72CA445EE00C5C66F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		622E99C32CA445EE00C5C66F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 622E99B02CA445EC00C5C66F /* MidnightGolf */;
+			targetProxy = 622E99C22CA445EE00C5C66F /* PBXContainerItemProxy */;
+		};
+		622E99CD2CA445EE00C5C66F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 622E99B02CA445EC00C5C66F /* MidnightGolf */;
+			targetProxy = 622E99CC2CA445EE00C5C66F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		622E99D32CA445EE00C5C66F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		622E99D42CA445EE00C5C66F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		622E99D62CA445EE00C5C66F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MidnightGolf/Preview Content\"";
+				DEVELOPMENT_TEAM = PBX6J6U58R;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "For us to scan your code, we must be able to have access to your camera";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Khafaajii.MidnightGolf;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		622E99D72CA445EE00C5C66F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MidnightGolf/Preview Content\"";
+				DEVELOPMENT_TEAM = PBX6J6U58R;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "For us to scan your code, we must be able to have access to your camera";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Khafaajii.MidnightGolf;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		622E99D92CA445EE00C5C66F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Khafaajii.MidnightGolfTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MidnightGolf.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MidnightGolf";
+			};
+			name = Debug;
+		};
+		622E99DA2CA445EE00C5C66F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Khafaajii.MidnightGolfTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MidnightGolf.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MidnightGolf";
+			};
+			name = Release;
+		};
+		622E99DC2CA445EE00C5C66F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Khafaajii.MidnightGolfUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MidnightGolf;
+			};
+			name = Debug;
+		};
+		622E99DD2CA445EE00C5C66F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Khafaajii.MidnightGolfUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MidnightGolf;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		622E99AC2CA445EC00C5C66F /* Build configuration list for PBXProject "MidnightGolf" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				622E99D32CA445EE00C5C66F /* Debug */,
+				622E99D42CA445EE00C5C66F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		622E99D52CA445EE00C5C66F /* Build configuration list for PBXNativeTarget "MidnightGolf" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				622E99D62CA445EE00C5C66F /* Debug */,
+				622E99D72CA445EE00C5C66F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		622E99D82CA445EE00C5C66F /* Build configuration list for PBXNativeTarget "MidnightGolfTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				622E99D92CA445EE00C5C66F /* Debug */,
+				622E99DA2CA445EE00C5C66F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		622E99DB2CA445EE00C5C66F /* Build configuration list for PBXNativeTarget "MidnightGolfUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				622E99DC2CA445EE00C5C66F /* Debug */,
+				622E99DD2CA445EE00C5C66F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6293C94B2CECCFFD00D69153 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		6293C94D2CECCFFD00D69153 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		6293C94F2CECCFFD00D69153 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		6293C9512CECCFFD00D69153 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		6293C9532CECCFFD00D69153 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		6293C9552CECCFFD00D69153 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		6293C9572CECCFFD00D69153 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+		6293C9592CECCFFD00D69153 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		6293C95B2CECCFFD00D69153 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 622E99A92CA445EC00C5C66F /* Project object */;
+}
