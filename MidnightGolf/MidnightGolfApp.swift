@@ -6,30 +6,30 @@
 //
 
 import SwiftUI
-import FirebaseCore
-import FirebaseFirestore
-import FirebaseAuth
-
+import Firebase
  // Setting Cloud Firestore up
 
 
-//class AppDelegate: NSObject, UIApplicationDelegate {
-//  func application(_ application: UIApplication,
-//                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-//    FirebaseApp.configure() // Configuring Firebase at the start of the application
-//          
-//    return true
-//  }
-//}
+class AppDelegate: NSObject, UIApplicationDelegate {
+  func application(_ application: UIApplication,
+                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+          
+    return true
+  }
+}
 
-let db = Firestore.firestore()
+
+
 
 @main
 struct MidnightGolfApp: App {
-    @ObservedObject var manager = FirestoreManager()
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+//    @ObservedObject var manager = FirestoreManager()
     
     init() {
         FirebaseApp.configure()
+        
     }
     
     var body: some Scene {

@@ -9,11 +9,11 @@ import Foundation
 
 struct Student: Identifiable, Codable {
     let id: String
-    let first: String?
-    let last: String?
-    let born: Int?
-    let school: String?
-    let gradDate: Int?
+    let first: String
+    let last: String
+    let born: Int
+    let school: String
+    let gradDate: Int
     
 //    var school: String
 //    var graduationDate: Int

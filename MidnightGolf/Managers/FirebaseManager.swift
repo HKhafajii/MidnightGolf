@@ -9,42 +9,49 @@ import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
 
+
+
 class FirestoreManager: ObservableObject {
     static let shared = FirestoreManager()
     
-//    @Published var resources: [Resource] = []
+    //    @Published var resources: [Resource] = []
     @Published var mailHelper = MailHelper()
     @Published var student: Student?
     @Published var students: [Student] = []
+    @Published var names: [String] = []
     
-    private let userCollection = db.collection("users")
+    private var userCollection: CollectionReference
     
     private func userDocument(uuid: String) -> DocumentReference {
+        
         userCollection.document(uuid)
     }
-
     
-    init(mailHelper: MailHelper = MailHelper(), students: [Student]) {
+    
+    init(mailHelper: MailHelper = MailHelper(), students: [Student] = []) {
         self.mailHelper = mailHelper
-//        self.students = students
-//        self.student = student
+        self.userCollection = Firestore.firestore().collection("users")
+        names = getNames()
+        Task {
+            await fetchAllUsers()
+        }
     }
     
     // Default Constructor
-  
-    init() { }
     
-//    ------ REQUESTS ---------
+    
+    
+    //    ------ REQUESTS ---------
     
     
     func postUser(first: String, last: String, born: Int) async {
         do {
             let ref = try await userCollection.addDocument(data:
-                [
-                "first" : first,
-                "last" : last,
-                "born" : born
-                ])
+                                                            [
+                                                                "first" : first,
+                                                                "last" : last,
+                                                                "born" : born
+                                                            ])
             print("Document added with ID: \(ref.documentID)")
         } catch {
             print("Error adding document: \(error)")
@@ -71,8 +78,54 @@ class FirestoreManager: ObservableObject {
         
     }
     
+    func fetchAllUsers() async {
+        do {
+            let snapshot = try await userCollection.getDocuments()
+            
+            // Print the raw documents received from Firestore
+            print("Fetched Documents: \(snapshot.documents)")
+            
+            let fetchedStudents = snapshot.documents.compactMap { doc -> Student? in
+                let data = doc.data()
+                
+                // Print each document's data for debugging
+                print("Document ID: \(doc.documentID), Data: \(data)")
+                
+                let first = data["first"] as? String ?? "Unknown"
+                let last = data["last"] as? String ?? "Unknown"
+                let born = data["born"] as? Int ?? 0
+                let school = data["school"] as? String ?? "Not Specified"
+                let gradDate = data["graduationDate"] as? Int ?? 0
+                
+                return Student(id: doc.documentID, first: first, last: last, born: born, school: school, gradDate: gradDate)
+            }
+            
+            // Print parsed Student objects
+            print("Parsed Students: \(fetchedStudents)")
+            
+            DispatchQueue.main.async {
+                FirestoreManager.shared.students = fetchedStudents
+            }
+        } catch {
+            print("Error fetching users: \(error.localizedDescription)")
+        }
+    }
+    
+    func getNames() -> [String] {
+        
+        var names: [String] = []
+        
+        for student in students {
+            names.append(student.first + " " + student.last)
+        }
+        return names
+    }
+    
     func createNewUser(user: Student) async throws {
-//        try await userDocument(uuid: auth.uid)
+        //        try await userDocument(uuid: auth.uid)
+        
+        
+        
     }
 }
 

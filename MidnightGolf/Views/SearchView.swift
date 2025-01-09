@@ -1,7 +1,11 @@
 import SwiftUI
 
 struct SearchView: View {
-    // Mock data to search through
+    
+    @StateObject private var manager = FirestoreManager.shared
+    
+    
+    
     let allItems = [
         "Apple", "Banana", "Cherry", "Date", "Eggfruit",
         "Fig", "Grapefruit", "Honeydew", "Jackfruit", "Kiwi"
@@ -9,15 +13,14 @@ struct SearchView: View {
     
     @State private var searchText: String = ""
     
-    // Filtered results based on search text
     var filteredItems: [String] {
-        guard !searchText.isEmpty else { return [] } // Return empty until typing begins
-        return allItems.filter { $0.localizedCaseInsensitiveContains(searchText) }
+        guard !searchText.isEmpty else { return [] }
+        return manager.names.filter { $0.localizedCaseInsensitiveContains(searchText) }
     }
     
     var body: some View {
         VStack {
-            // Simple text field for searching
+            
             TextField("Search...", text: $searchText)
                 .font(.title3)
                 .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
@@ -25,7 +28,7 @@ struct SearchView: View {
                 .background(Capsule().fill(.ultraThinMaterial))
                 .shadow(radius: 8, x: 0, y: 8)
             
-            // Only show the list if there is search text
+            
             if !searchText.isEmpty {
                 List(filteredItems, id: \.self) { item in
                     NavigationLink {

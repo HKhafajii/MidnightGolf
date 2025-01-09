@@ -27,6 +27,7 @@ struct CheckInScreen: View {
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
+//                    .padding()
                 
                 VStack(spacing: 50) {
                     
@@ -36,7 +37,7 @@ struct CheckInScreen: View {
                     
                     Image("logo")
                         .resizable()
-                        .frame(maxWidth: CheckInScreen.deviceWidth / 3, maxHeight: CheckInScreen.deviceHeight / 3.5)
+                        .frame(maxWidth: CheckInScreen.deviceWidth / 2.8, maxHeight: CheckInScreen.deviceHeight / 3.5)
                         .shadow(radius: 8, x: 0, y: 8)
                     
                     Text("Check In")
