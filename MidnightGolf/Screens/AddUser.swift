@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AddUser: View {
     
-//    @EnvironmentObject var fbManager
+    @ObservedObject var fbManager = FirestoreManager.shared
     
     var body: some View {
         
@@ -10,16 +10,14 @@ struct AddUser: View {
         NavigationStack {
             ZStack {
                 
+//                TODO: Make the background work properly
                 //                Image("bg")
                 //                    .resizable()
                 //                    .scaledToFill()
                 //                    .ignoresSafeArea()
                 
                 VStack(spacing: 15) {
-                    
-//                    AddUserTextFields()
-                    
-                    
+                    AddUserTextFields(fbManager: fbManager)
                 }
                 .padding()
             }
@@ -42,7 +40,7 @@ struct AddUserTextFields: View {
     @State var school: String = ""
     @State var gradDate: Date = Date()
     
-    @StateObject var fbManager: FirestoreManager
+    @ObservedObject var fbManager: FirestoreManager
     
     var body: some View {
         

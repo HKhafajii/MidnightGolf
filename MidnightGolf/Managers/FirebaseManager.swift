@@ -15,6 +15,8 @@ class FirestoreManager: ObservableObject {
     static let shared = FirestoreManager()
     
     //    @Published var resources: [Resource] = []
+    
+    //    ------ Variables ---------
     @Published var mailHelper = MailHelper()
     @Published var student: Student?
     @Published var students: [Student] = []
@@ -43,12 +45,6 @@ class FirestoreManager: ObservableObject {
     
     //    ------ REQUESTS ---------
     
-//    @State var firstName: String = ""
-//    @State var lastName: String = ""
-//    @State var birthDate: Date = Date()
-//    @State var school: String = ""
-//    @State var gradDate: Date = Date()
-    
     
     func postUser(first: String, last: String, born: Date, school: String, gradDate: Date) async {
         
@@ -62,9 +58,9 @@ class FirestoreManager: ObservableObject {
                                                             [
                                                                 "first" : first,
                                                                 "last" : last,
-                                                                "born" : born,
+                                                                "born" : birthDateString,
                                                                 "school" : school,
-                                                                "gradDate" : gradDate
+                                                                "gradDate" : gradDateString
                                                             ])
             print("Document added with ID: \(ref.documentID)")
         } catch {
@@ -135,11 +131,7 @@ class FirestoreManager: ObservableObject {
         return names
     }
     
-    func createNewUser(user: Student) async throws {
-        //        try await userDocument(uuid: auth.uid)
-        
-        
-        
-    }
+    //    ------ END OF REQUESTS ---------
+    
 }
 

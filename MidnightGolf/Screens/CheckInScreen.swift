@@ -18,7 +18,7 @@ struct CheckInScreen: View {
         UIScreen.main.bounds.height
     }
     
-    @StateObject var fbManager = FirestoreManager()
+    @ObservedObject var fbManager = FirestoreManager.shared
     
     var body: some View {
         
@@ -30,19 +30,29 @@ struct CheckInScreen: View {
                     .scaledToFill()
                     .ignoresSafeArea()
                 
-                VStack(spacing: 50) {
+                VStack(spacing: 25) {
                     
                     HStack {
-                        Image(systemName: "person.badge.key.fill")
+                        NavigationLink {
+                            AdminScreen()
+                        } label: {
+                            Image(systemName: "person.badge.key.fill")
+                                .imageScale(.medium)
+                            
+                        }
+
+                        
                         TimeView()
-                    }
+                            .background(Color.red.opacity(0.3))
+
+                    } // End of HStack
                     
                     
                     Spacer()
                     
                     Image("logo")
                         .resizable()
-                        .frame(maxWidth: CheckInScreen.deviceWidth / 2.8, maxHeight: CheckInScreen.deviceHeight / 3.5)
+                        .frame(maxWidth: CheckInScreen.deviceWidth / 4, maxHeight: CheckInScreen.deviceHeight / 2)
                         .shadow(radius: 8, x: 0, y: 8)
                     
                     Text("Check In")
@@ -81,7 +91,7 @@ struct CheckInScreen: View {
                             .font(.title)
                             .foregroundStyle(.white)
                             .fontWeight(.semibold)
-                            .frame(maxWidth: CheckInScreen.deviceWidth / 2)
+                            .frame(maxWidth: CheckInScreen.deviceWidth / 5)
                             .padding()
                             .background(RoundedRectangle(cornerRadius: 16).fill(Color("blue")))
                             .shadow(radius: 8, x: 0, y: 8)
