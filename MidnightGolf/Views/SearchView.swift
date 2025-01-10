@@ -4,13 +4,6 @@ struct SearchView: View {
     
     @StateObject private var manager = FirestoreManager.shared
     
-    
-    
-    let allItems = [
-        "Apple", "Banana", "Cherry", "Date", "Eggfruit",
-        "Fig", "Grapefruit", "Honeydew", "Jackfruit", "Kiwi"
-    ]
-    
     @State private var searchText: String = ""
     
     var filteredItems: [String] {

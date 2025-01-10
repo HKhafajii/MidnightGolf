@@ -43,14 +43,28 @@ class FirestoreManager: ObservableObject {
     
     //    ------ REQUESTS ---------
     
+//    @State var firstName: String = ""
+//    @State var lastName: String = ""
+//    @State var birthDate: Date = Date()
+//    @State var school: String = ""
+//    @State var gradDate: Date = Date()
     
-    func postUser(first: String, last: String, born: Int) async {
+    
+    func postUser(first: String, last: String, born: Date, school: String, gradDate: Date) async {
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let birthDateString = dateFormatter.string(from: born)
+        let gradDateString = dateFormatter.string(from: gradDate)
+        
         do {
             let ref = try await userCollection.addDocument(data:
                                                             [
                                                                 "first" : first,
                                                                 "last" : last,
-                                                                "born" : born
+                                                                "born" : born,
+                                                                "school" : school,
+                                                                "gradDate" : gradDate
                                                             ])
             print("Document added with ID: \(ref.documentID)")
         } catch {

@@ -56,13 +56,13 @@ struct ContentView: View {
                 
                 HStack {
                     Spacer()
-                    Button("Add me") {
-                        Task {
-                            await fbManager.postUser(first: firstName, last: lastName, born: birthYear)
-                            path.append("destination")
-                        }
-                        
-                    }
+//                    Button("Add me") {
+//                        Task {
+//                            await fbManager.postUser(first: firstName, last: lastName, born: birthYear, )
+//                            path.append("destination")
+//                        }
+//                        
+//                    }
                     
 //                    TODO: Fix this so that when the button is pressed it navigates to the next view and calls the async function
 //                    .navigationDestination(for: String.self, destination: { value in

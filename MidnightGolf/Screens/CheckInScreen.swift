@@ -18,6 +18,8 @@ struct CheckInScreen: View {
         UIScreen.main.bounds.height
     }
     
+    @StateObject var fbManager = FirestoreManager()
+    
     var body: some View {
         
         NavigationStack {
@@ -27,11 +29,14 @@ struct CheckInScreen: View {
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
-//                    .padding()
                 
                 VStack(spacing: 50) {
                     
-                    TimeView()
+                    HStack {
+                        Image(systemName: "person.badge.key.fill")
+                        TimeView()
+                    }
+                    
                     
                     Spacer()
                     
@@ -102,11 +107,9 @@ struct TimeView: View {
     var body: some View {
         Text(timeNow)
             .font(.largeTitle)
-            .foregroundStyle(.white)
             .fontWeight(.semibold)
             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
             .padding()
-            .background(RoundedRectangle(cornerRadius: 16).fill(Color("blue")))
             .shadow(radius: 8, x: 0, y: 8)
             .onReceive(timer) { _ in
                 self.timeNow = dateFormatter.string(from: Date())
