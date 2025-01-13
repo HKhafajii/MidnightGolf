@@ -17,6 +17,9 @@ struct AdminVerificationSheetView: View {
                 Image("bg")
                 
                 VStack {
+                    Image(systemName: "chevron.down")
+                        .imageScale(.large)
+                        .foregroundStyle(Color("blue"))
                     Spacer()
                     
                     // PIN Circles
@@ -42,9 +45,9 @@ struct AdminVerificationSheetView: View {
                     
                     Spacer()
                     
-                    // Number Pad
+                    
                     VStack(spacing: 10) {
-                        // First three rows
+                        
                         ForEach(0..<3) { row in
                             HStack(spacing: 10) {
                                 ForEach(1...3, id: \.self) { col in
@@ -56,18 +59,18 @@ struct AdminVerificationSheetView: View {
                             }
                         }
                         
-                        // Bottom row with 0 and backspace
+                        
                         HStack(spacing: 10) {
-                            // Placeholder to align 0 under the 8
+                            
                             Spacer()
                                 .frame(width: 60)
                             
-                            // 0 Button
+                            
                             PinButton(number: 0) {
                                 addDigit(0)
                             }
                             
-                            // Backspace Button
+                            
                             Button(action: deleteDigit) {
                                 Image(systemName: "delete.left")
                                     .font(.title)
@@ -79,7 +82,7 @@ struct AdminVerificationSheetView: View {
                     
                     Spacer()
                     
-                    // Navigation Link to next screen
+                    
                     NavigationLink(destination: AdminScreen(), isActive: $navigateToNextScreen) {
                         EmptyView()
                     }
@@ -111,7 +114,7 @@ struct AdminVerificationSheetView: View {
             navigateToNextScreen = true
         } else {
             showError = true
-            pin.removeAll() // Clear the entered PIN
+            pin.removeAll()
         }
     }
 }
