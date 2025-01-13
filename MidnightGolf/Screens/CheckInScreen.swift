@@ -19,7 +19,7 @@ struct CheckInScreen: View {
     }
     
     @ObservedObject var fbManager = FirestoreManager.shared
-    
+    @State private var showAdminSheet = false
     var body: some View {
         
         NavigationStack {
@@ -33,17 +33,15 @@ struct CheckInScreen: View {
                 VStack(spacing: 25) {
                     
                     HStack {
-                        NavigationLink {
-                            AdminScreen()
+                        Button {
+                            showAdminSheet = true
                         } label: {
                             Image(systemName: "person.badge.key.fill")
                                 .imageScale(.medium)
-                            
                         }
-
                         
                         TimeView()
-                            .background(Color.red.opacity(0.3))
+
 
                     } // End of HStack
                     
@@ -97,6 +95,9 @@ struct CheckInScreen: View {
                             .shadow(radius: 8, x: 0, y: 8)
                     }
                 } // End of VStack
+                .sheet(isPresented: $showAdminSheet, content: {
+                    AdminVerificationSheetView()
+                })
                 .padding()
             } // End of ZStack
         } // End of NavigationStack

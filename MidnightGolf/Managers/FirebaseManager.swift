@@ -81,8 +81,8 @@ class FirestoreManager: ObservableObject {
         let first = data["first"] as? String ?? ""
         let last = data["last"] as? String ?? ""
         let school = data["school"] as? String ?? ""
-        let gradDate = data["graduationDate"] as? Int ?? 0
-        let born = data["born"] as? Int ?? 0
+        let gradDate = data["graduationDate"] as? String ?? ""
+        let born = data["born"] as? String ?? ""
         
         return Student(id: userId, first: first, last: last, born: born, school: school, gradDate: gradDate)
         
@@ -103,9 +103,9 @@ class FirestoreManager: ObservableObject {
                 
                 let first = data["first"] as? String ?? "Unknown"
                 let last = data["last"] as? String ?? "Unknown"
-                let born = data["born"] as? Int ?? 0
+                let born = data["born"] as? String ?? "Unknown"
                 let school = data["school"] as? String ?? "Not Specified"
-                let gradDate = data["graduationDate"] as? Int ?? 0
+                let gradDate = data["graduationDate"] as? String ?? "Unknown"
                 
                 return Student(id: doc.documentID, first: first, last: last, born: born, school: school, gradDate: gradDate)
             }

@@ -11,18 +11,9 @@ struct Student: Identifiable, Codable {
     let id: String
     let first: String
     let last: String
-    let born: Int
+    let born: String
     let school: String
-    let gradDate: Int
-    
-//    var school: String
-//    var graduationDate: Int
+    let gradDate: String
 }
 
-
-//let first = data["first"] as? String ?? ""
-//let last = data["last"] as? String ?? ""
-//let born = data["born"] as? Int ?? 0
-//
-//return Student(userId: userId, first: first, last: last, born: born)
 
