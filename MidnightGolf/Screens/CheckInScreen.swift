@@ -19,7 +19,12 @@ struct CheckInScreen: View {
     }
     
     @ObservedObject var fbManager = FirestoreManager.shared
+    
+
+    @StateObject private var timerManager = TimerManager()
+    
     @State private var showAdminSheet = false
+    
     var body: some View {
         
         NavigationStack {
@@ -37,20 +42,23 @@ struct CheckInScreen: View {
                             showAdminSheet = true
                         } label: {
                             Image(systemName: "person.badge.key.fill")
-                                .imageScale(.medium)
+                                .imageScale(.large)
+                                .shadow(radius: 10, x: 0, y: 8)
                         }
+                     
                         
-                        TimeView()
-
-
-                    } // End of HStack
                     
+                        TimeView(viewModel: timerManager)
+                    }
                     
                     Spacer()
                     
                     Image("logo")
                         .resizable()
-                        .frame(maxWidth: CheckInScreen.deviceWidth / 4, maxHeight: CheckInScreen.deviceHeight / 2)
+                        .frame(
+                            maxWidth: CheckInScreen.deviceWidth / 4,
+                            maxHeight: CheckInScreen.deviceHeight / 2
+                        )
                         .shadow(radius: 8, x: 0, y: 8)
                     
                     Text("Check In")
@@ -64,7 +72,6 @@ struct CheckInScreen: View {
                             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
                         
                         HStack {
-                            
                             Spacer()
                             
                             NavigationLink {
@@ -78,7 +85,7 @@ struct CheckInScreen: View {
                             }
                             .padding()
                             .padding(.trailing, 20)
-                        } // End of Hstack
+                        }
                         .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
                     }
                     
@@ -91,19 +98,21 @@ struct CheckInScreen: View {
                             .fontWeight(.semibold)
                             .frame(maxWidth: CheckInScreen.deviceWidth / 5)
                             .padding()
-                            .background(RoundedRectangle(cornerRadius: 16).fill(Color("blue")))
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color("blue"))
+                            )
                             .shadow(radius: 8, x: 0, y: 8)
                     }
-                } // End of VStack
-                .sheet(isPresented: $showAdminSheet, content: {
+                }
+                .sheet(isPresented: $showAdminSheet) {
                     AdminVerificationSheetView()
-                })
+                }
                 .padding()
-            } // End of ZStack
-        } // End of NavigationStack
+            }
+        }
     }
 }
-
 #Preview {
     CheckInScreen()
 }
@@ -111,21 +120,16 @@ struct CheckInScreen: View {
 
 struct TimeView: View {
     
-    @State var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
-    @State var timeNow = ""
-    let dateFormatter = DateFormatter()
+ 
+    @ObservedObject var viewModel: TimerManager
     
     var body: some View {
-        Text(timeNow)
+        Text(viewModel.currentTime)
             .font(.largeTitle)
             .fontWeight(.semibold)
             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
             .padding()
             .shadow(radius: 8, x: 0, y: 8)
-            .onReceive(timer) { _ in
-                self.timeNow = dateFormatter.string(from: Date())
-            }
-            .onAppear(perform: {dateFormatter.dateFormat = "LLLL dd, hh:mm:ss a"})
     }
-} // End of TimeView
+}
 
