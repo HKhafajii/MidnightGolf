@@ -30,4 +30,5 @@ class QRCodeManager {
         return image.pngData()
     }
     
+    
 }

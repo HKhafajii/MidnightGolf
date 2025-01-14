@@ -5,16 +5,15 @@
 //  Created by Hassan Alkhafaji on 11/21/24.
 //
 import Foundation
+import UIKit
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
 
-
-
 class FirestoreManager: ObservableObject {
-    static let shared = FirestoreManager()
     
-    //    @Published var resources: [Resource] = []
+    // Singleton Instance
+    static let shared = FirestoreManager()
     
     //    ------ Variables ---------
     @Published var mailHelper = MailHelper()
@@ -23,7 +22,6 @@ class FirestoreManager: ObservableObject {
     @Published var names: [String] = []
     
     private var userCollection: CollectionReference
-    
     private func userDocument(uuid: String) -> DocumentReference {
         
         userCollection.document(uuid)
@@ -39,10 +37,6 @@ class FirestoreManager: ObservableObject {
         }
     }
     
-  
-    
-    
-    
     
     //    ------ REQUESTS ---------
     
@@ -54,6 +48,9 @@ class FirestoreManager: ObservableObject {
         let birthDateString = dateFormatter.string(from: born)
         let gradDateString = dateFormatter.string(from: gradDate)
         
+        let qrCodebase64 = qrCode.base64EncodedString()
+        
+        
         do {
             let ref = try await userCollection.addDocument(data:
                                                             [
@@ -62,7 +59,7 @@ class FirestoreManager: ObservableObject {
                                                                 "born" : birthDateString,
                                                                 "school" : school,
                                                                 "gradDate" : gradDateString,
-                                                                "qrCode" : qrCode
+                                                                "qrCode" : qrCodebase64
                                                             ])
             print("Document added with ID: \(ref.documentID)")
         } catch {
@@ -85,43 +82,48 @@ class FirestoreManager: ObservableObject {
         let school = data["school"] as? String ?? ""
         let gradDate = data["graduationDate"] as? String ?? ""
         let born = data["born"] as? String ?? ""
+        let qrCode = data["qrCode"] as? Data ?? Data()
         
-        return Student(id: userId, first: first, last: last, born: born, school: school, gradDate: gradDate)
+        return Student(id: userId, first: first, last: last, born: born, school: school, gradDate: gradDate, qrCode: qrCode)
         
-    }
+    } // End of GetUser
     
     func fetchAllUsers() async {
         do {
             let snapshot = try await userCollection.getDocuments()
             
-            // Print the raw documents received from Firestore
-            print("Fetched Documents: \(snapshot.documents)")
-            
             let fetchedStudents = snapshot.documents.compactMap { doc -> Student? in
                 let data = doc.data()
-                
-                // Print each document's data for debugging
-                print("Document ID: \(doc.documentID), Data: \(data)")
                 
                 let first = data["first"] as? String ?? "Unknown"
                 let last = data["last"] as? String ?? "Unknown"
                 let born = data["born"] as? String ?? "Unknown"
                 let school = data["school"] as? String ?? "Not Specified"
-                let gradDate = data["graduationDate"] as? String ?? "Unknown"
+                let gradDate = data["gradDate"] as? String ?? "Unknown"
+                let qrCodeBase64 = data["qrCode"] as? String ?? ""
                 
-                return Student(id: doc.documentID, first: first, last: last, born: born, school: school, gradDate: gradDate)
+                let qrCodeData = Data(base64Encoded: qrCodeBase64) ?? Data()
+                
+                return Student(
+                    id: doc.documentID,
+                    first: first,
+                    last: last,
+                    born: born,
+                    school: school,
+                    gradDate: gradDate,
+                    qrCode: qrCodeData
+                )
             }
             
-            // Print parsed Student objects
             print("Parsed Students: \(fetchedStudents)")
             
             DispatchQueue.main.async {
-                FirestoreManager.shared.students = fetchedStudents
+                self.students = fetchedStudents
             }
         } catch {
             print("Error fetching users: \(error.localizedDescription)")
         }
-    }
+    } // End of Fetch all users
     
     func getNames() -> [String] {
         
@@ -131,6 +133,10 @@ class FirestoreManager: ObservableObject {
             names.append(student.first + " " + student.last)
         }
         return names
+    } // end of getNames
+    
+    func fetchQRCode(for documentID: String, completion: @escaping (UIImage?) -> Void) {
+        
     }
     
     //    ------ END OF REQUESTS ---------

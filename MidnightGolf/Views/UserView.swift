@@ -18,6 +18,15 @@ struct UsersView: View {
                 Text("Born: \(student.born)")
                 Text("School: \(student.school)")
                 Text("Graduation Date: \(student.gradDate)")
+                
+                if let qrCodeImage = UIImage(data: student.qrCode) {
+                    Image(uiImage: qrCodeImage)
+                        .interpolation(.none)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 200, height: 200)
+                }
+                
             }
         }
         .onAppear {

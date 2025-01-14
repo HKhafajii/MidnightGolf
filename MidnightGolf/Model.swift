@@ -14,6 +14,7 @@ struct Student: Identifiable, Codable {
     let born: String
     let school: String
     let gradDate: String
+    let qrCode: Data
 }
 
 

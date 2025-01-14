@@ -20,7 +20,14 @@ struct AdminScreen: View {
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
-                VStack {
+                VStack(spacing: 25) {
+                    
+                    NavigationLink {
+                        UsersView()
+                    } label: {
+                        Text("User View")
+                    }
+
                     
                 }
                 
