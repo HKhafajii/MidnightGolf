@@ -1,23 +1,32 @@
 import SwiftUI
+import CoreImage.CIFilterBuiltins
 
 struct AddUser: View {
     
     @ObservedObject var fbManager = FirestoreManager.shared
+    @State var firstN: String = ""
+    @State var lastN: String = ""
+    
+    
+    let context = CIContext()
+    let filter = CIFilter.qrCodeGenerator()
     
     var body: some View {
-        
         
         NavigationStack {
             ZStack {
                 
-//                TODO: Make the background work properly
+                //                TODO: Make the background work properly
                 //                Image("bg")
                 //                    .resizable()
                 //                    .scaledToFill()
                 //                    .ignoresSafeArea()
                 
                 VStack(spacing: 15) {
-                    AddUserTextFields(fbManager: fbManager)
+                    
+                    AddUserTextFields(firstName: $firstN, lastName: $lastN, fbManager: fbManager)
+                    
+                    
                 }
                 .padding()
             }
@@ -34,13 +43,14 @@ struct AddUser: View {
 }
 
 struct AddUserTextFields: View {
-    @State var firstName: String = ""
-    @State var lastName: String = ""
+    @Binding var firstName: String
+    @Binding var lastName: String
     @State var birthDate: Date = Date()
     @State var school: String = ""
     @State var gradDate: Date = Date()
     
     @ObservedObject var fbManager: FirestoreManager
+    @State var qrCodeManager =  QRCodeManager()
     
     var body: some View {
         
@@ -92,9 +102,18 @@ struct AddUserTextFields: View {
                 .cornerRadius(16)
             
             Button {
-                Task {
-                    await fbManager.postUser(first: firstName, last: lastName, born: birthDate, school: school, gradDate: gradDate)
+                
+                let qrCode = qrCodeManager.generateQRCode(from: firstName + lastName)
+                
+                if let qrCodeData = qrCodeManager.convertImageToData(image: qrCode) {
+                    Task {
+                        await fbManager.postUser(first: firstName, last: lastName, born: birthDate, school: school, gradDate: gradDate, qrCode: qrCodeData)
+                    }
+                } else {
+                    print("The Qr code wasn't able to be generated")
                 }
+                
+               
             } label: {
                 Text("Add User")
                     .font(.title2)

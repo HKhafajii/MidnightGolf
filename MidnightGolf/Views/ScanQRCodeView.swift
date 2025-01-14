@@ -103,7 +103,7 @@ struct ScanQRCodeView: View {
             .onAppear(perform: checkCameraPermission)
             .alert(errorMessage, isPresented: $showError) {
                 if cameraPermission == .denied {
-                    Button("Seetings") {
+                    Button("Settings") {
                         let settingsStrings = UIApplication.openSettingsURLString
                         if let settingsURL = URL(string: settingsStrings) {
                             openURL(settingsURL)

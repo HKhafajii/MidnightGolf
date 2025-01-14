@@ -24,6 +24,7 @@ struct CheckInScreen: View {
     @StateObject private var timerManager = TimerManager()
     
     @State private var showAdminSheet = false
+    @State private var navigateToNextScreen = false
     
     var body: some View {
         
@@ -104,9 +105,13 @@ struct CheckInScreen: View {
                             )
                             .shadow(radius: 8, x: 0, y: 8)
                     }
+                    
+                    NavigationLink(destination: AdminScreen(), isActive: $navigateToNextScreen) {
+                        EmptyView()
+                    }
                 }
                 .sheet(isPresented: $showAdminSheet) {
-                    AdminVerificationSheetView()
+                    AdminVerificationSheetView(navigateToNextScreen: $navigateToNextScreen, showAdminSheet: $showAdminSheet)
                 }
                 .padding()
             }

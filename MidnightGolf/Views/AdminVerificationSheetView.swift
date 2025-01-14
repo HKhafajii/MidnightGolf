@@ -5,13 +5,11 @@ struct AdminVerificationSheetView: View {
     let adminPin = [3, 2, 9, 8]
     let maxDigits = 4
     @State private var showError = false
-    @State private var navigateToNextScreen = false
+    @Binding  var navigateToNextScreen: Bool
+    @Binding var showAdminSheet: Bool
 
     var body: some View {
         NavigationStack {
-            
-
-            
             ZStack {
                 
                 Image("bg")
@@ -22,7 +20,6 @@ struct AdminVerificationSheetView: View {
                         .foregroundStyle(Color("blue"))
                     Spacer()
                     
-                    // PIN Circles
                     HStack(spacing: 15) {
                         ForEach(0..<maxDigits, id: \.self) { index in
                             Circle()
@@ -45,7 +42,6 @@ struct AdminVerificationSheetView: View {
                     
                     Spacer()
                     
-                    
                     VStack(spacing: 10) {
                         
                         ForEach(0..<3) { row in
@@ -59,7 +55,6 @@ struct AdminVerificationSheetView: View {
                             }
                         }
                         
-                        
                         HStack(spacing: 10) {
                             
                             Spacer()
@@ -69,7 +64,6 @@ struct AdminVerificationSheetView: View {
                             PinButton(number: 0) {
                                 addDigit(0)
                             }
-                            
                             
                             Button(action: deleteDigit) {
                                 Image(systemName: "delete.left")
@@ -82,10 +76,7 @@ struct AdminVerificationSheetView: View {
                     
                     Spacer()
                     
-                    
-                    NavigationLink(destination: AdminScreen(), isActive: $navigateToNextScreen) {
-                        EmptyView()
-                    }
+                   
                 }
                 .padding()
             }
@@ -112,6 +103,8 @@ struct AdminVerificationSheetView: View {
     private func verifyPin() {
         if pin == adminPin {
             navigateToNextScreen = true
+            showAdminSheet = false
+            
         } else {
             showError = true
             pin.removeAll()
@@ -142,5 +135,5 @@ struct SuccessView: View {
 }
 
 #Preview {
-    AdminVerificationSheetView()
+    AdminVerificationSheetView(navigateToNextScreen: .constant(false), showAdminSheet: .constant(true))
 }

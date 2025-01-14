@@ -39,14 +39,15 @@ class FirestoreManager: ObservableObject {
         }
     }
     
-    // Default Constructor
+  
+    
     
     
     
     //    ------ REQUESTS ---------
     
     
-    func postUser(first: String, last: String, born: Date, school: String, gradDate: Date) async {
+    func postUser(first: String, last: String, born: Date, school: String, gradDate: Date, qrCode: Data) async {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -60,7 +61,8 @@ class FirestoreManager: ObservableObject {
                                                                 "last" : last,
                                                                 "born" : birthDateString,
                                                                 "school" : school,
-                                                                "gradDate" : gradDateString
+                                                                "gradDate" : gradDateString,
+                                                                "qrCode" : qrCode
                                                             ])
             print("Document added with ID: \(ref.documentID)")
         } catch {
