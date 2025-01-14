@@ -11,10 +11,12 @@ import SwiftUI
 
 class QRCodeManager {
     
+    //    ------ Variables ---------
     let context = CIContext()
     let filter = CIFilter.qrCodeGenerator()
     
     
+    //    ------ Functions ---------
     
     func generateQRCode(from string: String) -> UIImage {
         filter.message = Data(string.utf8)
@@ -24,11 +26,11 @@ class QRCodeManager {
             }
         }
         return UIImage(systemName: "xmark.circle") ?? UIImage()
-    }
+    } // End of GenerateQRCode
     
     func convertImageToData(image: UIImage) -> Data? {
         return image.pngData()
-    }
+    } // End of Converting image to data
     
     
-}
+} // End of QR code manager
