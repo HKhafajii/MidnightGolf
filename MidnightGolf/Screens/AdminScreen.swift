@@ -20,16 +20,48 @@ struct AdminScreen: View {
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
-                VStack(spacing: 25) {
+                VStack(spacing: 50) {
                     
                     NavigationLink {
-                        UsersView()
+                        StudentDirectoryScreen()
                     } label: {
-                        Text("User View")
+                        Text("Student Directory")
+                            .font(.title)
+                            .foregroundStyle(Color("navy"))
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: CheckInScreen.deviceWidth / 5)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color("yellow"))
+                                    .shadow(radius: 8, x: 0, y: 8)
+                            )
                     }
+                    .padding()
+                    
+                    
+                    
+                    NavigationLink {
+                        AttendanceTabScreen()
+                    } label: {
+                        Text("Current Attendence")
+                            .font(.title)
+                            .foregroundStyle(Color("navy"))
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: CheckInScreen.deviceWidth / 5)
+                            .padding()
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color("yellow"))
+                                    .shadow(radius: 8, x: 0, y: 8)
+                            )
+                    }
+                    .padding()
+                    
 
                     
                 }
+                .padding()
                 
                 
             }

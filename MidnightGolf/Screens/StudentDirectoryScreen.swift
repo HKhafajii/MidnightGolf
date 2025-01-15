@@ -19,9 +19,16 @@ struct StudentDirectoryScreen: View {
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
-                VStack {
+                VStack(alignment: .leading, spacing: 25) {
+                   
+                    Text("Student Directory")
+                        .font(.largeTitle)
+                        .foregroundStyle(Color("navy"))
+                        .fontWeight(.bold)
+                        
                     
                 }
+                .padding()
                 
                 
             }

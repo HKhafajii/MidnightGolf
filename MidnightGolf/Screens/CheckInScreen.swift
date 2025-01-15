@@ -39,17 +39,19 @@ struct CheckInScreen: View {
                 VStack(spacing: 25) {
                     
                     HStack {
+                    
+                        TimeView(viewModel: timerManager)
+                        
                         Button {
                             showAdminSheet = true
                         } label: {
                             Image(systemName: "person.badge.key.fill")
-                                .imageScale(.large)
+
+                                .resizable()
+                                .frame(maxWidth: 40, maxHeight: 40)
+                                .foregroundStyle(Color("navy"))
                                 .shadow(radius: 10, x: 0, y: 8)
                         }
-                     
-                        
-                    
-                        TimeView(viewModel: timerManager)
                     }
                     
                     Spacer()
@@ -65,6 +67,7 @@ struct CheckInScreen: View {
                     Text("Check In")
                         .font(.largeTitle)
                         .fontWeight(.bold)
+                        .foregroundStyle(Color("navy"))
                         .padding()
                     
                     VStack {
@@ -95,15 +98,16 @@ struct CheckInScreen: View {
                     } label: {
                         Text("Scan QR Code")
                             .font(.title)
-                            .foregroundStyle(.white)
+                            .foregroundStyle(Color("navy"))
                             .fontWeight(.semibold)
                             .frame(maxWidth: CheckInScreen.deviceWidth / 5)
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(Color("blue"))
+                                    .shadow(radius: 8, x: 0, y: 8)
                             )
-                            .shadow(radius: 8, x: 0, y: 8)
+                            
                     }
                     
                     NavigationLink(destination: AdminScreen(), isActive: $navigateToNextScreen) {
@@ -131,6 +135,7 @@ struct TimeView: View {
     var body: some View {
         Text(viewModel.currentTime)
             .font(.largeTitle)
+            .foregroundStyle(Color("navy"))
             .fontWeight(.semibold)
             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
             .padding()

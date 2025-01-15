@@ -19,7 +19,39 @@ struct AttendanceTabScreen: View {
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
-                VStack {
+                VStack(alignment: .leading) {
+                    
+                    Text("Attendance")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color("navy"))
+                    
+                    
+//                    TabView {
+                        
+//                        Text("Today")
+//                            .tabItem {
+//                                Image(systemName: "house.fill")
+//                                Text("Home")
+//                            }
+//                        
+//                        Text("Week")
+//                            .tabItem {
+//                                Image(systemName: "globe")
+//                                Text("Browse")
+//                            }
+//                        
+//                        Text("Month")
+//                            .tabItem {
+//                                Image(systemName: "person.fill")
+//                                Text("Profile")
+//                            }
+                        
+                        
+//                    }
+//                    .tabViewStyle(PageTabViewStyle())
+             
+                    
                     
                 }
                 
