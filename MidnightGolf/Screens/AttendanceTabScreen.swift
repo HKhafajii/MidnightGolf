@@ -27,33 +27,22 @@ struct AttendanceTabScreen: View {
                         .foregroundStyle(Color("navy"))
                     
                     
-//                    TabView {
+                    TabView {
+
+                        Tab {
+                            Image(systemName: "person.fill")
+                        } label: {
+                            Image(systemName: "person.fill")
+                        }
+
                         
-//                        Text("Today")
-//                            .tabItem {
-//                                Image(systemName: "house.fill")
-//                                Text("Home")
-//                            }
-//                        
-//                        Text("Week")
-//                            .tabItem {
-//                                Image(systemName: "globe")
-//                                Text("Browse")
-//                            }
-//                        
-//                        Text("Month")
-//                            .tabItem {
-//                                Image(systemName: "person.fill")
-//                                Text("Profile")
-//                            }
-                        
-                        
-//                    }
-//                    .tabViewStyle(PageTabViewStyle())
+                    }
+                    .tabViewStyle(PageTabViewStyle())
              
                     
                     
                 }
+                .padding()
                 
                 
             }

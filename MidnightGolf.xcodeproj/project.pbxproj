@@ -227,6 +227,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				6210371C2D3A93DD003921EC /* XCRemoteSwiftPackageReference "CodeScanner" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 622E99B22CA445EC00C5C66F /* Products */;
@@ -601,6 +602,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6210371C2D3A93DD003921EC /* XCRemoteSwiftPackageReference "CodeScanner" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/twostraws/CodeScanner";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.2;
+			};
+		};
 		6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";

@@ -35,8 +35,7 @@ struct MidnightGolfApp: App {
     var body: some Scene {
         WindowGroup {
 //            ContentView(email: "", password: "", firstName: "", lastName: "", birthYear: 0)
-//            CheckInScreen()
-              SearchView()
+            CheckInScreen()
         }
     }
 }

@@ -20,10 +20,11 @@ struct CheckInScreen: View {
     
     @ObservedObject var fbManager = FirestoreManager.shared
     
-
+    
     @StateObject private var timerManager = TimerManager()
     
     @State private var showAdminSheet = false
+    @State private var showScanSheet = false
     @State private var navigateToNextScreen = false
     
     var body: some View {
@@ -39,18 +40,18 @@ struct CheckInScreen: View {
                 VStack(spacing: 25) {
                     
                     HStack {
-                    
+                        
                         TimeView(viewModel: timerManager)
                         
                         Button {
                             showAdminSheet = true
                         } label: {
                             Image(systemName: "person.badge.key.fill")
-
+                            
                                 .resizable()
-                                .frame(maxWidth: 40, maxHeight: 40)
+                                .frame(maxWidth: 45, maxHeight: 40)
                                 .foregroundStyle(Color("navy"))
-                                .shadow(radius: 10, x: 0, y: 8)
+                                .shadow(radius: 10, x: 0, y: 5)
                         }
                     }
                     
@@ -68,6 +69,7 @@ struct CheckInScreen: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(Color("navy"))
+                    
                         .padding()
                     
                     VStack {
@@ -93,6 +95,10 @@ struct CheckInScreen: View {
                         .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
                     }
                     
+                    
+                    Button("Scan", systemImage: "qrcode.viewfinder") {
+                        showScanSheet = true
+                    }
                     NavigationLink {
                         ScanQRCodeView()
                     } label: {
@@ -103,11 +109,11 @@ struct CheckInScreen: View {
                             .frame(maxWidth: CheckInScreen.deviceWidth / 5)
                             .padding()
                             .background(
-                                RoundedRectangle(cornerRadius: 16)
+                                RoundedRectangle(cornerRadius: 10)
                                     .fill(Color("blue"))
                                     .shadow(radius: 8, x: 0, y: 8)
                             )
-                            
+                        
                     }
                     
                     NavigationLink(destination: AdminScreen(), isActive: $navigateToNextScreen) {
@@ -129,7 +135,7 @@ struct CheckInScreen: View {
 
 struct TimeView: View {
     
- 
+    
     @ObservedObject var viewModel: TimerManager
     
     var body: some View {
@@ -139,7 +145,7 @@ struct TimeView: View {
             .fontWeight(.semibold)
             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
             .padding()
-            .shadow(radius: 8, x: 0, y: 8)
+            .shadow(radius: 8, x: 0, y: 5)
     }
 }
 
