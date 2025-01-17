@@ -20,6 +20,7 @@ class FirestoreManager: ObservableObject {
     @Published var student: Student?
     @Published var students: [Student] = []
     @Published var names: [String] = []
+    @Published private(set) var studentQRCodes: Set<String> = []
     
     private var userCollection: CollectionReference
     private func userDocument(uuid: String) -> DocumentReference {
@@ -119,6 +120,10 @@ class FirestoreManager: ObservableObject {
             
             DispatchQueue.main.async {
                 self.students = fetchedStudents
+                
+                self.studentQRCodes = Set(fetchedStudents.compactMap { student in
+                    String(data: student.qrCode, encoding: .utf8)
+                })
             }
         } catch {
             print("Error fetching users: \(error.localizedDescription)")

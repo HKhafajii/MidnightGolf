@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import CodeScanner
+
 
 struct CheckInScreen: View {
     
@@ -97,25 +99,20 @@ struct CheckInScreen: View {
                     
                     
                     Button("Scan", systemImage: "qrcode.viewfinder") {
+                        
                         showScanSheet = true
-                    }
-                    NavigationLink {
-                        ScanQRCodeView()
-                    } label: {
-                        Text("Scan QR Code")
-                            .font(.title)
-                            .foregroundStyle(Color("navy"))
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: CheckInScreen.deviceWidth / 5)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .fill(Color("blue"))
-                                    .shadow(radius: 8, x: 0, y: 8)
-                            )
                         
                     }
+                    .font(.largeTitle)
+                    .foregroundStyle(Color("navy"))
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: CheckInScreen.deviceWidth / 5)
+                    .shadow(radius: 8, x: 0, y: 8)
                     
+                    .sheet(isPresented: $showScanSheet) {
+                        CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
+                    }
+  
                     NavigationLink(destination: AdminScreen(), isActive: $navigateToNextScreen) {
                         EmptyView()
                     }
@@ -127,6 +124,20 @@ struct CheckInScreen: View {
             }
         }
     }
+      func handleScan(result: Result<ScanResult, ScanError>) {
+    
+          showScanSheet = false
+    
+        
+            switch result {
+            case .success(let result):
+                let scannedCode = result.string
+                if fbManager.studentQRCodes.contains(scannedCode) {
+                    print("Scanned code matches")
+                }
+            case .failure(let error):
+                print("Scanning failed: \(error.localizedDescription)")
+            }    }
 }
 #Preview {
     CheckInScreen()

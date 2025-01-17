@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6210371E2D3AA78B003921EC /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 6210371D2D3AA78B003921EC /* CodeScanner */; };
 		6293C94C2CECCFFD00D69153 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C94B2CECCFFD00D69153 /* FirebaseAnalytics */; };
 		6293C94E2CECCFFD00D69153 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C94D2CECCFFD00D69153 /* FirebaseAuth */; };
 		6293C9502CECCFFD00D69153 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C94F2CECCFFD00D69153 /* FirebaseCore */; };
@@ -68,6 +69,7 @@
 				6293C9542CECCFFD00D69153 /* FirebaseDatabase in Frameworks */,
 				6293C95C2CECCFFD00D69153 /* FirebaseStorage in Frameworks */,
 				6293C9582CECCFFD00D69153 /* FirebaseFunctions in Frameworks */,
+				6210371E2D3AA78B003921EC /* CodeScanner in Frameworks */,
 				6293C94C2CECCFFD00D69153 /* FirebaseAnalytics in Frameworks */,
 				6293C9522CECCFFD00D69153 /* FirebaseCrashlytics in Frameworks */,
 				6293C9502CECCFFD00D69153 /* FirebaseCore in Frameworks */,
@@ -142,6 +144,7 @@
 				6293C9572CECCFFD00D69153 /* FirebaseFunctions */,
 				6293C9592CECCFFD00D69153 /* FirebaseMessaging */,
 				6293C95B2CECCFFD00D69153 /* FirebaseStorage */,
+				6210371D2D3AA78B003921EC /* CodeScanner */,
 			);
 			productName = MidnightGolf;
 			productReference = 622E99B12CA445EC00C5C66F /* MidnightGolf.app */;
@@ -621,6 +624,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6210371D2D3AA78B003921EC /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6210371C2D3A93DD003921EC /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
 		6293C94B2CECCFFD00D69153 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
