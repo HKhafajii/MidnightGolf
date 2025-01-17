@@ -9,6 +9,7 @@ import Foundation
 
 class CheckInManager: ObservableObject {
     
+    let timer = TimerManager()
     
     
 }
