@@ -7,9 +7,8 @@ struct AddUser: View {
     @State var firstN: String = ""
     @State var lastN: String = ""
     
-    
-    let context = CIContext()
-    let filter = CIFilter.qrCodeGenerator()
+    @Binding var showAddStudentSheet: Bool
+  
     
     var body: some View {
         
@@ -24,7 +23,7 @@ struct AddUser: View {
                 
                 VStack(spacing: 15) {
                     
-                    AddUserTextFields(firstName: $firstN, lastName: $lastN, fbManager: fbManager)
+                    AddUserTextFields( showAddStudentSheet: $showAddStudentSheet )
                     
                     
                 }
@@ -39,17 +38,18 @@ struct AddUser: View {
 
 
 #Preview {
-    AddUser()
+    AddUser(showAddStudentSheet: .constant(false))
 }
 
 struct AddUserTextFields: View {
-    @Binding var firstName: String
-    @Binding var lastName: String
+    @State var firstName: String = ""
+    @State var lastName: String = ""
     @State var birthDate: Date = Date()
     @State var school: String = ""
     @State var gradDate: Date = Date()
+    @Binding var showAddStudentSheet: Bool
     
-    @ObservedObject var fbManager: FirestoreManager
+    @ObservedObject var fbManager: FirestoreManager = FirestoreManager.shared
     @State var qrCodeManager =  QRCodeManager()
     
     var body: some View {
@@ -112,18 +112,18 @@ struct AddUserTextFields: View {
                 } else {
                     print("The Qr code wasn't able to be generated")
                 }
-                
-               
+                showAddStudentSheet = false
             } label: {
                 Text("Add User")
                     .font(.title2)
                     .foregroundStyle(.white)
                     .fontWeight(.semibold)
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 2)
+                    .frame(maxWidth: CheckInScreen.deviceWidth / 2.1)
                     .padding()
                     .background(RoundedRectangle(cornerRadius: 16).fill(Color("blue")))
                     .shadow(radius: 8, x: 0, y: 8)
             }
+            .padding()
         }
     }
 }
