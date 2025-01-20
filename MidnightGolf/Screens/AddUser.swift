@@ -108,6 +108,7 @@ struct AddUserTextFields: View {
                 if let qrCodeData = qrCodeManager.convertImageToData(image: qrCode) {
                     Task {
                         await fbManager.postUser(first: firstName, last: lastName, born: birthDate, school: school, gradDate: gradDate, qrCode: qrCodeData)
+                        
                     }
                 } else {
                     print("The Qr code wasn't able to be generated")
