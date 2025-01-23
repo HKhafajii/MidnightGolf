@@ -24,8 +24,11 @@ class FirestoreManager: ObservableObject {
     
     private var userCollection: CollectionReference
     private func userDocument(uuid: String) -> DocumentReference {
-        
         userCollection.document(uuid)
+    }
+    
+    private var attendanceCollection: CollectionReference {
+        Firestore.firestore().collection("attendance")
     }
     
     
@@ -40,6 +43,29 @@ class FirestoreManager: ObservableObject {
     
     
     //    ------ REQUESTS ---------
+    
+    func postAttendance(_ attendance: Attendance) async throws {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        guard let data = try? encoder.encode(attendance), let dictionary = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw URLError(.cannotParseResponse)
+        }
+        try await attendanceCollection.addDocument(data: dictionary)
+        print("Attendance posted")
+    }
+    
+    func fetchAttendance(for studentID: String) async throws -> [Attendance] {
+        let snapshot = try await attendanceCollection.whereField("studentID", isEqualTo: studentID).getDocuments()
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return snapshot.documents.compactMap { document in
+            guard let data = try? JSONSerialization.data(withJSONObject: document.data()),
+                  let attendance = try? decoder.decode(Attendance.self, from: data) else {
+                return nil
+            }
+            return attendance
+        }
+    }
     
     
     func postUser(first: String, last: String, born: Date, school: String, gradDate: Date, qrCode: Data) async {

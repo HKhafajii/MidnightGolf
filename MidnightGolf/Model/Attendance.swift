@@ -8,11 +8,11 @@
 import Foundation
 
 struct Attendance: Codable {
-    
+    let studentID: String
     let timeIn: Date?
-    let timeOut: Date?
-    let isCheckedIn: Bool?
-    let isLate: Bool?
-    let totalTime: Double?
+    var timeOut: Date?
+    var isCheckedIn: Bool
+    var isLate: Bool
+    var totalTime: Double
     
 }
