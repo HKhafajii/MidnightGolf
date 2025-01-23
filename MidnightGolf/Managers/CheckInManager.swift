@@ -64,7 +64,8 @@ class CheckInManager: ObservableObject {
         let today = formatter.string(from: Date())
         
         let isLate = isLate(for: today, at: time)
-        return Attendance(timeIn: time, timeOut: nil, isCheckedIn: true, isLate: isLate, totalTime: 0)
+//        TODO: Fix this
+        return Attendance(studentID: "chicken", timeIn: time, timeOut: nil, isCheckedIn: true, isLate: isLate, totalTime: 0)
     }
     
     func checkOut(for attendance: inout Attendance, at time: Date) {
