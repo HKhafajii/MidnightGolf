@@ -9,6 +9,7 @@ import Foundation
 
 struct Student: Identifiable, Codable {
     let id: String
+    let group: String
     let first: String
     let last: String
     let born: String

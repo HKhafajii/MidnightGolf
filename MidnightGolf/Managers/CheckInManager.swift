@@ -49,37 +49,42 @@ class CheckInManager: ObservableObject {
     
     @Published var isCheckedIn: Bool = false
     
-    func checkIn(for student: String, at time: Date) throws -> Attendance? {
+    func checkIn(for student: Student, at time: Date) async throws -> Attendance? {
         
-        guard !isCheckedIn else {
-            throw CheckInError.alreadyCheckedIn
-        }
-        
-        guard isValidClockInDay(for: student) else {
-            throw CheckInError.invalidClockInDay
-           }
+        guard !isCheckedIn else { throw CheckInError.alreadyCheckedIn }
+        guard isValidClockInDay(for: student) else { throw CheckInError.invalidClockInDay }
         
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE"
         let today = formatter.string(from: Date())
-        
         let isLate = isLate(for: today, at: time)
-//        TODO: Fix this
-        return Attendance(studentID: "chicken", timeIn: time, timeOut: nil, isCheckedIn: true, isLate: isLate, totalTime: 0)
+
+        
+        let attendance = Attendance(
+            studentID: student.id,
+            timeIn: time,
+            timeOut: nil,
+            isCheckedIn: true,
+            isLate: isLate,
+            totalTime: 0)
+        
+        try await FirestoreManager.shared.postAttendance(attendance)
+        isCheckedIn = true
+        return attendance
     }
     
-    func checkOut(for attendance: inout Attendance, at time: Date) {
+    func checkOut(for attendance: inout Attendance, at time: Date) async throws {
         guard attendance.isCheckedIn, let timeIn = attendance.timeIn else {
-            print("Cannot check out: not checked in or missing timeIn")
-            return
+            throw CheckInError.notCheckedIn
         }
         
         attendance.timeOut = time
         attendance.isCheckedIn = false
-        if let timeIn = attendance.timeIn {
-            let elapsedTime = time.timeIntervalSince(timeIn) / 3600.0
-            attendance.totalTime = elapsedTime
-        }
+        attendance.totalTime = time.timeIntervalSince(timeIn) / 3600.0
+        
+        try await FirestoreManager.shared.postAttendance(attendance)
+        isCheckedIn = false
+        
     }
     
     func isLate(for day: String, at time: Date) -> Bool {
@@ -88,9 +93,9 @@ class CheckInManager: ObservableObject {
         return time >= threshold
     }
     
-    func isValidClockInDay(for user: String) -> Bool {
+    func isValidClockInDay(for student: Student) -> Bool {
         
-        guard let group = userGroups[user],
+        guard let group = userGroups[student.group],
               let allowedDays = validClockInDays[group] else { return false}
         
         let dateFormatter = DateFormatter()
