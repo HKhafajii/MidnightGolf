@@ -61,7 +61,7 @@ class CheckInManager: ObservableObject {
 
         
         let attendance = Attendance(
-            studentID: student.id,
+            id: UUID().uuidString, studentID: student.id,
             timeIn: time,
             timeOut: nil,
             isCheckedIn: true,
@@ -104,6 +104,18 @@ class CheckInManager: ObservableObject {
         
         return allowedDays.contains(today)
         
+    }
+    
+    func handleCheckInorOut(for student: Student) {
+        Task {
+            do {
+                let attendance = try await checkIn(for: student, at: Date())
+                print("Check in successful for \(student.first)")
+                
+            } catch {
+                print("Check in failed: \(error.localizedDescription)")
+            }
+        }
     }
     
 }

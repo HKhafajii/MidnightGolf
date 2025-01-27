@@ -132,8 +132,12 @@ struct CheckInScreen: View {
             switch result {
             case .success(let result):
                 let scannedCode = result.string
-                if fbManager.studentQRCodes.contains(scannedCode) {
+                if let student = fbManager.students.first(where: {
+                    String(data: $0.qrCode, encoding: .utf8) == scannedCode
+                }) {
+                    fbManager.checkInManager.handleCheckInorOut(for: student)
                     print("Scanned code matches")
+                    
                 }
             case .failure(let error):
                 print("Scanning failed: \(error.localizedDescription)")

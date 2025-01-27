@@ -17,6 +17,7 @@ class FirestoreManager: ObservableObject {
     
     //    ------ Variables ---------
     @Published var mailHelper = MailHelper()
+    @Published var checkInManager = CheckInManager()
     @Published var student: Student?
     @Published var students: [Student] = []
     @Published var names: [String] = []
@@ -106,12 +107,13 @@ class FirestoreManager: ObservableObject {
         
         let first = data["first"] as? String ?? ""
         let last = data["last"] as? String ?? ""
+        let group = data["group"] as? String ?? ""
         let school = data["school"] as? String ?? ""
         let gradDate = data["graduationDate"] as? String ?? ""
         let born = data["born"] as? String ?? ""
         let qrCode = data["qrCode"] as? Data ?? Data()
         
-        return Student(id: userId, first: first, last: last, born: born, school: school, gradDate: gradDate, qrCode: qrCode)
+        return Student(id: userId, group: group, first: first, last: last, born: born, school: school, gradDate: gradDate, qrCode: qrCode)
         
     } // End of GetUser
     
@@ -124,6 +126,7 @@ class FirestoreManager: ObservableObject {
                 
                 let first = data["first"] as? String ?? "Unknown"
                 let last = data["last"] as? String ?? "Unknown"
+                let group = data["group"] as? String ?? "Unkown"
                 let born = data["born"] as? String ?? "Unknown"
                 let school = data["school"] as? String ?? "Not Specified"
                 let gradDate = data["gradDate"] as? String ?? "Unknown"
@@ -133,6 +136,7 @@ class FirestoreManager: ObservableObject {
                 
                 return Student(
                     id: doc.documentID,
+                    group: group,
                     first: first,
                     last: last,
                     born: born,
