@@ -8,7 +8,7 @@
 import Foundation
 
 struct Attendance: Codable, Identifiable {
-    let id: String
+    var id: String
     let studentID: String
     let timeIn: Date?
     var timeOut: Date?

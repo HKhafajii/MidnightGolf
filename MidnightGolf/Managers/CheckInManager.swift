@@ -16,15 +16,15 @@ class CheckInManager: ObservableObject {
     private let lateThresholdHour = 9 // 9 AM
     private let firestoreManager = FirestoreManager.shared
     
- 
-    
         
         func handleCheckInOut(for student: Student) async throws {
             let isCurrentlyCheckedIn = student.isCheckedIn
             
             if isCurrentlyCheckedIn {
+                print("Checking out student: \(student.first) \(student.last)")
                 try await handleCheckOut(student: student)
             } else {
+                print("Checking in student: \(student.first) \(student.last)")
                 try await handleCheckIn(student: student)
             }
         }
@@ -45,6 +45,7 @@ class CheckInManager: ObservableObject {
             
             try attendanceRef.setData(from: attendance)
             try await updateStudentStatus(studentID: student.id, isCheckedIn: true)
+            print("Checked in: \(student.first) \(student.last)")
         }
         
         private func handleCheckOut(student: Student) async throws {

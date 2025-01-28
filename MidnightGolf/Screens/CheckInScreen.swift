@@ -150,7 +150,7 @@ struct CheckInScreen: View {
       }
 }
 #Preview {
-    CheckInScreen()
+    
 }
 
 

@@ -36,9 +36,6 @@ class FirestoreManager: ObservableObject {
     init(mailHelper: MailHelper = MailHelper(), students: [Student] = []) {
         self.mailHelper = mailHelper
         names = getNames()
-        Task {
-            await fetchAllUsers()
-        }
     }
     
     
@@ -184,7 +181,14 @@ class FirestoreManager: ObservableObject {
               .order(by: "timeIn", descending: true)
               .getDocuments()
           
-          return try snapshot.documents.map { try $0.data(as: Attendance.self) }
+          
+          return try snapshot.documents.map { document in
+          
+              var attendance = try document.data(as: Attendance.self)
+              attendance.id = document.documentID
+              return attendance
+              
+          }
       }
     
     //    ------ END OF REQUESTS ---------
