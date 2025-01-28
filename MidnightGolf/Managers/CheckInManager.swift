@@ -6,116 +6,83 @@
 //
 
 import Foundation
+import FirebaseFirestore
+
+enum CheckInError: Error {
+    case alreadyCheckedIn, invalidClockInDay, notCheckedIn,missingTimeIn, noOpenAttendance, studentNotFound
+}
 
 class CheckInManager: ObservableObject {
+    private let lateThresholdHour = 9 // 9 AM
+    private let firestoreManager = FirestoreManager.shared
     
-    let timer = TimerManager()
+ 
     
-    let validClockInDays: [String: [String]] = [
-        "Mon/Wed" : ["Monday", "Wednesday"],
-        "Tue/Thu" : ["Tuesday", "Thursday"]
-    ]
-    
-    let userGroups: [String: String] = [
-        "StudentA": "Mon/Wed",
-        "StudentB": "Tue/Wed"
-    ]
-    
-    let lateThreshold: [String: Date]  = [
-        "Monday": CheckInManager.createTime(hour: 9, minute: 0),
-        "Wednesday": CheckInManager.createTime(hour: 9, minute: 0),
-        "Tuesday": CheckInManager.createTime(hour: 9, minute: 0),
-        "Thursday": CheckInManager.createTime(hour: 9, minute: 0)
-    ]
-    
-    init() {
         
-    }
-    
-//    TODO: This functionality needs to be looked at better, somewhere along the lines where we reference and return attendance objects I don't feel as though this should work properly.
-    
-    
-    enum CheckInError: Error {
-        case alreadyCheckedIn, invalidClockInDay, notCheckedIn,missingTimeIn
-    }
-    
-    
-    static func createTime(hour: Int, minute: Int) -> Date {
-        var components = DateComponents()
-        components.hour = hour
-        components.minute = minute
-        return Calendar.current.date(from: components) ?? Date()
-    }
-    
-    @Published var isCheckedIn: Bool = false
-    
-    func checkIn(for student: Student, at time: Date) async throws -> Attendance? {
-        
-        guard !isCheckedIn else { throw CheckInError.alreadyCheckedIn }
-        guard isValidClockInDay(for: student) else { throw CheckInError.invalidClockInDay }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE"
-        let today = formatter.string(from: Date())
-        let isLate = isLate(for: today, at: time)
-
-        
-        let attendance = Attendance(
-            id: UUID().uuidString, studentID: student.id,
-            timeIn: time,
-            timeOut: nil,
-            isCheckedIn: true,
-            isLate: isLate,
-            totalTime: 0)
-        
-        try await FirestoreManager.shared.postAttendance(attendance)
-        isCheckedIn = true
-        return attendance
-    }
-    
-    func checkOut(for attendance: inout Attendance, at time: Date) async throws {
-        guard attendance.isCheckedIn, let timeIn = attendance.timeIn else {
-            throw CheckInError.notCheckedIn
-        }
-        
-        attendance.timeOut = time
-        attendance.isCheckedIn = false
-        attendance.totalTime = time.timeIntervalSince(timeIn) / 3600.0
-        
-        try await FirestoreManager.shared.postAttendance(attendance)
-        isCheckedIn = false
-        
-    }
-    
-    func isLate(for day: String, at time: Date) -> Bool {
-        guard let threshold = lateThreshold[day] else { return false }
-        
-        return time >= threshold
-    }
-    
-    func isValidClockInDay(for student: Student) -> Bool {
-        
-        guard let group = userGroups[student.group],
-              let allowedDays = validClockInDays[group] else { return false}
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "EEEE"
-        let today = dateFormatter.string(from: Date())
-        
-        return allowedDays.contains(today)
-        
-    }
-    
-    func handleCheckInorOut(for student: Student) {
-        Task {
-            do {
-                let attendance = try await checkIn(for: student, at: Date())
-                print("Check in successful for \(student.first)")
-                
-            } catch {
-                print("Check in failed: \(error.localizedDescription)")
+        func handleCheckInOut(for student: Student) async throws {
+            let isCurrentlyCheckedIn = student.isCheckedIn
+            
+            if isCurrentlyCheckedIn {
+                try await handleCheckOut(student: student)
+            } else {
+                try await handleCheckIn(student: student)
             }
         }
+        
+        private func handleCheckIn(student: Student) async throws {
+            let attendanceRef = firestoreManager.db.collection("attendance").document()
+            let checkInDate = Date()
+            
+            let attendance = Attendance(
+                id: attendanceRef.documentID,
+                studentID: student.id,
+                timeIn: checkInDate,
+                timeOut: nil,
+                isCheckedIn: true,
+                isLate: isLate(checkInDate: checkInDate),
+                totalTime: 0
+            )
+            
+            try attendanceRef.setData(from: attendance)
+            try await updateStudentStatus(studentID: student.id, isCheckedIn: true)
+        }
+        
+        private func handleCheckOut(student: Student) async throws {
+            guard let openAttendance = try await getOpenAttendance(studentID: student.id) else {
+                throw CheckInError.noOpenAttendance
+            }
+            
+            let checkOutDate = Date()
+            let totalTime = checkOutDate.timeIntervalSince(openAttendance.timeIn!) / 3600
+            
+            try await firestoreManager.db.collection("attendance").document(openAttendance.id).updateData([
+                "timeOut": checkOutDate,
+                "totalTime": totalTime
+            ])
+            
+            try await updateStudentStatus(studentID: student.id, isCheckedIn: false)
+        }
+        
+        private func updateStudentStatus(studentID: String, isCheckedIn: Bool) async throws {
+            try await firestoreManager.db.collection("users").document(studentID).updateData([
+                "isCheckedIn": isCheckedIn
+            ])
+        }
+        
+    private func isLate(checkInDate: Date) -> Bool {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute], from: checkInDate)
+        return components.hour! > lateThresholdHour ||
+              (components.hour! == lateThresholdHour && components.minute! > 0)
     }
     
+    private func getOpenAttendance(studentID: String) async throws -> Attendance? {
+        let snapshot = try await firestoreManager.db.collection("attendance")
+            .whereField("studentID", isEqualTo: studentID)
+            .whereField("timeOut", isEqualTo: NSNull())
+            .limit(to: 1)
+            .getDocuments()
+        
+        return snapshot.documents.compactMap { try? $0.data(as: Attendance.self) }.first
+    }
 }

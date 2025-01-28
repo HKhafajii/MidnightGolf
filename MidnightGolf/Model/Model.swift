@@ -16,6 +16,13 @@ struct Student: Identifiable, Codable {
     let school: String
     let gradDate: String
     let qrCode: Data
+    var isCheckedIn: Bool = false
+}
+
+extension Student {
+    func qrString() -> String? {
+        String(data: qrCode, encoding: .utf8)
+    }
 }
 
 

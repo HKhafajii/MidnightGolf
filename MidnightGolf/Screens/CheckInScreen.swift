@@ -20,9 +20,8 @@ struct CheckInScreen: View {
         UIScreen.main.bounds.height
     }
     
-    @ObservedObject var fbManager = FirestoreManager.shared
-    
-    
+    @ObservedObject var checkInManager = CheckInManager()
+    @ObservedObject var firestoreManager = FirestoreManager()
     @StateObject private var timerManager = TimerManager()
     
     @State private var showAdminSheet = false
@@ -131,17 +130,24 @@ struct CheckInScreen: View {
         
             switch result {
             case .success(let result):
-                let scannedCode = result.string
-                if let student = fbManager.students.first(where: {
-                    String(data: $0.qrCode, encoding: .utf8) == scannedCode
-                }) {
-                    fbManager.checkInManager.handleCheckInorOut(for: student)
-                    print("Scanned code matches")
-                    
-                }
+                Task {
+                        do {
+                            guard let student = firestoreManager.students.first(where: {
+                                String(data: $0.qrCode, encoding: .utf8) == result.string
+                            }) else {
+                                throw CheckInError.studentNotFound
+                            }
+                            
+                            try await checkInManager.handleCheckInOut(for: student)
+                            try await firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: !student.isCheckedIn)
+                        } catch {
+                            print("Error: \(error.localizedDescription)")
+                        }
+                    }
             case .failure(let error):
                 print("Scanning failed: \(error.localizedDescription)")
-            }    }
+            }
+      }
 }
 #Preview {
     CheckInScreen()

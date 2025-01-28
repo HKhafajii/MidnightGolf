@@ -22,20 +22,19 @@ class FirestoreManager: ObservableObject {
     @Published var students: [Student] = []
     @Published var names: [String] = []
     @Published private(set) var studentQRCodes: Set<String> = []
+     let db = Firestore.firestore()
     
-    private var userCollection: CollectionReference
-    private func userDocument(uuid: String) -> DocumentReference {
-        userCollection.document(uuid)
-    }
-    
-    private var attendanceCollection: CollectionReference {
-        Firestore.firestore().collection("attendance")
-    }
+    private var userCollection: CollectionReference {
+          db.collection("users")
+      }
+      
+      private var attendanceCollection: CollectionReference {
+          db.collection("attendance")
+      }
     
     
     init(mailHelper: MailHelper = MailHelper(), students: [Student] = []) {
         self.mailHelper = mailHelper
-        self.userCollection = Firestore.firestore().collection("users")
         names = getNames()
         Task {
             await fetchAllUsers()
@@ -99,7 +98,7 @@ class FirestoreManager: ObservableObject {
     
     func getUser(userId: String) async throws -> Student {
         
-        let snapshot = try await userDocument(uuid: userId).getDocument()
+        let snapshot = try await userCollection.document(userId).getDocument()
         
         guard let data = snapshot.data(), let userId = data["user_id"] as? String else {
             throw URLError(.badServerResponse)
@@ -173,6 +172,20 @@ class FirestoreManager: ObservableObject {
     func fetchQRCode(for documentID: String, completion: @escaping (UIImage?) -> Void) {
         
     }
+    
+    func updateStudentStatus(studentID: String, isCheckedIn: Bool) async throws {
+          let studentRef = db.collection("users").document(studentID)
+          try await studentRef.updateData(["isCheckedIn": isCheckedIn])
+      }
+      
+      func getAttendanceHistory(studentID: String) async throws -> [Attendance] {
+          let snapshot = try await db.collection("attendance")
+              .whereField("studentID", isEqualTo: studentID)
+              .order(by: "timeIn", descending: true)
+              .getDocuments()
+          
+          return try snapshot.documents.map { try $0.data(as: Attendance.self) }
+      }
     
     //    ------ END OF REQUESTS ---------
     
