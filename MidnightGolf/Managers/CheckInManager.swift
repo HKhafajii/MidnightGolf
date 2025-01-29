@@ -16,7 +16,7 @@ class CheckInManager: ObservableObject {
     private let lateThresholdHour = 9 // 9 AM
     private let firestoreManager = FirestoreManager.shared
     
-        
+        @MainActor
         func handleCheckInOut(for student: Student) async throws {
             let isCurrentlyCheckedIn = student.isCheckedIn
             
@@ -54,7 +54,11 @@ class CheckInManager: ObservableObject {
             }
             
             let checkOutDate = Date()
-            let totalTime = checkOutDate.timeIntervalSince(openAttendance.timeIn!) / 3600
+//            let totalTime = checkOutDate.timeIntervalSince(openAttendance.timeIn!) / 3600
+            guard let timeIn = openAttendance.timeIn else {
+                throw CheckInError.missingTimeIn
+            }
+            let totalTime = checkOutDate.timeIntervalSince(timeIn) / 3600
             
             try await firestoreManager.db.collection("attendance").document(openAttendance.id).updateData([
                 "timeOut": checkOutDate,

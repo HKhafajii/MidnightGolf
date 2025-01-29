@@ -116,7 +116,7 @@ class FirestoreManager: ObservableObject {
         
     } // End of GetUser
     
-    
+    @MainActor
     func fetchAllUsers() async {
         isLoadingStudents = true
         defer { isLoadingStudents = false }
@@ -196,7 +196,9 @@ class FirestoreManager: ObservableObject {
               .getDocuments()
           
           
+          print("DEBUG: Found \(snapshot.documents.count) documents for student \(studentID)")
           return try snapshot.documents.map { document in
+              print("DEBUG: Document \(document.documentID) data: \(document.data())")
               do {
                   return try document.data(as: Attendance.self)
               } catch {

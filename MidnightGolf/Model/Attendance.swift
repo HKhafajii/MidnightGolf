@@ -11,10 +11,10 @@ import FirebaseFirestore
 struct Attendance: Codable, Identifiable {
     var id: String
     let studentID: String
-    @ServerTimestamp var timeIn: Date?
-    @ServerTimestamp var timeOut: Date?
-    var isCheckedIn: Bool
-    var isLate: Bool
-    var totalTime: Double
+    @ServerTimestamp var timeIn: Date? = nil
+    @ServerTimestamp var timeOut: Date? = nil
+    var isCheckedIn: Bool = false
+    var isLate: Bool = false
+    var totalTime: Double = 0
     
 }

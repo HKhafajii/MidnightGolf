@@ -47,18 +47,24 @@ struct AttendanceView: View {
         }
         .padding()
         .task {
-//            await loadAttendance()
+            guard !student.id.isEmpty else { return }
+            await loadAttendance()
         }
         
     }
 
     // Fetch Attendance History
     private func loadAttendance() async {
+        
+                
         isLoading = true
+        print("DEBUG: Starting load for student \(student.id)")
+        
         defer { isLoading = false }
         
         
         do {
+            print("DEBUG: Student exists? \(student.id.isEmpty ? "NO" : "YES")")
             let history = try await firestoreManager.getAttendanceHistory(studentID: student.id)
             
             DispatchQueue.main.async {
@@ -78,14 +84,14 @@ struct AttendanceView: View {
     let validQRCode = "Sample QR Code".data(using: .utf8) ?? Data()
     AttendanceView(
         student: Student(
-            id: UUID().uuidString,
-            group: "Group A",
-            first: "Hassan",
-            last: "Alkhafaji",
+            id: "test-id",
+            group: "Test Group",
+            first: "Test",
+            last: "User",
             born: "2002",
-            school: "Melvindale",
+            school: "Test School",
             gradDate: "2020",
-            qrCode: validQRCode,
+            qrCode: Data(),
             isCheckedIn: false
             
         )

@@ -20,8 +20,7 @@ struct CheckInScreen: View {
         UIScreen.main.bounds.height
     }
     
-    @ObservedObject var checkInManager = CheckInManager()
-    @ObservedObject var firestoreManager = FirestoreManager()
+    @ObservedObject var firestoreManager = FirestoreManager.shared
     @StateObject private var timerManager = TimerManager()
     
     @State private var showAdminSheet = false
@@ -138,7 +137,7 @@ struct CheckInScreen: View {
                                 throw CheckInError.studentNotFound
                             }
                             
-                            try await checkInManager.handleCheckInOut(for: student)
+                            try await firestoreManager.checkInManager.handleCheckInOut(for: student)
                             try await firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: !student.isCheckedIn)
                             await firestoreManager.fetchAllUsers()
                         } catch {
@@ -151,7 +150,7 @@ struct CheckInScreen: View {
       }
 }
 #Preview {
-    
+    CheckInScreen()
 }
 
 
