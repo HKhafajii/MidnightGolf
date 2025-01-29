@@ -5,6 +5,7 @@ struct AttendanceView: View {
     @State private var attendanceHistory: [Attendance] = []
     @State private var errorMessage: String?
     @State private var isLoading = true
+    @ObservedObject var firestoreManager = FirestoreManager.shared
 
     var body: some View {
         VStack {
@@ -45,20 +46,32 @@ struct AttendanceView: View {
             }
         }
         .padding()
+        .task {
+//            await loadAttendance()
+        }
         
     }
 
     // Fetch Attendance History
     private func loadAttendance() async {
         isLoading = true
-        errorMessage = nil
+        defer { isLoading = false }
+        
+        
         do {
-            attendanceHistory = try await FirestoreManager.shared.getAttendanceHistory(studentID: student.id)
+            let history = try await firestoreManager.getAttendanceHistory(studentID: student.id)
+            
+            DispatchQueue.main.async {
+                attendanceHistory = history
+            }
+            
         } catch {
-            errorMessage = "Failed to load attendance: \(error.localizedDescription)"
+            DispatchQueue.main.async {
+                errorMessage = error.localizedDescription
+            }
         }
-        isLoading = false
-    }
+    } // End of loadAttendance()
+    
 }
 
 #Preview {

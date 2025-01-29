@@ -6,12 +6,13 @@
 //
 
 import Foundation
+import FirebaseFirestore
 
 struct Attendance: Codable, Identifiable {
     var id: String
     let studentID: String
-    let timeIn: Date?
-    var timeOut: Date?
+    @ServerTimestamp var timeIn: Date?
+    @ServerTimestamp var timeOut: Date?
     var isCheckedIn: Bool
     var isLate: Bool
     var totalTime: Double

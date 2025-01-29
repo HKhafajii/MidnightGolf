@@ -36,7 +36,7 @@ class CheckInManager: ObservableObject {
             let attendance = Attendance(
                 id: attendanceRef.documentID,
                 studentID: student.id,
-                timeIn: checkInDate,
+                timeIn: nil,
                 timeOut: nil,
                 isCheckedIn: true,
                 isLate: isLate(checkInDate: checkInDate),

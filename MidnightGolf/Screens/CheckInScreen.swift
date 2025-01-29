@@ -97,11 +97,8 @@ struct CheckInScreen: View {
                     }
                     
                     
-                    Button("Scan", systemImage: "qrcode.viewfinder") {
-                        
-                        showScanSheet = true
-                        
-                    }
+                    Button("Scan", systemImage: "qrcode.viewfinder") { showScanSheet = true }
+                        .disabled(firestoreManager.isLoadingStudents)
                     .font(.largeTitle)
                     .foregroundStyle(Color("navy"))
                     .fontWeight(.semibold)
@@ -120,6 +117,9 @@ struct CheckInScreen: View {
                     AdminVerificationSheetView(navigateToNextScreen: $navigateToNextScreen, showAdminSheet: $showAdminSheet)
                 }
                 .padding()
+            }
+            .task {
+                await firestoreManager.fetchAllUsers()
             }
         }
     }
@@ -140,6 +140,7 @@ struct CheckInScreen: View {
                             
                             try await checkInManager.handleCheckInOut(for: student)
                             try await firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: !student.isCheckedIn)
+                            await firestoreManager.fetchAllUsers()
                         } catch {
                             print("Error: \(error.localizedDescription)")
                         }

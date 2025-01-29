@@ -21,6 +21,7 @@ class FirestoreManager: ObservableObject {
     @Published var student: Student?
     @Published var students: [Student] = []
     @Published var names: [String] = []
+    @Published var isLoadingStudents = false
     @Published private(set) var studentQRCodes: Set<String> = []
      let db = Firestore.firestore()
     
@@ -49,7 +50,8 @@ class FirestoreManager: ObservableObject {
         }
         try await attendanceCollection.addDocument(data: dictionary)
         print("Attendance posted")
-    }
+    } // End of postAttendance()
+    
     
     func fetchAttendance(for studentID: String) async throws -> [Attendance] {
         let snapshot = try await attendanceCollection.whereField("studentID", isEqualTo: studentID).getDocuments()
@@ -62,7 +64,7 @@ class FirestoreManager: ObservableObject {
             }
             return attendance
         }
-    }
+    } // End of fetchAttendance()
     
     
     func postUser(first: String, last: String, born: Date, school: String, gradDate: Date, qrCode: Data) async {
@@ -93,6 +95,7 @@ class FirestoreManager: ObservableObject {
         
     } // End of Post request
     
+    
     func getUser(userId: String) async throws -> Student {
         
         let snapshot = try await userCollection.document(userId).getDocument()
@@ -113,7 +116,11 @@ class FirestoreManager: ObservableObject {
         
     } // End of GetUser
     
+    
     func fetchAllUsers() async {
+        isLoadingStudents = true
+        defer { isLoadingStudents = false }
+        
         do {
             let snapshot = try await userCollection.getDocuments()
             
@@ -148,34 +155,41 @@ class FirestoreManager: ObservableObject {
                 self.students = fetchedStudents
                 
                 self.studentQRCodes = Set(fetchedStudents.compactMap { student in
-                    String(data: student.qrCode, encoding: .utf8)
+                    student.qrString()
                 })
             }
         } catch {
             print("Error fetching users: \(error.localizedDescription)")
         }
+        
     } // End of Fetch all users
+    
     
     func getNames() -> [String] {
         
         var names: [String] = []
-        
         for student in students {
             names.append(student.first + " " + student.last)
         }
+        
         return names
     } // end of getNames
+    
     
     func fetchQRCode(for documentID: String, completion: @escaping (UIImage?) -> Void) {
         
     }
     
+    
     func updateStudentStatus(studentID: String, isCheckedIn: Bool) async throws {
           let studentRef = db.collection("users").document(studentID)
           try await studentRef.updateData(["isCheckedIn": isCheckedIn])
-      }
+      } // End of updateStudentStatus()
       
+    
       func getAttendanceHistory(studentID: String) async throws -> [Attendance] {
+          
+          
           let snapshot = try await db.collection("attendance")
               .whereField("studentID", isEqualTo: studentID)
               .order(by: "timeIn", descending: true)
@@ -183,13 +197,15 @@ class FirestoreManager: ObservableObject {
           
           
           return try snapshot.documents.map { document in
-          
-              var attendance = try document.data(as: Attendance.self)
-              attendance.id = document.documentID
-              return attendance
+              do {
+                  return try document.data(as: Attendance.self)
+              } catch {
+                  print("Failed to decode document \(document.documentID)")
+                  throw error
+              }
               
           }
-      }
+      } // End of getAttendanceHistory()
     
     //    ------ END OF REQUESTS ---------
     
