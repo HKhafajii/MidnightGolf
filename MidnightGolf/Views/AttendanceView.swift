@@ -5,7 +5,12 @@ struct AttendanceView: View {
     @State private var attendanceHistory: [Attendance] = []
     @State private var errorMessage: String?
     @State private var isLoading = true
-    @ObservedObject var firestoreManager = FirestoreManager.shared
+    @StateObject private var viewModel: AttendanceViewModel
+    
+    init(student: Student, firestoreManager: FirestoreManager) {
+        self.student = student
+        _viewModel = StateObject(wrappedValue: AttendanceViewModel(firestoreManager: firestoreManager))
+    }
 
     var body: some View {
         VStack {
@@ -48,36 +53,10 @@ struct AttendanceView: View {
         .padding()
         .task {
             guard !student.id.isEmpty else { return }
-            await loadAttendance()
+            await viewModel.loadAttendance(for: student)
         }
         
     }
-
-    // Fetch Attendance History
-    private func loadAttendance() async {
-        
-                
-        isLoading = true
-        print("DEBUG: Starting load for student \(student.id)")
-        
-        defer { isLoading = false }
-        
-        
-        do {
-            print("DEBUG: Student exists? \(student.id.isEmpty ? "NO" : "YES")")
-            let history = try await firestoreManager.getAttendanceHistory(studentID: student.id)
-            
-            DispatchQueue.main.async {
-                attendanceHistory = history
-            }
-            
-        } catch {
-            DispatchQueue.main.async {
-                errorMessage = error.localizedDescription
-            }
-        }
-    } // End of loadAttendance()
-    
 }
 
 #Preview {
@@ -94,7 +73,8 @@ struct AttendanceView: View {
             qrCode: Data(),
             isCheckedIn: false
             
-        )
+        ),
+        firestoreManager: FirestoreManager()
     )
 }
 

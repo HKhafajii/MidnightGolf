@@ -11,7 +11,13 @@ import CodeScanner
 
 struct CheckInScreen: View {
     
+    @EnvironmentObject var viewModel: ViewModel
+    @StateObject private var timerManager = TimerManager()
+    
     @State var searchTitle = ""
+    @State private var showAdminSheet = false
+    @State private var showScanSheet = false
+    @State private var navigateToNextScreen = false
     static var deviceWidth: CGFloat {
         UIScreen.main.bounds.width
     }
@@ -20,12 +26,8 @@ struct CheckInScreen: View {
         UIScreen.main.bounds.height
     }
     
-    @ObservedObject var firestoreManager = FirestoreManager.shared
-    @StateObject private var timerManager = TimerManager()
     
-    @State private var showAdminSheet = false
-    @State private var showScanSheet = false
-    @State private var navigateToNextScreen = false
+   
     
     var body: some View {
         
@@ -97,7 +99,7 @@ struct CheckInScreen: View {
                     
                     
                     Button("Scan", systemImage: "qrcode.viewfinder") { showScanSheet = true }
-                        .disabled(firestoreManager.isLoadingStudents)
+                        .disabled(viewModel.firestoreManager.isLoadingStudents)
                     .font(.largeTitle)
                     .foregroundStyle(Color("navy"))
                     .fontWeight(.semibold)
@@ -118,7 +120,7 @@ struct CheckInScreen: View {
                 .padding()
             }
             .task {
-                await firestoreManager.fetchAllUsers()
+                await viewModel.firestoreManager.fetchAllUsers()
             }
         }
     }
@@ -131,15 +133,15 @@ struct CheckInScreen: View {
             case .success(let result):
                 Task {
                         do {
-                            guard let student = firestoreManager.students.first(where: {
+                            guard let student = viewModel.firestoreManager.students.first(where: {
                                 String(data: $0.qrCode, encoding: .utf8) == result.string
                             }) else {
                                 throw CheckInError.studentNotFound
                             }
                             
-                            try await firestoreManager.checkInManager.handleCheckInOut(for: student)
-                            try await firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: !student.isCheckedIn)
-                            await firestoreManager.fetchAllUsers()
+                            try await viewModel.checkInManager.handleCheckInOut(for: student)
+                            try await viewModel.firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: !student.isCheckedIn)
+                            await viewModel.firestoreManager.fetchAllUsers()
                         } catch {
                             print("Error: \(error.localizedDescription)")
                         }

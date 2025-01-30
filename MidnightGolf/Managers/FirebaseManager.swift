@@ -12,15 +12,10 @@ import FirebaseAuth
 
 class FirestoreManager: ObservableObject {
     
-    // Singleton Instance
-    static let shared = FirestoreManager()
-    
     //    ------ Variables ---------
-    @Published var mailHelper = MailHelper()
-    @Published var checkInManager = CheckInManager()
     @Published var student: Student?
     @Published var students: [Student] = []
-    @Published var names: [String] = []
+    
     @Published var isLoadingStudents = false
     @Published private(set) var studentQRCodes: Set<String> = []
      let db = Firestore.firestore()
@@ -34,10 +29,15 @@ class FirestoreManager: ObservableObject {
       }
     
     
-    init(mailHelper: MailHelper = MailHelper(), students: [Student] = []) {
-        self.mailHelper = mailHelper
-        names = getNames()
-    }
+    func getNames() -> [String] {
+        
+        var names: [String] = []
+        for student in students {
+            names.append(student.first + " " + student.last)
+        }
+        
+        return names
+    } // end of getNames
     
     
     //    ------ REQUESTS ---------
@@ -165,48 +165,27 @@ class FirestoreManager: ObservableObject {
     } // End of Fetch all users
     
     
-    func getNames() -> [String] {
-        
-        var names: [String] = []
-        for student in students {
-            names.append(student.first + " " + student.last)
-        }
-        
-        return names
-    } // end of getNames
+  
     
-    
-    func fetchQRCode(for documentID: String, completion: @escaping (UIImage?) -> Void) {
-        
-    }
-    
-    
+    @MainActor
     func updateStudentStatus(studentID: String, isCheckedIn: Bool) async throws {
           let studentRef = db.collection("users").document(studentID)
           try await studentRef.updateData(["isCheckedIn": isCheckedIn])
       } // End of updateStudentStatus()
       
     
+    @MainActor
       func getAttendanceHistory(studentID: String) async throws -> [Attendance] {
-          
           
           let snapshot = try await db.collection("attendance")
               .whereField("studentID", isEqualTo: studentID)
               .order(by: "timeIn", descending: true)
               .getDocuments()
           
-          
-          print("DEBUG: Found \(snapshot.documents.count) documents for student \(studentID)")
           return try snapshot.documents.map { document in
-              print("DEBUG: Document \(document.documentID) data: \(document.data())")
-              do {
-                  return try document.data(as: Attendance.self)
-              } catch {
-                  print("Failed to decode document \(document.documentID)")
-                  throw error
-              }
-              
+              return try document.data(as: Attendance.self)
           }
+          
       } // End of getAttendanceHistory()
     
     //    ------ END OF REQUESTS ---------
