@@ -28,15 +28,15 @@ class CheckInManager: ObservableObject {
        
     
        private func handleCheckIn(student: Student) -> (Attendance, Bool) {
-           let checkInDate = Date()
+        
            
            let newAttendance = Attendance(
                id: UUID().uuidString, // You can override later with Firestore docID if needed
                studentID: student.id,
-               timeIn: checkInDate,
+               timeIn: Date(),
                timeOut: nil,
                isCheckedIn: true,
-               isLate: isLate(checkInDate: checkInDate),
+               isLate: isLate(checkInDate: Date()),
                totalTime: 0
            )
            

@@ -72,17 +72,17 @@ class FirestoreManager: ObservableObject {
         
         let studentID = UUID().uuidString
         do {
-            let ref = try await userCollection.addDocument(data:
-                                                            [
-                                                                "id" : studentID,
-                                                                "first" : first,
-                                                                "last" : last,
-                                                                "born" : birthDateString,
-                                                                "school" : school,
-                                                                "gradDate" : gradDateString,
-                                                                "qrCode" : qrCodebase64
-                                                            ])
-            print("Document added with ID: \(ref.documentID)")
+            try await userCollection.document(studentID).setData([
+                    "id": studentID,
+                    "first": first,
+                    "last": last,
+                    "born": birthDateString,
+                    "school": school,
+                    "gradDate": gradDateString,
+                    "qrCode": qrCodebase64,
+                    "isCheckedIn": false
+                ])
+            
         } catch {
             print("Error adding document: \(error)")
         }
@@ -122,7 +122,7 @@ class FirestoreManager: ObservableObject {
             let fetchedStudents = snapshot.documents.compactMap { doc -> Student? in
                 let data = doc.data()
                 
-                let id = data["id"] as? String ?? "Unknown"
+                let studentId = doc.documentID
                 let first = data["first"] as? String ?? "Unknown"
                 let last = data["last"] as? String ?? "Unknown"
                 let group = data["group"] as? String ?? "Unkown"
@@ -134,7 +134,7 @@ class FirestoreManager: ObservableObject {
                 let qrCodeData = Data(base64Encoded: qrCodeBase64) ?? Data()
                 
                 return Student(
-                    id: id,
+                    id: studentId,
                     group: group,
                     first: first,
                     last: last,
@@ -202,7 +202,7 @@ class FirestoreManager: ObservableObject {
          return snapshot.documents.compactMap { try? $0.data(as: Attendance.self) }
      }
      
-     /// Returns any attendance record where `timeOut` is `nil` (still checked in)
+     
      func fetchOpenAttendance(for studentID: String) async throws -> Attendance? {
          let snapshot = try await attendanceCollection
              .whereField("studentID", isEqualTo: studentID)

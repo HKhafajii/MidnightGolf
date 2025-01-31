@@ -22,6 +22,7 @@ class ViewModel: ObservableObject {
         do {
             let fetched = try await firestoreManager.fetchAllUsers()
             self.students = fetched
+            self.names = fetched.map { $0.first + " " + $0.last }
         } catch {
             print("Failed to fetch users: \(error)")
         }
@@ -86,11 +87,5 @@ class ViewModel: ObservableObject {
             attendanceManager.errorMessage = "Failed to load attendance: \(error.localizedDescription)"
         }
     }
-    
-    func loadNames() {
-        for student in students {
-            names.append(student.first + " " + student.last)
-        }
-    } // end of getNames
     
 }

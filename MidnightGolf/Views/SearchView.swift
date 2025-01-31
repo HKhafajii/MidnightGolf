@@ -6,14 +6,20 @@ struct SearchView: View {
     
     @State private var searchText: String = ""
     
-    var filteredItems: [String] {
-        guard !searchText.isEmpty else { return [] }
-        return viewModel.names.filter { $0.localizedCaseInsensitiveContains(searchText) }
-    }
+    private var filteredStudents: [Student] {
+          if searchText.isEmpty {
+              return viewModel.students
+          } else {
+              return viewModel.students.filter { student in
+                  student.first.localizedCaseInsensitiveContains(searchText)
+                  || student.last.localizedCaseInsensitiveContains(searchText)
+              }
+          }
+      }
     
     var body: some View {
         VStack {
-            
+         
             TextField("Search...", text: $searchText)
                 .font(.title3)
                 .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
@@ -23,59 +29,76 @@ struct SearchView: View {
             
             
             if !searchText.isEmpty {
-                List(filteredItems, id: \.self) { item in
-                    NavigationLink {
-//                        ProfileView(someString: item)
-                    } label: {
-                        Text(item)
-                            .font(.headline)
-                            .fontWeight(.semibold)
-                    }
-
-                }
+                List(filteredStudents, id: \.self) { student in
+                    
                 
-                .listStyle(PlainListStyle())
-            } else {
+                    HStack {
+                        Text(student.first + " " + student.last)
+                            .font(.headline)
+                            
+                            .fontWeight(.semibold)
+                        Spacer()
+                        
+                        Button {
+                            Task { await viewModel.checkInOutStudent(student)
+                            }
+                        } label: {
+                            Text("Check In")
+                                .font(.headline)
+                                .foregroundStyle(Color.white)
+                                .fontWeight(.semibold)
+                                .padding()
+                                .background(Capsule().fill(Color("blue")))
+                                .padding()
+                            
+                        }
+
+                        
+                    }
+                        
+                    }
+                    
+                    .listStyle(PlainListStyle())
+                } else {
+                    
+                }
+            }
+            
+        }
+        func getStudent(name: String) -> Student? {
+            for student in viewModel.students {
+                if student.first + " " + student.last == name {
+                    return student
+                }
+            }
+            return nil
+        }
+    }
+    
+    #Preview {
+        NavigationStack {
+            SearchView()
+                .environmentObject(ViewModel())
+        }
+    }
+    
+    
+    struct ProfileView: View {
+        
+        let student: Student
+        
+        var body: some View {
+            
+            VStack(alignment: .leading) {
+                
+                Text(student.first + " " + student.last)
+                    .font(.headline)
+                Text("School: \(student.school)")
+                Text("Graduation Date: \(student.gradDate)")
+                Text("Student Group: \(student.group)")
+                Text("Born: \(student.born)")
+                Text("Checked In?: \(student.isCheckedIn ? "Yes" : "No")")
                 
             }
         }
-        
-//        ProfileView(someString: "", fireStoreManager: FirestoreManager())
     }
-}
-
-#Preview {
-    SearchView()
-        .environmentObject(ViewModel())
-}
-
-
-//struct ProfileView: View {
-//    
-//    @State var someString: String
-//    @StateObject var fireStoreManager = FirestoreManager.shared
-//    
-//    var body: some View {
-//        
-//        VStack {
-//            List(fireStoreManager.students) { student in
-//                VStack(alignment: .leading) {
-//                    
-//                    Text(student.first + " " + student.last)
-//                        .font(.headline)
-//                    Text("School: \(student.school)")
-//                    Text("Graduation Date: \(student.graduationDate)")
-//                    
-//                }
-//            }
-//            .task {
-//                await fireStoreManager.get(collection: "users")
-//                print("Students: \(fireStoreManager.students)")
-//            }
-//        }
-//        
-//        Text(someString)
-//            .font(.headline)
-//            .fontWeight(.semibold)
-//    }
-//}

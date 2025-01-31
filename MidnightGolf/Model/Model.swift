@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Student: Identifiable, Codable {
+struct Student: Identifiable, Codable, Hashable {
     let id: String
     let group: String
     let first: String
