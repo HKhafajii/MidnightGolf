@@ -8,7 +8,7 @@
 import Foundation
 import MessageUI
 
-class MailHelper: NSObject, MFMailComposeViewControllerDelegate, ObservableObject {
+class MailManager: NSObject, MFMailComposeViewControllerDelegate, ObservableObject {
     
     
 //    ------- FUNCTIONS --------
@@ -24,7 +24,7 @@ class MailHelper: NSObject, MFMailComposeViewControllerDelegate, ObservableObjec
         mailComposeVC.setToRecipients([to])
         mailComposeVC.setSubject(subject)
         mailComposeVC.setMessageBody(body, isHTML: false)
-        MailHelper.getRootViewController()?.present(mailComposeVC, animated: true, completion: nil)
+        MailManager.getRootViewController()?.present(mailComposeVC, animated: true, completion: nil)
     } // End of sendEmail Function
     
     static func getRootViewController() -> UIViewController? {

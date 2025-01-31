@@ -12,12 +12,13 @@ import FirebaseAuth
 
 class FirestoreManager: ObservableObject {
     
-    //    ------ Variables ---------
+
     @Published var student: Student?
     @Published var students: [Student] = []
+    @Published private(set) var studentQRCodes: Set<String> = []
     
     @Published var isLoadingStudents = false
-    @Published private(set) var studentQRCodes: Set<String> = []
+    
      let db = Firestore.firestore()
     
     private var userCollection: CollectionReference {
@@ -29,15 +30,8 @@ class FirestoreManager: ObservableObject {
       }
     
     
-    func getNames() -> [String] {
-        
-        var names: [String] = []
-        for student in students {
-            names.append(student.first + " " + student.last)
-        }
-        
-        return names
-    } // end of getNames
+    
+   
     
     
     //    ------ REQUESTS ---------
@@ -53,21 +47,21 @@ class FirestoreManager: ObservableObject {
     } // End of postAttendance()
     
     
-    func fetchAttendance(for studentID: String) async throws -> [Attendance] {
-        let snapshot = try await attendanceCollection.whereField("studentID", isEqualTo: studentID).getDocuments()
-        let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
-        return snapshot.documents.compactMap { document in
-            guard let data = try? JSONSerialization.data(withJSONObject: document.data()),
-                  let attendance = try? decoder.decode(Attendance.self, from: data) else {
-                return nil
-            }
-            return attendance
-        }
-    } // End of fetchAttendance()
+//    func fetchAttendance(for studentID: String) async throws -> [Attendance] {
+//        let snapshot = try await attendanceCollection.whereField("studentID", isEqualTo: studentID).getDocuments()
+//        let decoder = JSONDecoder()
+//        decoder.dateDecodingStrategy = .iso8601
+//        return snapshot.documents.compactMap { document in
+//            guard let data = try? JSONSerialization.data(withJSONObject: document.data()),
+//                  let attendance = try? decoder.decode(Attendance.self, from: data) else {
+//                return nil
+//            }
+//            return attendance
+//        }
+//    } // End of fetchAttendance()
     
     
-    func postUser(first: String, last: String, born: Date, school: String, gradDate: Date, qrCode: Data) async {
+    func postUser(first: String, last: String, born: Date, school: String, gradDate: Date, qrCode: Data) async throws {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -117,11 +111,11 @@ class FirestoreManager: ObservableObject {
     } // End of GetUser
     
     @MainActor
-    func fetchAllUsers() async {
+    func fetchAllUsers() async throws -> [Student] {
         isLoadingStudents = true
         defer { isLoadingStudents = false }
         
-        do {
+        
             let snapshot = try await userCollection.getDocuments()
             
             let fetchedStudents = snapshot.documents.compactMap { doc -> Student? in
@@ -152,25 +146,22 @@ class FirestoreManager: ObservableObject {
             print("Parsed Students: \(fetchedStudents)")
             
             DispatchQueue.main.async {
-                self.students = fetchedStudents
-                
                 self.studentQRCodes = Set(fetchedStudents.compactMap { student in
                     student.qrString()
                 })
+                
             }
-        } catch {
-            print("Error fetching users: \(error.localizedDescription)")
-        }
-        
+        return fetchedStudents
+            
+                    
     } // End of Fetch all users
     
     
   
     
-    @MainActor
     func updateStudentStatus(studentID: String, isCheckedIn: Bool) async throws {
-          let studentRef = db.collection("users").document(studentID)
-          try await studentRef.updateData(["isCheckedIn": isCheckedIn])
+        
+        try await userCollection.document(studentID).updateData(["isCheckedIn" : isCheckedIn])
       } // End of updateStudentStatus()
       
     
@@ -188,6 +179,37 @@ class FirestoreManager: ObservableObject {
           
       } // End of getAttendanceHistory()
     
+    
+    func createAttendance(_ attendance: Attendance) async throws {
+        let docRef = attendanceCollection.document()
+        var newAttendance = attendance
+        
+        try docRef.setData(from: newAttendance)
+    }
+    
+    func updateAttendance(_ attendanceID: String, fields: [String: Any]) async throws {
+           try await attendanceCollection.document(attendanceID).updateData(fields)
+       }
+    
+    func fetchAttendance(for studentID: String) async throws -> [Attendance] {
+         let snapshot = try await attendanceCollection
+             .whereField("studentID", isEqualTo: studentID)
+             .order(by: "timeIn", descending: true)
+             .getDocuments()
+         
+         return snapshot.documents.compactMap { try? $0.data(as: Attendance.self) }
+     }
+     
+     /// Returns any attendance record where `timeOut` is `nil` (still checked in)
+     func fetchOpenAttendance(for studentID: String) async throws -> Attendance? {
+         let snapshot = try await attendanceCollection
+             .whereField("studentID", isEqualTo: studentID)
+             .whereField("timeOut", isEqualTo: NSNull())
+             .limit(to: 1)
+             .getDocuments()
+         
+         return snapshot.documents.compactMap { try? $0.data(as: Attendance.self) }.first
+     }
     //    ------ END OF REQUESTS ---------
     
 }

@@ -120,7 +120,7 @@ struct CheckInScreen: View {
                 .padding()
             }
             .task {
-                await viewModel.firestoreManager.fetchAllUsers()
+                 await viewModel.loadAllStudents()
             }
         }
     }
@@ -133,15 +133,17 @@ struct CheckInScreen: View {
             case .success(let result):
                 Task {
                         do {
-                            guard let student = viewModel.firestoreManager.students.first(where: {
+                            guard let student = viewModel.students.first(where: {
                                 String(data: $0.qrCode, encoding: .utf8) == result.string
                             }) else {
                                 throw CheckInError.studentNotFound
                             }
                             
-                            try await viewModel.checkInManager.handleCheckInOut(for: student)
+                             await viewModel.checkInOutStudent(student)
+                            
                             try await viewModel.firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: !student.isCheckedIn)
-                            await viewModel.firestoreManager.fetchAllUsers()
+                            
+                            await viewModel.loadAllStudents()
                         } catch {
                             print("Error: \(error.localizedDescription)")
                         }

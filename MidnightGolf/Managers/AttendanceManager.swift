@@ -1,5 +1,5 @@
 //
-//  AttendanceViewModel.swift
+//  AttendanceManager.swift
 //  MidnightGolf
 //
 //  Created by Hassan Alkhafaji on 1/30/25.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AttendanceViewModel: ObservableObject {
+class AttendanceManager: ObservableObject {
     @Published var attendanceHistory: [Attendance] = []
     @Published var errorMessage: String?
     @Published var isLoading = false    

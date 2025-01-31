@@ -2,13 +2,13 @@ import SwiftUI
 
 struct SearchView: View {
     
-    @StateObject private var manager = FirestoreManager.shared
+    @EnvironmentObject var viewModel: ViewModel
     
     @State private var searchText: String = ""
     
     var filteredItems: [String] {
         guard !searchText.isEmpty else { return [] }
-        return manager.names.filter { $0.localizedCaseInsensitiveContains(searchText) }
+        return viewModel.names.filter { $0.localizedCaseInsensitiveContains(searchText) }
     }
     
     var body: some View {

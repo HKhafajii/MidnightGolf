@@ -5,12 +5,9 @@ struct AttendanceView: View {
     @State private var attendanceHistory: [Attendance] = []
     @State private var errorMessage: String?
     @State private var isLoading = true
-    @StateObject private var viewModel: AttendanceViewModel
+    @EnvironmentObject private var viewModel: ViewModel
     
-    init(student: Student, firestoreManager: FirestoreManager) {
-        self.student = student
-        _viewModel = StateObject(wrappedValue: AttendanceViewModel(firestoreManager: firestoreManager))
-    }
+    
 
     var body: some View {
         VStack {
@@ -72,9 +69,7 @@ struct AttendanceView: View {
             gradDate: "2020",
             qrCode: Data(),
             isCheckedIn: false
-            
-        ),
-        firestoreManager: FirestoreManager()
+        )  
     )
 }
 

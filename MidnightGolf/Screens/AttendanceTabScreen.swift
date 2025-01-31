@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AttendanceTabScreen: View {
-    @ObservedObject var fbManager = FirestoreManager.shared
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         

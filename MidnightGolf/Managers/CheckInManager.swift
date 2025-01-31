@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FirebaseFirestore
+
 
 enum CheckInError: Error {
     case alreadyCheckedIn, invalidClockInDay, notCheckedIn,missingTimeIn, noOpenAttendance, studentNotFound
@@ -15,76 +15,70 @@ enum CheckInError: Error {
 class CheckInManager: ObservableObject {
     private let lateThresholdHour = 9 // 9 AM
     
-
-    @MainActor
-    func handleCheckInOut(for student: Student) async throws {
-        let isCurrentlyCheckedIn = student.isCheckedIn
-
-        if isCurrentlyCheckedIn {
-            print("Checking out student: \(student.first) \(student.last)")
-            try await handleCheckOut(student: student)
-        } else {
-            print("Checking in student: \(student.first) \(student.last)")
-            try await handleCheckIn(student: student)
-        }
-    }
-
-    private func handleCheckIn(student: Student) async throws {
-        let attendanceRef = firestoreManager.db.collection("attendance").document()
-        let checkInDate = Date()
-
-        let attendance = Attendance(
-            id: attendanceRef.documentID,
-            studentID: student.id,
-            timeIn: checkInDate,
-            timeOut: nil,
-            isCheckedIn: true,
-            isLate: isLate(checkInDate: checkInDate),
-            totalTime: 0
-        )
-
-        try attendanceRef.setData(from: attendance)
-        try await updateStudentStatus(studentID: student.id, isCheckedIn: true)
-        print("Checked in: \(student.first) \(student.last)")
-    }
-
-    private func handleCheckOut(student: Student) async throws {
-        guard let openAttendance = try await getOpenAttendance(studentID: student.id),
-              let timeIn = openAttendance.timeIn else {
-            throw CheckInError.noOpenAttendance
-        }
-
-        let checkOutDate = Date()
-        let totalTime = checkOutDate.timeIntervalSince(timeIn) / 3600
-
-        try await firestoreManager.db.collection("attendance").document(openAttendance.id).updateData([
-            "timeOut": checkOutDate,
-            "totalTime": totalTime
-        ])
-
-        try await updateStudentStatus(studentID: student.id, isCheckedIn: false)
-    }
-
-    private func updateStudentStatus(studentID: String, isCheckedIn: Bool) async throws {
-        try await firestoreManager.db.collection("users").document(studentID).updateData([
-            "isCheckedIn": isCheckedIn
-        ])
-    }
-
-    private func isLate(checkInDate: Date) -> Bool {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.hour, .minute], from: checkInDate)
-        return components.hour! > lateThresholdHour ||
-              (components.hour! == lateThresholdHour && components.minute! > 0)
-    }
-
-    private func getOpenAttendance(studentID: String) async throws -> Attendance? {
-        let snapshot = try await firestoreManager.db.collection("attendance")
-            .whereField("studentID", isEqualTo: studentID)
-            .whereField("timeOut", isEqualTo: NSNull())
-            .limit(to: 1)
-            .getDocuments()
-
-        return snapshot.documents.compactMap { try? $0.data(as: Attendance.self) }.first
-    }
-}
+    func handleCheckInOut(for student: Student, openAttendance: Attendance?) throws -> (Attendance, Bool) {
+           
+           if student.isCheckedIn {
+               // Student is currently checked in, so we need to check them out.
+               return try handleCheckOut(openAttendance: openAttendance)
+           } else {
+               // Student is currently checked out, so we need to check them in.
+               return handleCheckIn(student: student)
+           }
+       }
+       
+    
+       private func handleCheckIn(student: Student) -> (Attendance, Bool) {
+           let checkInDate = Date()
+           
+           let newAttendance = Attendance(
+               id: UUID().uuidString, // You can override later with Firestore docID if needed
+               studentID: student.id,
+               timeIn: checkInDate,
+               timeOut: nil,
+               isCheckedIn: true,
+               isLate: isLate(checkInDate: checkInDate),
+               totalTime: 0
+           )
+           
+           
+           return (newAttendance, true)
+       }
+       
+       
+       private func handleCheckOut(openAttendance: Attendance?) throws -> (Attendance, Bool) {
+           guard let openAttendance = openAttendance,
+                 let timeIn = openAttendance.timeIn else {
+               throw CheckInError.noOpenAttendance
+           }
+           
+           var updatedAttendance = openAttendance
+           let checkOutDate = Date()
+           let totalTime = checkOutDate.timeIntervalSince(timeIn) / 3600
+           
+           updatedAttendance.timeOut = checkOutDate
+           updatedAttendance.totalTime = totalTime
+           updatedAttendance.isCheckedIn = false
+           
+           return (updatedAttendance, false)
+       }
+       
+       
+       private func isLate(checkInDate: Date) -> Bool {
+           let calendar = Calendar.current
+           let components = calendar.dateComponents([.hour, .minute], from: checkInDate)
+           
+           guard let hour = components.hour,
+                 let minute = components.minute else {
+               return false
+           }
+           
+           
+           if hour > lateThresholdHour {
+               return true
+           } else if hour == lateThresholdHour && minute > 0 {
+               return true
+           } else {
+               return false
+           }
+       }
+   }

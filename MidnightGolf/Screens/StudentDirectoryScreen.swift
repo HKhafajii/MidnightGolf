@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct StudentDirectoryScreen: View {
-    @StateObject private var manager = FirestoreManager.shared
+    @EnvironmentObject  var viewModel: ViewModel
     
     @State private var showAddStudentSheet = false
     
@@ -22,7 +22,7 @@ struct StudentDirectoryScreen: View {
                         .padding(.top, 20)
                     
                     
-                    List(manager.students) { student in
+                    List(viewModel.students) { student in
                         
                         NavigationLink {
                             
@@ -82,11 +82,6 @@ struct StudentDirectoryScreen: View {
                     }
                     .sheet(isPresented: $showAddStudentSheet) {
                         AddUser(showAddStudentSheet: $showAddStudentSheet)
-                    }
-                }
-                .onAppear {
-                    Task {
-                        await manager.fetchAllUsers()
                     }
                 }
             }

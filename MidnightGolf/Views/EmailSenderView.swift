@@ -12,7 +12,7 @@ struct EmailSenderView: View {
     @State var mailSubject = ""
     @State var mailBody = ""
     @State var mailTo = ""
-    @ObservedObject var manager = FirestoreManager()
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         VStack(spacing: 30) {
@@ -27,9 +27,7 @@ struct EmailSenderView: View {
                 .font(.title2)
             
             Button {
-                
-                manager.mailHelper.sendEmail(subject: mailSubject, body: mailBody, to: mailTo)
-                
+                viewModel.mailManager.sendEmail(subject: mailSubject, body: mailBody, to: mailTo)
             } label: {
                 Text("Send email")
             }

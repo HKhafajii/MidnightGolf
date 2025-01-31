@@ -3,7 +3,7 @@ import CoreImage.CIFilterBuiltins
 
 struct AddUser: View {
     
-    @ObservedObject var fbManager = FirestoreManager.shared
+    @EnvironmentObject var viewModel: ViewModel
     @State var firstN: String = ""
     @State var lastN: String = ""
     
@@ -49,7 +49,7 @@ struct AddUserTextFields: View {
     @State var gradDate: Date = Date()
     @Binding var showAddStudentSheet: Bool
     
-    @ObservedObject var fbManager: FirestoreManager = FirestoreManager.shared
+    @EnvironmentObject var viewModel: ViewModel
     @State var qrCodeManager =  QRCodeManager()
     
     var body: some View {
@@ -107,7 +107,7 @@ struct AddUserTextFields: View {
                 
                 if let qrCodeData = qrCodeManager.convertImageToData(image: qrCode) {
                     Task {
-                        await fbManager.postUser(first: firstName, last: lastName, born: birthDate, school: school, gradDate: gradDate, qrCode: qrCodeData)
+                       try await  viewModel.firestoreManager.postUser(first: firstName, last: lastName, born: birthDate, school: school, gradDate: gradDate, qrCode: qrCodeData)
                         
                     }
                 } else {
