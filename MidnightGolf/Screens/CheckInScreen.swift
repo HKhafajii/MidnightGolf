@@ -77,6 +77,7 @@ struct CheckInScreen: View {
                     VStack {
                         
                         SearchView()
+                            .environmentObject(viewModel)
                             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
                         
                         HStack {
@@ -110,7 +111,7 @@ struct CheckInScreen: View {
                         CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
                     }
   
-                    NavigationLink(destination: AdminScreen(), isActive: $navigateToNextScreen) {
+                    NavigationLink(destination: AdminScreen().environmentObject(viewModel), isActive: $navigateToNextScreen) {
                         EmptyView()
                     }
                 }
@@ -141,8 +142,6 @@ struct CheckInScreen: View {
                             
                              await viewModel.checkInOutStudent(student)
                             
-                            try await viewModel.firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: !student.isCheckedIn)
-                            
                             await viewModel.loadAllStudents()
                         } catch {
                             print("Error: \(error.localizedDescription)")
@@ -155,6 +154,7 @@ struct CheckInScreen: View {
 }
 #Preview {
     CheckInScreen()
+        .environmentObject(ViewModel())
 }
 
 

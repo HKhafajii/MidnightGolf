@@ -10,6 +10,7 @@ import SwiftUI
 struct AdminScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel
+    @State var showSheet = false
     
     var body: some View {
         
@@ -43,6 +44,7 @@ struct AdminScreen: View {
                     
                     NavigationLink {
                         AttendanceTabScreen()
+                            .environmentObject(viewModel)
                     } label: {
                         Text("Current Attendence")
                             .font(.title)
@@ -58,6 +60,9 @@ struct AdminScreen: View {
                     }
                     .padding()
                     
+               
+                    
+                                    
 
                     
                 }
@@ -71,4 +76,5 @@ struct AdminScreen: View {
 
 #Preview {
     AdminScreen()
+        .environmentObject(ViewModel())
 }

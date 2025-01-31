@@ -25,7 +25,8 @@ struct StudentDirectoryScreen: View {
                     List(viewModel.students) { student in
                         
                         NavigationLink {
-                            
+                            AttendanceView(student: student)
+                                .environmentObject(viewModel)
                         } label: {
                             
                             HStack(spacing: 16) {
@@ -82,6 +83,7 @@ struct StudentDirectoryScreen: View {
                     }
                     .sheet(isPresented: $showAddStudentSheet) {
                         AddUser(showAddStudentSheet: $showAddStudentSheet)
+                            .environmentObject(viewModel)
                     }
                 }
             }
@@ -91,4 +93,5 @@ struct StudentDirectoryScreen: View {
 
 #Preview {
     StudentDirectoryScreen()
+        .environmentObject(ViewModel())
 }

@@ -11,13 +11,11 @@ struct AttendanceView: View {
 
     var body: some View {
         VStack {
-            
             Text("Attendance for \(student.first) \(student.last)")
                 .font(.title)
                 .fontWeight(.bold)
                 .padding()
 
-            
             if isLoading {
                 ProgressView("Loading attendance...")
                     .padding()
@@ -31,13 +29,12 @@ struct AttendanceView: View {
                     .foregroundColor(.gray)
                     .padding()
             } else {
-                
                 List(attendanceHistory) { attendance in
                     VStack(alignment: .leading) {
                         Text("Checked In: \(attendance.timeIn?.formatted() ?? "N/A")")
-                        Text(attendance.timeOut != nil ?
-                             "Checked Out: \(attendance.timeOut!.formatted())" :
-                             "Currently Checked In")
+                        Text(attendance.timeOut != nil
+                             ? "Checked Out: \(attendance.timeOut!.formatted())"
+                             : "Currently Checked In")
                             .foregroundColor(attendance.timeOut == nil ? .blue : .primary)
                         Text("Late Arrival: \(attendance.isLate ? "Yes" : "No")")
                         Text("Total Time: \(attendance.totalTime, specifier: "%.2f") hours")
@@ -49,8 +46,15 @@ struct AttendanceView: View {
         }
         .padding()
         .task {
-            guard !student.id.isEmpty else { return }
-            await viewModel.loadAttendance(for: student)
+            isLoading = true
+                        errorMessage = nil
+                        do {
+                            let history = try await viewModel.firestoreManager.getAttendanceHistory(studentID: student.id)
+                            attendanceHistory = history
+                        } catch {
+                            errorMessage = "Failed to load attendance: \(error.localizedDescription)"
+                        }
+                        isLoading = false
         }
         
     }
@@ -71,6 +75,7 @@ struct AttendanceView: View {
             isCheckedIn: false
         )  
     )
+    .environmentObject(ViewModel())
 }
 
 

@@ -39,6 +39,7 @@ struct AddUser: View {
 
 #Preview {
     AddUser(showAddStudentSheet: .constant(false))
+        .environmentObject(ViewModel())
 }
 
 struct AddUserTextFields: View {

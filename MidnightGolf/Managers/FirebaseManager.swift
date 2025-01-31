@@ -70,10 +70,11 @@ class FirestoreManager: ObservableObject {
         
         let qrCodebase64 = qrCode.base64EncodedString()
         
-        
+        let studentID = UUID().uuidString
         do {
             let ref = try await userCollection.addDocument(data:
                                                             [
+                                                                "id" : studentID,
                                                                 "first" : first,
                                                                 "last" : last,
                                                                 "born" : birthDateString,
@@ -121,6 +122,7 @@ class FirestoreManager: ObservableObject {
             let fetchedStudents = snapshot.documents.compactMap { doc -> Student? in
                 let data = doc.data()
                 
+                let id = data["id"] as? String ?? "Unknown"
                 let first = data["first"] as? String ?? "Unknown"
                 let last = data["last"] as? String ?? "Unknown"
                 let group = data["group"] as? String ?? "Unkown"
@@ -132,7 +134,7 @@ class FirestoreManager: ObservableObject {
                 let qrCodeData = Data(base64Encoded: qrCodeBase64) ?? Data()
                 
                 return Student(
-                    id: doc.documentID,
+                    id: id,
                     group: group,
                     first: first,
                     last: last,
