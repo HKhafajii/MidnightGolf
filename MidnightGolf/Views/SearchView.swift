@@ -36,10 +36,7 @@ struct SearchView: View {
                 
                 .listStyle(PlainListStyle())
             } else {
-                // You can also show a placeholder or empty view here if you want
-                // For example:
-                // Text("Start typing to see results...")
-                //     .foregroundColor(.gray)
+                
             }
         }
         
@@ -49,6 +46,7 @@ struct SearchView: View {
 
 #Preview {
     SearchView()
+        .environmentObject(ViewModel())
 }
 
 
