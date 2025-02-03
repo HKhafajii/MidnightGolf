@@ -41,9 +41,22 @@
 		622E99CB2CA445EE00C5C66F /* MidnightGolfUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MidnightGolfUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		64752AEC2D41DE5500BC7505 /* Exceptions for "MidnightGolf" folder in "MidnightGolf" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 622E99B02CA445EC00C5C66F /* MidnightGolf */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		622E99B32CA445EC00C5C66F /* MidnightGolf */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				64752AEC2D41DE5500BC7505 /* Exceptions for "MidnightGolf" folder in "MidnightGolf" target */,
+			);
 			path = MidnightGolf;
 			sourceTree = "<group>";
 		};
