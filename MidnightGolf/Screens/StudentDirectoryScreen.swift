@@ -30,7 +30,6 @@ struct StudentDirectoryScreen: View {
                         } label: {
                             
                             HStack(spacing: 16) {
-                                
                                 Image(systemName: "person.fill")
                                     .resizable()
                                     .frame(width: 40, height: 40)
@@ -38,8 +37,7 @@ struct StudentDirectoryScreen: View {
                                     .padding(10)
                                     .background(Color.gray.opacity(0.2))
                                     .clipShape(Circle())
-                                
-                                
+
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text("\(student.first) \(student.last)")
                                         .font(.headline)
@@ -56,10 +54,11 @@ struct StudentDirectoryScreen: View {
                                             .foregroundColor(.gray)
                                     }
                                 }
-                                
+
                                 Spacer()
-                                
-                                if let qrCodeImage = UIImage(data: student.qrCode) {
+
+                                // ✅ Load QR Code from stored Base64 string
+                                if let qrCodeImage = student.qrCodeImage() {
                                     Image(uiImage: qrCodeImage)
                                         .interpolation(.none)
                                         .resizable()

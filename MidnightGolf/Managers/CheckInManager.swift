@@ -17,13 +17,18 @@ class CheckInManager: ObservableObject {
     
     func handleCheckInOut(for student: Student, openAttendance: Attendance?) throws -> (Attendance, Bool) {
            
-           if student.isCheckedIn {
-               // Student is currently checked in, so we need to check them out.
-               return try handleCheckOut(openAttendance: openAttendance)
-           } else {
-               // Student is currently checked out, so we need to check them in.
-               return handleCheckIn(student: student)
-           }
+        if let openAttendance = openAttendance {
+            return try handleCheckOut(openAttendance: openAttendance)
+        } else {
+            return handleCheckIn(student: student)
+        }
+        
+        
+//           if student.isCheckedIn {
+//               return try handleCheckOut(openAttendance: openAttendance)
+//           } else {
+//               return handleCheckIn(student: student)
+//           }
        }
        
     

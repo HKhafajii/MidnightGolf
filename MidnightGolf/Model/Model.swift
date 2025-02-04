@@ -6,7 +6,6 @@
 //
 
 import Foundation
-
 struct Student: Identifiable, Codable, Hashable {
     let id: String
     let group: String
@@ -15,14 +14,14 @@ struct Student: Identifiable, Codable, Hashable {
     let born: String
     let school: String
     let gradDate: String
-    let qrCode: Data
+    var qrCode: String
     var isCheckedIn: Bool = false
 }
 
-extension Student {
-    func qrString() -> String? {
-        String(data: qrCode, encoding: .utf8)
-    }
-}
+//extension Student {
+//    func qrString() -> String? {
+//        String(data: qrCode, encoding: .utf8)
+//    }
+//}
 
 

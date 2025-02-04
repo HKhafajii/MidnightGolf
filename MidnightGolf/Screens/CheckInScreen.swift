@@ -26,9 +26,6 @@ struct CheckInScreen: View {
         UIScreen.main.bounds.height
     }
     
-    
-   
-    
     var body: some View {
         
         NavigationStack {
@@ -101,16 +98,16 @@ struct CheckInScreen: View {
                     
                     Button("Scan", systemImage: "qrcode.viewfinder") { showScanSheet = true }
                         .disabled(viewModel.firestoreManager.isLoadingStudents)
-                    .font(.largeTitle)
-                    .foregroundStyle(Color("navy"))
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 5)
-                    .shadow(radius: 8, x: 0, y: 8)
+                        .font(.largeTitle)
+                        .foregroundStyle(Color("navy"))
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: CheckInScreen.deviceWidth / 5)
+                        .shadow(radius: 8, x: 0, y: 8)
                     
-                    .sheet(isPresented: $showScanSheet) {
-                        CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
-                    }
-  
+                        .sheet(isPresented: $showScanSheet) {
+                            CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
+                        }
+                    
                     NavigationLink(destination: AdminScreen().environmentObject(viewModel), isActive: $navigateToNextScreen) {
                         EmptyView()
                     }
@@ -121,36 +118,40 @@ struct CheckInScreen: View {
                 .padding()
             }
             .task {
-                 await viewModel.loadAllStudents()
+                await viewModel.loadAllStudents()
             }
         }
     }
-      func handleScan(result: Result<ScanResult, ScanError>) {
-    
-          showScanSheet = false
-    
-        
-            switch result {
-            case .success(let result):
-                Task {
-                        do {
-                            guard let student = viewModel.students.first(where: {
-                                String(data: $0.qrCode, encoding: .utf8) == result.string
-                            }) else {
-                                throw CheckInError.studentNotFound
-                            }
-                            
-                             await viewModel.checkInOutStudent(student)
-                            
-                            await viewModel.loadAllStudents()
-                        } catch {
-                            print("Error: \(error.localizedDescription)")
-                        }
+    func handleScan(result: Result<ScanResult, ScanError>) {
+        showScanSheet = false
+
+        switch result {
+        case .success(let result):
+            Task {
+                do {
+                    print("Scanned QR Code Text: \(result.string)")
+
+                    if let student = viewModel.students.first(where: {
+                        print("Checking student: \($0.first) \($0.last)")
+                        print("Stored QR Text: \($0.qrCodeText)")
+                        return $0.qrCodeText == result.string
+                    }) {
+                        print("Matched student: \(student.first) \(student.last)")
+                        await viewModel.checkInOutStudent(student)
+                    } else {
+                        print("No student matched the scanned QR Code Text.")
+                        throw CheckInError.studentNotFound
                     }
-            case .failure(let error):
-                print("Scanning failed: \(error.localizedDescription)")
+
+                    await viewModel.loadAllStudents()
+                } catch {
+                    print("Error: \(error.localizedDescription)")
+                }
             }
-      }
+        case .failure(let error):
+            print("Scanning failed: \(error.localizedDescription)")
+        }
+    }
 }
 #Preview {
     CheckInScreen()
