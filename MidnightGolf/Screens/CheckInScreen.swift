@@ -129,27 +129,36 @@ struct CheckInScreen: View {
         case .success(let result):
             Task {
                 do {
-                    print("Scanned QR Code Text: \(result.string)")
+                    let scannedText = result.string.trimmingCharacters(in: .whitespacesAndNewlines)
+                    print("Scanned QR Code Text:", scannedText)
 
-                    if let student = viewModel.students.first(where: {
-                        print("Checking student: \($0.first) \($0.last)")
-                        print("Stored QR Text: \($0.qrCode)")
-                        return $0.qrCode == result.string
-                    }) {
-                        print("Matched student: \(student.first) \(student.last)")
-                        await viewModel.checkInOutStudent(student)
+                    
+                    if let qrCodeImage = QRCodeManager().generateQRCode(from: scannedText),
+                       let qrCodeData = qrCodeImage.pngData() {
+                        
+                        let scannedBase64 = qrCodeData.base64EncodedString()
+                        print("Scanned QR Code Base64:", scannedBase64.prefix(20), "...")
+
+                        
+                        if let student = viewModel.students.first(where: { $0.qrCode == scannedBase64 }) {
+                            print(" Matched student:", student.first, student.last)
+                            await viewModel.checkInOutStudent(student)
+                        } else {
+                            print(" No student matched the scanned QR Code.")
+                            throw CheckInError.studentNotFound
+                        }
                     } else {
-                        print("No student matched the scanned QR Code Text.")
                         throw CheckInError.studentNotFound
                     }
 
                     await viewModel.loadAllStudents()
+                
                 } catch {
-                    print("Error: \(error.localizedDescription)")
+                    print("❌ Error: \(error.localizedDescription)")
                 }
             }
         case .failure(let error):
-            print("Scanning failed: \(error.localizedDescription)")
+            print("❌ Scanning failed: \(error.localizedDescription)")
         }
     }
 }

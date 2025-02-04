@@ -144,7 +144,7 @@ class FirestoreManager: ObservableObject {
             let gradDate = data["gradDate"] as? String ?? "Unknown"
             let qrCodeText = data["qrCode"] as? String ?? ""
 
-            print("📦 Fetched Student: \(first) \(last) with QR Text: \(qrCodeText)")
+            
 
             return Student(
                 id: studentId,
@@ -158,7 +158,7 @@ class FirestoreManager: ObservableObject {
             )
         }
 
-        print("Successfully parsed \(fetchedStudents.count) students")
+        
 
         return fetchedStudents
     } // End of FetchAllUsers

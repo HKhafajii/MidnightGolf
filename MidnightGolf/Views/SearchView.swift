@@ -43,12 +43,12 @@ struct SearchView: View {
                             Task { await viewModel.checkInOutStudent(student)
                             }
                         } label: {
-                            Text("Check In")
-                                .font(.headline)
-                                .foregroundStyle(Color.white)
-                                .fontWeight(.semibold)
-                                .padding()
-                                .background(Capsule().fill(Color("blue")))
+                            Text("Check \(student.isCheckedIn ? "Out" : "In")")
+//                                .font(.headline)
+//                                .foregroundStyle(Color.white)
+//                                .fontWeight(.semibold)
+//                                .padding()
+//                                .background(Capsule().fill(Color("blue")))
                                 .padding()
                             
                         }
