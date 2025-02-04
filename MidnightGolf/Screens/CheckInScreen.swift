@@ -133,8 +133,8 @@ struct CheckInScreen: View {
 
                     if let student = viewModel.students.first(where: {
                         print("Checking student: \($0.first) \($0.last)")
-                        print("Stored QR Text: \($0.qrCodeText)")
-                        return $0.qrCodeText == result.string
+                        print("Stored QR Text: \($0.qrCode)")
+                        return $0.qrCode == result.string
                     }) {
                         print("Matched student: \(student.first) \(student.last)")
                         await viewModel.checkInOutStudent(student)
