@@ -19,11 +19,24 @@ struct Student: Identifiable, Codable, Hashable {
     var isCheckedIn: Bool = false
     
     func qrCodeImage() -> UIImage? {
-        if let qrData = Data(base64Encoded: qrCode) {
-               return UIImage(data: qrData)
-           }
-           return nil
-       }
+        guard !qrCode.isEmpty else {
+            print("QR Code is empty for student:", first, last)
+            return nil
+        }
+        
+        guard let qrData = Data(base64Encoded: qrCode) else {
+            print("Failed to decode Base64 QR Code for student:", first, last)
+            return nil
+        }
+        
+        guard let qrImage = UIImage(data: qrData) else {
+            print("❌ Failed to convert QR Data to UIImage for student:", first, last)
+            return nil
+        }
+        
+        print("Successfully loaded QR Code for:", first, last)
+        return qrImage
+    }
 }
 
 

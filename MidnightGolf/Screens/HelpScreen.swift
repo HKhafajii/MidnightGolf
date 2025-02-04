@@ -10,7 +10,7 @@ import SwiftUI
 struct HelpScreen: View {
     var body: some View {
         ZStack {
-            Color("blue")
+            Color("MGPblue")
                 .ignoresSafeArea()
             
             Image(systemName: "questionmark.circle.fill")

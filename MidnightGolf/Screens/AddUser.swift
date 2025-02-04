@@ -116,7 +116,9 @@ struct AddUserTextFields: View {
                             gradDate: gradDate,
                             qrCode: qrCodeText
                         )
+                        await viewModel.loadAllStudents()
                     }
+                    
                 }
                 showAddStudentSheet = false
             } label: {

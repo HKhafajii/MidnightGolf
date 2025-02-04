@@ -28,13 +28,13 @@ struct AdminScreen: View {
                     } label: {
                         Text("Student Directory")
                             .font(.title)
-                            .foregroundStyle(Color("navy"))
+                            .foregroundStyle(Color("MGPnavy"))
                             .fontWeight(.semibold)
                             .frame(maxWidth: CheckInScreen.deviceWidth / 5)
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color("yellow"))
+                                    .fill(Color("MGPyellow"))
                                     .shadow(radius: 8, x: 0, y: 8)
                             )
                     }
@@ -48,13 +48,13 @@ struct AdminScreen: View {
                     } label: {
                         Text("Current Attendence")
                             .font(.title)
-                            .foregroundStyle(Color("navy"))
+                            .foregroundStyle(Color("MGPnavy"))
                             .fontWeight(.semibold)
                             .frame(maxWidth: CheckInScreen.deviceWidth / 5)
                             .padding()
                             .background(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color("yellow"))
+                                    .fill(Color("MGPyellow"))
                                     .shadow(radius: 8, x: 0, y: 8)
                             )
                     }

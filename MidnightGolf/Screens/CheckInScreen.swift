@@ -49,7 +49,7 @@ struct CheckInScreen: View {
                             
                                 .resizable()
                                 .frame(maxWidth: 45, maxHeight: 40)
-                                .foregroundStyle(Color("navy"))
+                                .foregroundStyle(Color("MGPnavy"))
                                 .shadow(radius: 10, x: 0, y: 5)
                         }
                     }
@@ -67,7 +67,7 @@ struct CheckInScreen: View {
                     Text("Check In")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color("navy"))
+                        .foregroundStyle(Color("MGPnavy"))
                     
                         .padding()
                     
@@ -99,7 +99,7 @@ struct CheckInScreen: View {
                     Button("Scan", systemImage: "qrcode.viewfinder") { showScanSheet = true }
                         .disabled(viewModel.firestoreManager.isLoadingStudents)
                         .font(.largeTitle)
-                        .foregroundStyle(Color("navy"))
+                        .foregroundStyle(Color("MGPnavy"))
                         .fontWeight(.semibold)
                         .frame(maxWidth: CheckInScreen.deviceWidth / 5)
                         .shadow(radius: 8, x: 0, y: 8)
@@ -167,7 +167,7 @@ struct TimeView: View {
     var body: some View {
         Text(viewModel.currentTime)
             .font(.largeTitle)
-            .foregroundStyle(Color("navy"))
+            .foregroundStyle(Color("MGPnavy"))
             .fontWeight(.semibold)
             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
             .padding()

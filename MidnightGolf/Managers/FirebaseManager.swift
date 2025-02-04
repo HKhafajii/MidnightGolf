@@ -142,7 +142,7 @@ class FirestoreManager: ObservableObject {
             let born = data["born"] as? String ?? "Unknown"
             let school = data["school"] as? String ?? "Not Specified"
             let gradDate = data["gradDate"] as? String ?? "Unknown"
-            let qrCodeText = data["qrCodeText"] as? String ?? ""
+            let qrCodeText = data["qrCode"] as? String ?? ""
 
             print("📦 Fetched Student: \(first) \(last) with QR Text: \(qrCodeText)")
 

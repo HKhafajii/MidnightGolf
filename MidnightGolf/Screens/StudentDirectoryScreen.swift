@@ -25,6 +25,7 @@ struct StudentDirectoryScreen: View {
                                 .environmentObject(viewModel)
                         } label: {
                             StudentRow(student: student)
+                                
                         }
                     }
                     .listStyle(PlainListStyle())
@@ -89,7 +90,7 @@ struct StudentRow: View {
 
             Spacer()
 
-            
+       
             if let qrCodeImage = student.qrCodeImage() {
                 Image(uiImage: qrCodeImage)
                     .interpolation(.none)
@@ -97,6 +98,9 @@ struct StudentRow: View {
                     .scaledToFit()
                     .frame(width: 50, height: 50)
                     .padding(5)
+            } else {
+                Text("QR Not Found")
+                    .foregroundColor(.red)
             }
         }
         .padding()
