@@ -114,7 +114,8 @@ struct AddUserTextFields: View {
                             born: birthDate,
                             school: school,
                             gradDate: gradDate,
-                            qrCode: qrCodeText)
+                            qrCode: qrCodeText
+                        )
                     }
                 }
                 showAddStudentSheet = false

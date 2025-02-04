@@ -39,14 +39,14 @@ class ViewModel: ObservableObject {
             print("Fetched open attendance:", openAttendance?.id ?? "None found")
 
             if let existingAttendance = openAttendance {
-                // Student is checking out
+                
                 print("Checking out, updating existing attendance record:", existingAttendance.id)
 
                 let checkOutDate = Date()
                 let totalTime = checkOutDate.timeIntervalSince(existingAttendance.timeIn ?? checkOutDate) / 3600
 
                 let updatedFields: [String: Any] = [
-                    "timeOut": checkOutDate,  // ✅ Store timeOut
+                    "timeOut": checkOutDate,
                     "totalTime": totalTime,
                     "isCheckedIn": false
                 ]

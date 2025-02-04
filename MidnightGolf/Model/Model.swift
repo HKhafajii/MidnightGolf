@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 struct Student: Identifiable, Codable, Hashable {
     let id: String
     let group: String
@@ -16,7 +17,15 @@ struct Student: Identifiable, Codable, Hashable {
     let gradDate: String
     var qrCode: String
     var isCheckedIn: Bool = false
+    
+    func qrCodeImage() -> UIImage? {
+        if let qrData = Data(base64Encoded: qrCode) {
+               return UIImage(data: qrData)
+           }
+           return nil
+       }
 }
+
 
 //extension Student {
 //    func qrString() -> String? {

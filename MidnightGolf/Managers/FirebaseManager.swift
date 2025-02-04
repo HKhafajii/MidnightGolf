@@ -94,9 +94,9 @@ class FirestoreManager: ObservableObject {
                     "qrCode": qrCodeBase64,
                     "isCheckedIn": false
                 ])
-                print("✅ Successfully added student with QR content: \(qrCode)")
+                print("Successfully added student with QR content: \(qrCode)")
             } catch {
-                print("❌ Error adding document: \(error)")
+                print("Error adding document: \(error)")
             }
         }
         
@@ -142,7 +142,7 @@ class FirestoreManager: ObservableObject {
             let born = data["born"] as? String ?? "Unknown"
             let school = data["school"] as? String ?? "Not Specified"
             let gradDate = data["gradDate"] as? String ?? "Unknown"
-            let qrCodeText = data["qrCodeText"] as? String ?? "" // ✅ Fetch as plain text
+            let qrCodeText = data["qrCodeText"] as? String ?? ""
 
             print("📦 Fetched Student: \(first) \(last) with QR Text: \(qrCodeText)")
 
@@ -158,7 +158,7 @@ class FirestoreManager: ObservableObject {
             )
         }
 
-        print("✅ Successfully parsed \(fetchedStudents.count) students")
+        print("Successfully parsed \(fetchedStudents.count) students")
 
         return fetchedStudents
     } // End of FetchAllUsers
@@ -219,11 +219,11 @@ class FirestoreManager: ObservableObject {
             .getDocuments() // Get all documents to check what's being returned
 
         // Print all documents returned for debugging
-        print("🔍 Firestore returned \(snapshot.documents.count) attendance records for student:", studentID)
+        print("Firestore returned \(snapshot.documents.count) attendance records for student:", studentID)
 
         for document in snapshot.documents {
             let data = document.data()
-            print("📄 Document ID:", document.documentID, "Data:", data)
+            print("Document ID:", document.documentID, "Data:", data)
         }
 
         // Now filter to find an open attendance record (where timeOut is null)
@@ -231,10 +231,10 @@ class FirestoreManager: ObservableObject {
             let data = document.data()
             
             let timeIn = data["timeIn"] as? Timestamp
-            let timeOut = data["timeOut"] as? Timestamp // This should be nil for open attendance
+            let timeOut = data["timeOut"] as? Timestamp
 
-            if timeOut == nil { // 🔥 Double-checking Firestore doesn't store it differently
-                print("✅ Found open attendance record:", document.documentID)
+            if timeOut == nil {
+                print("Found open attendance record:", document.documentID)
                 return Attendance(
                     id: document.documentID,
                     studentID: data["studentID"] as? String ?? "",
@@ -245,12 +245,12 @@ class FirestoreManager: ObservableObject {
                     totalTime: data["totalTime"] as? Double ?? 0
                 )
             } else {
-                print("❌ Skipping closed attendance record:", document.documentID, "timeOut:", timeOut?.dateValue() ?? "nil")
+                print("Skipping closed attendance record:", document.documentID, "timeOut:", timeOut?.dateValue() ?? "nil")
                 return nil
             }
         }.first
 
-        print("📢 Final fetched open attendance:", openAttendance?.id ?? "None found")
+        print("Final fetched open attendance:", openAttendance?.id ?? "None found")
         
         return openAttendance
     }
