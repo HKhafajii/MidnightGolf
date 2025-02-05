@@ -63,7 +63,7 @@ struct AttendanceTabScreen: View {
                                 }
                             }
                             .frame(maxWidth: screenWidth * 0.6)
-                            
+
                             HStack(spacing: screenWidth * 0.008) {
                                 ForEach(filters.indices, id: \.self) { index in
                                     Circle()
