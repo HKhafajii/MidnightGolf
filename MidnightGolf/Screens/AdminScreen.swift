@@ -23,47 +23,13 @@ struct AdminScreen: View {
                     .ignoresSafeArea()
                 VStack(spacing: 50) {
                     
-                    NavigationLink {
-                        StudentDirectoryScreen()
-                    } label: {
-                        Text("Student Directory")
-                            .font(.title)
-                            .foregroundStyle(Color("MGPnavy"))
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: CheckInScreen.deviceWidth / 5)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color("MGPyellow"))
-                                    .shadow(radius: 8, x: 0, y: 8)
-                            )
-                    }
-                    .padding()
+                 
+                    NavigationButtons(destination: StudentDirectoryScreen().environmentObject(viewModel), destinationName: "Student Directory")
                     
                     
+                    NavigationButtons(destination: AttendanceTabScreen().environmentObject(viewModel), destinationName: "Attendance")
                     
-                    NavigationLink {
-                        AttendanceTabScreen()
-                            .environmentObject(viewModel)
-                    } label: {
-                        Text("Current Attendence")
-                            .font(.title)
-                            .foregroundStyle(Color("MGPnavy"))
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: CheckInScreen.deviceWidth / 5)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(Color("MGPyellow"))
-                                    .shadow(radius: 8, x: 0, y: 8)
-                            )
-                    }
-                    .padding()
-                    
-               
-                    
-                                    
-
+                    NavigationButtons(destination: EmailSenderView().environmentObject(viewModel), destinationName: "Send an Email")
                     
                 }
                 .padding()
@@ -77,4 +43,32 @@ struct AdminScreen: View {
 #Preview {
     AdminScreen()
         .environmentObject(ViewModel())
+}
+
+
+struct NavigationButtons<Destination: View>: View {
+    
+    var destination: Destination
+    let destinationName: String
+    
+    var body: some View {
+        NavigationStack {
+            NavigationLink {
+                destination
+            } label: {
+                Text(destinationName)
+                    .font(.title)
+                    .foregroundStyle(Color("MGPnavy"))
+                    .fontWeight(.semibold)
+                    .frame(maxWidth: CheckInScreen.deviceWidth / 5)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color("MGPyellow"))
+                            .shadow(radius: 8, x: 0, y: 8)
+                    )
+            }
+            .padding()
+        }
+    }
 }

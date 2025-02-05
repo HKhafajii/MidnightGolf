@@ -15,25 +15,27 @@ struct EmailSenderView: View {
     @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
-        VStack(spacing: 30) {
+        ZStack {
+            Image("bg")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
             
-            TextField("Subject", text: $mailSubject)
-                .font(.title2)
+            VStack(spacing: 30) {
                 
-            TextField("Body", text: $mailBody)
-                .font(.title2)
+                Button {
+                    viewModel.mailManager.sendEmail(students: viewModel.students)
+                } label: {
+                    Text("Send Student List Email")
+                        .font(.title2)
+                        .padding()
+                        .background(RoundedRectangle(cornerRadius: 10).fill(Color("MGPnavy")))
+                        .foregroundColor(.white)
+                }
                 
-            TextField("To", text: $mailTo)
-                .font(.title2)
-            
-            Button {
-                viewModel.mailManager.sendEmail(subject: mailSubject, body: mailBody, to: mailTo)
-            } label: {
-                Text("Send email")
-            }
-            
-        }// End of VStack
-        .padding()
+            }// End of VStack
+            .padding()
+        }
     } // End of var body
 } // End of EmailSenderView Struct
 
