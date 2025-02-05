@@ -42,9 +42,22 @@
 		622E99CB2CA445EE00C5C66F /* MidnightGolfUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MidnightGolfUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		64B0D54E2D5278F7006A6BA8 /* Exceptions for "MidnightGolf" folder in "MidnightGolf" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 622E99B02CA445EC00C5C66F /* MidnightGolf */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		622E99B32CA445EC00C5C66F /* MidnightGolf */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				64B0D54E2D5278F7006A6BA8 /* Exceptions for "MidnightGolf" folder in "MidnightGolf" target */,
+			);
 			path = MidnightGolf;
 			sourceTree = "<group>";
 		};
@@ -436,6 +449,7 @@
 				DEVELOPMENT_TEAM = PBX6J6U58R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MidnightGolf/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "For us to scan your code, we must be able to have access to your camera";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -471,6 +485,7 @@
 				DEVELOPMENT_TEAM = PBX6J6U58R;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MidnightGolf/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "For us to scan your code, we must be able to have access to your camera";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
