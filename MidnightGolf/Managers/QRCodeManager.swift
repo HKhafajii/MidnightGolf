@@ -18,15 +18,17 @@ class QRCodeManager {
     
     //    ------ Functions ---------
     
-    func generateQRCode(from string: String) -> UIImage {
-        filter.message = Data(string.utf8)
-        if let outputImage = filter.outputImage {
-            if let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
+    func generateQRCode(from string: String) -> UIImage? {
+            guard !string.isEmpty else { return nil }
+            
+            filter.message = Data(string.utf8)
+            if let outputImage = filter.outputImage,
+               let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
                 return UIImage(cgImage: cgImage)
             }
-        }
-        return UIImage(systemName: "xmark.circle") ?? UIImage()
-    } // End of GenerateQRCode
+            
+            return nil
+        } // End of GenerateQRCode
     
     func convertImageToData(image: UIImage) -> Data? {
         return image.pngData()

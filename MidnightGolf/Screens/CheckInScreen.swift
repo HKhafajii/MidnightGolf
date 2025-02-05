@@ -26,9 +26,6 @@ struct CheckInScreen: View {
         UIScreen.main.bounds.height
     }
     
-    
-   
-    
     var body: some View {
         
         NavigationStack {
@@ -52,7 +49,7 @@ struct CheckInScreen: View {
                             
                                 .resizable()
                                 .frame(maxWidth: 45, maxHeight: 40)
-                                .foregroundStyle(Color("navy"))
+                                .foregroundStyle(Color("MGPnavy"))
                                 .shadow(radius: 10, x: 0, y: 5)
                         }
                     }
@@ -70,7 +67,7 @@ struct CheckInScreen: View {
                     Text("Check In")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundStyle(Color("navy"))
+                        .foregroundStyle(Color("MGPnavy"))
                     
                         .padding()
                     
@@ -101,16 +98,16 @@ struct CheckInScreen: View {
                     
                     Button("Scan", systemImage: "qrcode.viewfinder") { showScanSheet = true }
                         .disabled(viewModel.firestoreManager.isLoadingStudents)
-                    .font(.largeTitle)
-                    .foregroundStyle(Color("navy"))
-                    .fontWeight(.semibold)
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 5)
-                    .shadow(radius: 8, x: 0, y: 8)
+                        .font(.largeTitle)
+                        .foregroundStyle(Color("MGPnavy"))
+                        .fontWeight(.semibold)
+                        .frame(maxWidth: CheckInScreen.deviceWidth / 5)
+                        .shadow(radius: 8, x: 0, y: 8)
                     
-                    .sheet(isPresented: $showScanSheet) {
-                        CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
-                    }
-  
+                        .sheet(isPresented: $showScanSheet) {
+                            CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
+                        }
+                    
                     NavigationLink(destination: AdminScreen().environmentObject(viewModel), isActive: $navigateToNextScreen) {
                         EmptyView()
                     }
@@ -121,36 +118,49 @@ struct CheckInScreen: View {
                 .padding()
             }
             .task {
-                 await viewModel.loadAllStudents()
+                await viewModel.loadAllStudents()
             }
         }
     }
-      func handleScan(result: Result<ScanResult, ScanError>) {
-    
-          showScanSheet = false
-    
-        
-            switch result {
-            case .success(let result):
-                Task {
-                        do {
-                            guard let student = viewModel.students.first(where: {
-                                String(data: $0.qrCode, encoding: .utf8) == result.string
-                            }) else {
-                                throw CheckInError.studentNotFound
-                            }
-                            
-                             await viewModel.checkInOutStudent(student)
-                            
-                            await viewModel.loadAllStudents()
-                        } catch {
-                            print("Error: \(error.localizedDescription)")
+    func handleScan(result: Result<ScanResult, ScanError>) {
+        showScanSheet = false
+
+        switch result {
+        case .success(let result):
+            Task {
+                do {
+                    let scannedText = result.string.trimmingCharacters(in: .whitespacesAndNewlines)
+                    print("Scanned QR Code Text:", scannedText)
+
+                    
+                    if let qrCodeImage = QRCodeManager().generateQRCode(from: scannedText),
+                       let qrCodeData = qrCodeImage.pngData() {
+                        
+                        let scannedBase64 = qrCodeData.base64EncodedString()
+                        print("Scanned QR Code Base64:", scannedBase64.prefix(20), "...")
+
+                        
+                        if let student = viewModel.students.first(where: { $0.qrCode == scannedBase64 }) {
+                            print(" Matched student:", student.first, student.last)
+                            await viewModel.checkInOutStudent(student)
+                        } else {
+                            print(" No student matched the scanned QR Code.")
+                            throw CheckInError.studentNotFound
                         }
+                    } else {
+                        throw CheckInError.studentNotFound
                     }
-            case .failure(let error):
-                print("Scanning failed: \(error.localizedDescription)")
+
+                    await viewModel.loadAllStudents()
+                
+                } catch {
+                    print("❌ Error: \(error.localizedDescription)")
+                }
             }
-      }
+        case .failure(let error):
+            print("❌ Scanning failed: \(error.localizedDescription)")
+        }
+    }
 }
 #Preview {
     CheckInScreen()
@@ -166,7 +176,7 @@ struct TimeView: View {
     var body: some View {
         Text(viewModel.currentTime)
             .font(.largeTitle)
-            .foregroundStyle(Color("navy"))
+            .foregroundStyle(Color("MGPnavy"))
             .fontWeight(.semibold)
             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
             .padding()

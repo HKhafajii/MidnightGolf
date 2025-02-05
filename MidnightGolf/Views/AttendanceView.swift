@@ -71,7 +71,7 @@ struct AttendanceView: View {
             born: "2002",
             school: "Test School",
             gradDate: "2020",
-            qrCode: Data(),
+            qrCode: "",
             isCheckedIn: false
         )  
     )

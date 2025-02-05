@@ -6,6 +6,7 @@ class ViewModel: ObservableObject {
     @Published var checkInManager = CheckInManager()
     @Published var attendanceManager = AttendanceManager()
     @Published var mailManager = MailManager()
+    @Published var qrManager = QRCodeManager()
     
     @Published var students: [Student] = []
     @Published var names: [String] = []
@@ -32,44 +33,53 @@ class ViewModel: ObservableObject {
     @MainActor
     func checkInOutStudent(_ student: Student) async {
         do {
-            
+            print("Starting checkInOutStudent for student ID:", student.id)
+
             let openAttendance = try await firestoreManager.fetchOpenAttendance(for: student.id)
-            
-            
-            let (updatedAttendance, newIsCheckedIn) = try checkInManager.handleCheckInOut(for: student, openAttendance: openAttendance)
-            
-            
-            
-            if student.isCheckedIn {
+            print("Fetched open attendance:", openAttendance?.id ?? "None found")
+
+            if let existingAttendance = openAttendance {
                 
-                try await firestoreManager.updateAttendance(
-                    updatedAttendance.id,
-                    fields: [
-                        "timeOut": updatedAttendance.timeOut ?? NSNull(),
-                        "totalTime": updatedAttendance.totalTime,
-                        "isCheckedIn": updatedAttendance.isCheckedIn
-                    ]
-                )
+                print("Checking out, updating existing attendance record:", existingAttendance.id)
+
+                let checkOutDate = Date()
+                let totalTime = checkOutDate.timeIntervalSince(existingAttendance.timeIn ?? checkOutDate) / 3600
+
+                let updatedFields: [String: Any] = [
+                    "timeOut": checkOutDate,
+                    "totalTime": totalTime,
+                    "isCheckedIn": false
+                ]
+
+                try await firestoreManager.updateAttendance(existingAttendance.id, fields: updatedFields)
+                print("Successfully updated attendance record:", existingAttendance.id)
+
+                try await firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: false)
+                print("Successfully updated student isCheckedIn status to false")
+
             } else {
-                
-                try await firestoreManager.createAttendance(updatedAttendance)
+                // Student is checking in
+                print("Checking in, creating a new attendance record")
+
+                let newAttendance = Attendance(
+                    id: UUID().uuidString,
+                    studentID: student.id,
+                    timeIn: Date(),
+                    timeOut: nil,
+                    isCheckedIn: true,
+                    isLate: false,
+                    totalTime: 0
+                )
+
+                try await firestoreManager.createAttendance(newAttendance)
+                print("Created new attendance record:", newAttendance.id)
+
+                try await firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: true)
+                print("Successfully updated student isCheckedIn status to true")
             }
-            
-            
-            try await firestoreManager.updateStudentStatus(
-                studentID: student.id,
-                isCheckedIn: newIsCheckedIn
-            )
-            
-            
-            if let index = students.firstIndex(where: { $0.id == student.id }) {
-                var updatedStudent = students[index]
-                updatedStudent.isCheckedIn = newIsCheckedIn
-                students[index] = updatedStudent
-            }
-            
+
         } catch {
-            print("Error checking in/out: \(error.localizedDescription)")
+            print("Error checking in/out:", error.localizedDescription)
         }
     }
     

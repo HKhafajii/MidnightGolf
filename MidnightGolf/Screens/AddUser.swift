@@ -104,15 +104,21 @@ struct AddUserTextFields: View {
             
             Button {
                 
-                let qrCode = qrCodeManager.generateQRCode(from: firstName + lastName)
+                let qrCodeText = firstName + lastName
                 
-                if let qrCodeData = qrCodeManager.convertImageToData(image: qrCode) {
-                    Task {
-                       try await  viewModel.firestoreManager.postUser(first: firstName, last: lastName, born: birthDate, school: school, gradDate: gradDate, qrCode: qrCodeData)
-                        
+                Task {
+                    do {
+                        try await viewModel.firestoreManager.postUser(
+                            first: firstName,
+                            last: lastName,
+                            born: birthDate,
+                            school: school,
+                            gradDate: gradDate,
+                            qrCode: qrCodeText
+                        )
+                        await viewModel.loadAllStudents()
                     }
-                } else {
-                    print("The Qr code wasn't able to be generated")
+                    
                 }
                 showAddStudentSheet = false
             } label: {
