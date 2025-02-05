@@ -18,6 +18,7 @@ class FirestoreManager: ObservableObject {
     @Published private(set) var studentQRCodes: Set<String> = []
     
     @Published var isLoadingStudents = false
+    @Published var isLoadingAttendance = false
     
      let db = Firestore.firestore()
     
@@ -248,6 +249,30 @@ class FirestoreManager: ObservableObject {
         
         return openAttendance
     } // End of fetchOpenAttendance
+    
+    func fetchAllAttendance() async throws -> [Attendance] {
+        isLoadingStudents = true
+        defer { isLoadingStudents = false }
+
+        let snapshot = try await attendanceCollection.getDocuments()
+        
+        let fetchedAttendance = snapshot.documents.compactMap { doc -> Attendance? in
+            let data = doc.data()
+            
+            let id = data["id"] as? String ?? "Unkown"
+            let studentID = data["studentID"] as? String ?? "Unknown"
+            let timeIn = data["timeIn"] as? Date ?? nil
+            let timeOut = data["timeOut"] as? Date ?? nil
+            let totalTime = data["totalTime"] as? Double ?? 0
+            let isCheckedIn = data["isCheckedIn"] as? Bool ?? false
+            let isLate = data["isLate"] as? Bool ?? false
+            
+            
+            return Attendance(id: id, studentID: studentID, timeIn: timeIn, timeOut: timeOut, isCheckedIn: isCheckedIn, isLate: isLate, totalTime: totalTime)
+        }
+
+        return fetchedAttendance
+    }
     
     //    ------ END OF REQUESTS ---------
     

@@ -53,7 +53,7 @@ struct AttendanceTabScreen: View {
                             ScrollView {
                                 Group {
                                     if selectedFilter == 0 {
-//                                        ForEach(viewModel.attendanceManager.filterCheckInToday(attendanceList: viewModel))
+                                            
                                     } else if selectedFilter == 1 {
                                         Text("Weekly")
                                     } else {

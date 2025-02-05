@@ -18,7 +18,6 @@ class ViewModel: ObservableObject {
         }
     }
     
-    
     @MainActor
     func loadAllStudents() async {
         do {
@@ -84,6 +83,16 @@ class ViewModel: ObservableObject {
         }
     }
     
+    @MainActor
+    func loadAllAttendance(students: [Student]) async {
+        do {
+            let fetched = try await firestoreManager.fetchAllAttendance()
+            self.attendance = fetched
+        } catch {
+            print("Failed to fetch users: \(error)")
+        }
+    } // End of loadAllAttendance
+    
     
     func loadAttendance(for student: Student) async {
         attendanceManager.isLoading = true
@@ -98,9 +107,6 @@ class ViewModel: ObservableObject {
             attendanceManager.errorMessage = "Failed to load attendance: \(error.localizedDescription)"
         }
     }
-    
-    func loadAllAttendance(students: [Student]) async {
-        
-    }
+
     
 }
