@@ -9,6 +9,7 @@ class ViewModel: ObservableObject {
     @Published var qrManager = QRCodeManager()
     
     @Published var students: [Student] = []
+    @Published var attendance: [Attendance] = []
     @Published var names: [String] = []
     
     init() {
@@ -96,6 +97,10 @@ class ViewModel: ObservableObject {
         } catch {
             attendanceManager.errorMessage = "Failed to load attendance: \(error.localizedDescription)"
         }
+    }
+    
+    func loadAllAttendance(students: [Student]) async {
+        
     }
     
 }

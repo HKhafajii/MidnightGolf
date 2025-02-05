@@ -191,7 +191,7 @@ class FirestoreManager: ObservableObject {
         let docRef = attendanceCollection.document()
         let newAttendance = attendance
         try docRef.setData(from: newAttendance)
-    }
+    } // End of createAttendance
     
     func updateAttendance(_ attendanceID: String, fields: [String: Any]) async throws {
         
@@ -201,7 +201,7 @@ class FirestoreManager: ObservableObject {
         try await docRef.updateData(fields)
         
 //           try await attendanceCollection.document(attendanceID).updateData(fields)
-       }
+       } // End of updateAttendance
     
     func fetchAttendance(for studentID: String) async throws -> [Attendance] {
          let snapshot = try await attendanceCollection
@@ -210,23 +210,19 @@ class FirestoreManager: ObservableObject {
              .getDocuments()
          
          return snapshot.documents.compactMap { try? $0.data(as: Attendance.self) }
-     }
+     } // End of fetchAttendance
      
      
     func fetchOpenAttendance(for studentID: String) async throws -> Attendance? {
         let snapshot = try await attendanceCollection
-            .whereField("studentID", isEqualTo: studentID) // Fetch all records for this student
-            .getDocuments() // Get all documents to check what's being returned
-
-        // Print all documents returned for debugging
-        print("Firestore returned \(snapshot.documents.count) attendance records for student:", studentID)
+            .whereField("studentID", isEqualTo: studentID)
+            .getDocuments()
 
         for document in snapshot.documents {
             let data = document.data()
-            print("Document ID:", document.documentID, "Data:", data)
         }
 
-        // Now filter to find an open attendance record (where timeOut is null)
+        
         let openAttendance = snapshot.documents.compactMap { document -> Attendance? in
             let data = document.data()
             
@@ -245,15 +241,14 @@ class FirestoreManager: ObservableObject {
                     totalTime: data["totalTime"] as? Double ?? 0
                 )
             } else {
-                print("Skipping closed attendance record:", document.documentID, "timeOut:", timeOut?.dateValue() ?? "nil")
+                
                 return nil
             }
         }.first
-
-        print("Final fetched open attendance:", openAttendance?.id ?? "None found")
         
         return openAttendance
-    }
+    } // End of fetchOpenAttendance
+    
     //    ------ END OF REQUESTS ---------
     
 }
