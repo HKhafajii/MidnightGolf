@@ -41,7 +41,7 @@ struct AttendanceTabScreen: View {
                         Spacer()
                         VStack {
                             CustomSegmentedPicker(selectedIndex: $selectedFilter, options: filters)
-                                .font(.custom("NeueMontreal-Regular", size: screenWidth * 0.03))
+                                .font(.custom("NeueMontreal-Regular", size: screenWidth * 0.015))
                                 .padding()
                             
                             Text("Selected: \(filters[selectedFilter])")
@@ -102,10 +102,11 @@ struct CustomSegmentedPicker: View {
                     .background(
                         ZStack {
                             if selectedIndex == index {
-                                //Capsule()
+                                
                                 RoundedRectangle(cornerRadius: 25)
                                     .fill(Color.white)
                                     .matchedGeometryEffect(id: "selector", in: animation)
+                                    .shadow(radius: 10, x: 0, y: 8)
                             }
                         }
                     )
@@ -120,10 +121,10 @@ struct CustomSegmentedPicker: View {
         .padding(5)
         .background(Color(.systemGray4))
         .clipShape(RoundedRectangle(cornerRadius: 30))
-        .overlay(
-            RoundedRectangle(cornerRadius: 30)
-                .stroke(Color.gray, lineWidth: 1)
-        )
+        .shadow(radius: 20, x: 0, y: 8)
+//        .overlay(
+//            RoundedRectangle(cornerRadius: 30)
+//        )
     }
     
     @Namespace private var animation

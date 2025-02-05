@@ -18,4 +18,34 @@ class AttendanceManager: ObservableObject {
            self.attendanceHistory = history
        }
     
+    func filterCheckInToday(attendanceList: [Attendance]) -> [Attendance] {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        
+        return attendanceList.filter { record in
+            guard let timeIn = record.timeIn else { return false }
+            return calendar.isDate(timeIn, inSameDayAs: today)
+        }
+    } // End of filterCheckInToday
+    
+    func filterCheckInWeek(attendanceList: [Attendance]) -> [Attendance] {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        return attendanceList.filter { record in
+            guard let timeIn = record.timeIn else { return false }
+            return calendar.isDate(timeIn, equalTo: today, toGranularity: .weekOfYear)
+        }
+    } // End of filterCheckInWeek
+    
+    func filterCheckInMonth(attendanceList: [Attendance]) -> [Attendance] {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        return attendanceList.filter { record in
+            guard let timeIn = record.timeIn else { return false }
+            return calendar.isDate(timeIn, equalTo: today, toGranularity: .month)
+        }
+    } // End of filterCheckInMonth
+    
 }

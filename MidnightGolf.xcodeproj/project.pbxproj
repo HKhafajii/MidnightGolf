@@ -43,7 +43,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		64B0D54E2D5278F7006A6BA8 /* Exceptions for "MidnightGolf" folder in "MidnightGolf" target */ = {
+		627FF8B52D539F580021C9A8 /* Exceptions for "MidnightGolf" folder in "MidnightGolf" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -56,7 +56,7 @@
 		622E99B32CA445EC00C5C66F /* MidnightGolf */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				64B0D54E2D5278F7006A6BA8 /* Exceptions for "MidnightGolf" folder in "MidnightGolf" target */,
+				627FF8B52D539F580021C9A8 /* Exceptions for "MidnightGolf" folder in "MidnightGolf" target */,
 			);
 			path = MidnightGolf;
 			sourceTree = "<group>";
