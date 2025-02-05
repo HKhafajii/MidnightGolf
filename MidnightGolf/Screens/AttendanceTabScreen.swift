@@ -10,6 +10,10 @@ import SwiftUI
 struct AttendanceTabScreen: View {
     @EnvironmentObject var viewModel: ViewModel
     
+    @State var todayAttendance: [Attendance] = []
+    @State var weeklyAttendance: [Attendance] = []
+    @State var monthlyAttendance: [Attendance] = []
+    
     @State private var selectedFilter = 0
     let filters = ["Daily", "Weekly", "Monthly"]
     
@@ -53,12 +57,17 @@ struct AttendanceTabScreen: View {
                             ScrollView {
                                 Group {
                                     if selectedFilter == 0 {
-                                            
+                                        ForEach(todayAttendance) { attendance in
+                                            Text(attendance.id)
+                                        }
                                     } else if selectedFilter == 1 {
-                                        Text("Weekly")
+                                        ForEach(weeklyAttendance) { attendance in
+                                            Text(attendance.id)
+                                        }
                                     } else {
-                                        Text("Monthly")
-                                        Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.  ")
+                                        ForEach(monthlyAttendance) { attendance in
+                                            Text(attendance.id)
+                                        }
                                     }
                                 }
                             }
@@ -82,6 +91,14 @@ struct AttendanceTabScreen: View {
             }
             .safeAreaInset(edge: .top) {
                 Spacer().frame(height: screenHeight * 0.05)
+            }
+        }
+        .onAppear() {
+            Task {
+                await viewModel.loadAllAttendance()
+                todayAttendance = viewModel.attendanceManager.filterCheckInToday(attendanceList: viewModel.attendance)
+                weeklyAttendance = viewModel.attendanceManager.filterCheckInWeek(attendanceList: viewModel.attendance)
+                monthlyAttendance = viewModel.attendanceManager.filterCheckInMonth(attendanceList: viewModel.attendance)
             }
         }
         .ignoresSafeArea()

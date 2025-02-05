@@ -84,7 +84,7 @@ class ViewModel: ObservableObject {
     }
     
     @MainActor
-    func loadAllAttendance(students: [Student]) async {
+    func loadAllAttendance() async {
         do {
             let fetched = try await firestoreManager.fetchAllAttendance()
             self.attendance = fetched
