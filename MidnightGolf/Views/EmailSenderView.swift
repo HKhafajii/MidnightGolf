@@ -41,4 +41,5 @@ struct EmailSenderView: View {
 
 #Preview {
     EmailSenderView()
+        .environmentObject(ViewModel())
 }

@@ -19,31 +19,34 @@ struct Student: Identifiable, Codable, Hashable {
     var isCheckedIn: Bool = false
     
     func qrCodeImage() -> UIImage? {
-        guard !qrCode.isEmpty else {
-            print("QR Code is empty for student:", first, last)
-            return nil
-        }
-        
-        guard let qrData = Data(base64Encoded: qrCode) else {
-            print("Failed to decode Base64 QR Code for student:", first, last)
-            return nil
-        }
-        
-        guard let qrImage = UIImage(data: qrData) else {
-            print("❌ Failed to convert QR Data to UIImage for student:", first, last)
-            return nil
-        }
-        
-        print("Successfully loaded QR Code for:", first, last)
-        return qrImage
-    }
+          guard !qrCode.isEmpty else {
+              print("QR Code is empty for:", first, last)
+              return nil
+          }
+          
+          guard let qrData = Data(base64Encoded: qrCode) else {
+              print("Failed to decode Base64 QR Code for:", first, last)
+              return nil
+          }
+          
+          guard let qrImage = UIImage(data: qrData) else {
+              print("Failed to convert QR Data to UIImage for:", first, last)
+              return nil
+          }
+          
+          
+          let size = CGSize(width: 600, height: 600)  // Increase QR code size
+          UIGraphicsBeginImageContextWithOptions(size, false, 2.0)
+          qrImage.draw(in: CGRect(origin: .zero, size: size))
+          let highResQRImage = UIGraphicsGetImageFromCurrentImageContext()
+          UIGraphicsEndImageContext()
+          
+          print("Successfully generated high-resolution QR Code for:", first, last)
+          return highResQRImage
+      }
 }
 
 
-//extension Student {
-//    func qrString() -> String? {
-//        String(data: qrCode, encoding: .utf8)
-//    }
-//}
+
 
 

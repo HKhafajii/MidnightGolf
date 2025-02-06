@@ -36,6 +36,16 @@ struct CheckInScreen: View {
                     .scaledToFill()
                     .ignoresSafeArea()
                 
+                Image("logo")
+                    .resizable()
+                    .frame(
+                        maxWidth: CheckInScreen.deviceWidth / 4,
+                        maxHeight: CheckInScreen.deviceHeight / 3
+                    )
+                    .shadow(radius: 8, x: 0, y: 8)
+                    .offset(y: -100)
+
+                
                 VStack(spacing: 25) {
                     
                     HStack {
@@ -56,20 +66,11 @@ struct CheckInScreen: View {
                     
                     Spacer()
                     
-                    Image("logo")
-                        .resizable()
-                        .frame(
-                            maxWidth: CheckInScreen.deviceWidth / 4,
-                            maxHeight: CheckInScreen.deviceHeight / 2
-                        )
-                        .shadow(radius: 8, x: 0, y: 8)
-                    
                     Text("Check In")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundStyle(Color("MGPnavy"))
                     
-                        .padding()
                     
                     VStack {
                         
