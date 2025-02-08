@@ -6,6 +6,8 @@ struct SearchView: View {
     
     @State private var searchText: String = ""
     
+    
+    
     private var filteredStudents: [Student] {
           if searchText.isEmpty {
               return viewModel.students
@@ -21,7 +23,8 @@ struct SearchView: View {
         VStack {
          
             TextField("Search...", text: $searchText)
-                .font(.title3)
+                .font(.custom("NeueMontreal-Regular", size: CheckInScreen.deviceWidth * 0.015))
+
                 .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
                 .padding()
                 .background(Capsule().fill(.ultraThinMaterial))
@@ -34,7 +37,8 @@ struct SearchView: View {
                 
                     HStack {
                         Text(student.first + " " + student.last)
-                            .font(.headline)
+                            .font(.custom("NeueMontreal-Regular", size: CheckInScreen.deviceWidth * 0.015))
+
                             
                             .fontWeight(.semibold)
                         Spacer()
@@ -44,6 +48,8 @@ struct SearchView: View {
                             }
                         } label: {
                             Text("Check \(student.isCheckedIn ? "Out" : "In")")
+                                .font(.custom("NeueMontreal-Regular", size: CheckInScreen.deviceWidth * 0.015))
+
 //                                .font(.headline)
 //                                .foregroundStyle(Color.white)
 //                                .fontWeight(.semibold)

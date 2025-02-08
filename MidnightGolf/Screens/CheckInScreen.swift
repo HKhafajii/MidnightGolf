@@ -67,7 +67,8 @@ struct CheckInScreen: View {
                     Spacer()
                     
                     Text("Check In")
-                        .font(.largeTitle)
+                        .font(.custom("NeueMontreal-Regular", size: CheckInScreen.deviceWidth * 0.03))
+                        .shadow(radius: 16, x: 0, y: 5)
                         .fontWeight(.bold)
                         .foregroundStyle(Color("MGPnavy"))
                     
@@ -87,8 +88,8 @@ struct CheckInScreen: View {
                                 Text("Help")
                                     .foregroundStyle(.gray)
                                     .fontWeight(.semibold)
-                                    .font(.title2)
-                                    .shadow(radius: 10, x: 0, y: 8)
+                                    .font(.custom("NeueMontreal-Regular", size: CheckInScreen.deviceWidth * 0.02))
+                                    .shadow(radius: 12, x: 0, y: 8)
                             }
                             .padding()
                             .padding(.trailing, 20)
@@ -96,6 +97,7 @@ struct CheckInScreen: View {
                         .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
                     }
                     
+
                     
                     Button("Scan", systemImage: "qrcode.viewfinder") { showScanSheet = true }
                         .disabled(viewModel.firestoreManager.isLoadingStudents)
@@ -103,8 +105,7 @@ struct CheckInScreen: View {
                         .foregroundStyle(Color("MGPnavy"))
                         .fontWeight(.semibold)
                         .frame(maxWidth: CheckInScreen.deviceWidth / 5)
-                        .shadow(radius: 8, x: 0, y: 8)
-                    
+                        .shadow(radius: 12, x: 0, y: 5)
                         .sheet(isPresented: $showScanSheet) {
                             CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
                         }
@@ -176,12 +177,12 @@ struct TimeView: View {
     
     var body: some View {
         Text(viewModel.currentTime)
-            .font(.largeTitle)
+            .font(.custom("NeueMontreal-Regular", size: CheckInScreen.deviceWidth * 0.03))
             .foregroundStyle(Color("MGPnavy"))
             .fontWeight(.semibold)
             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
             .padding()
-            .shadow(radius: 8, x: 0, y: 5)
+            .shadow(radius: 16, x: 0, y: 5)
     }
 }
 

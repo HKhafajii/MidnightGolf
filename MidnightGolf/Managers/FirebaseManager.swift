@@ -61,19 +61,6 @@ class FirestoreManager: ObservableObject {
     } // End of postAttendance()
     
     
-//    func fetchAttendance(for studentID: String) async throws -> [Attendance] {
-//        let snapshot = try await attendanceCollection.whereField("studentID", isEqualTo: studentID).getDocuments()
-//        let decoder = JSONDecoder()
-//        decoder.dateDecodingStrategy = .iso8601
-//        return snapshot.documents.compactMap { document in
-//            guard let data = try? JSONSerialization.data(withJSONObject: document.data()),
-//                  let attendance = try? decoder.decode(Attendance.self, from: data) else {
-//                return nil
-//            }
-//            return attendance
-//        }
-//    } // End of fetchAttendance()
-    
     
     func postUser(first: String, last: String, born: Date, school: String, gradDate: Date, qrCode: String) async throws {
         let dateFormatter = DateFormatter()
@@ -106,26 +93,6 @@ class FirestoreManager: ObservableObject {
     } // End of Post request
     
     
-//    func getUser(userId: String) async throws -> Student {
-//        
-//        let snapshot = try await userCollection.document(userId).getDocument()
-//        
-//        guard let data = snapshot.data(), let userId = data["user_id"] as? String else {
-//            throw URLError(.badServerResponse)
-//        }
-//        
-//        let first = data["first"] as? String ?? ""
-//        let last = data["last"] as? String ?? ""
-//        let group = data["group"] as? String ?? ""
-//        let school = data["school"] as? String ?? ""
-//        let gradDate = data["graduationDate"] as? String ?? ""
-//        let born = data["born"] as? String ?? ""
-//        let qrCode = data["qrCode"] as? Data ?? Data()
-//        
-//        return Student(id: userId, group: group, first: first, last: last, born: born, school: school, gradDate: gradDate, qrCode: qrCode)
-//        
-//    } // End of GetUser
-    
     @MainActor
     func fetchAllUsers() async throws -> [Student] {
         isLoadingStudents = true
@@ -144,9 +111,9 @@ class FirestoreManager: ObservableObject {
             let school = data["school"] as? String ?? "Not Specified"
             let gradDate = data["gradDate"] as? String ?? "Unknown"
             let qrCodeText = data["qrCode"] as? String ?? ""
-
             
-
+            
+            
             return Student(
                 id: studentId,
                 group: group,
@@ -159,13 +126,10 @@ class FirestoreManager: ObservableObject {
             )
         }
 
-        
-
         return fetchedStudents
     } // End of FetchAllUsers
     
     
-  
     
     func updateStudentStatus(studentID: String, isCheckedIn: Bool) async throws {
         
@@ -219,10 +183,6 @@ class FirestoreManager: ObservableObject {
             .whereField("studentID", isEqualTo: studentID)
             .getDocuments()
 
-        for document in snapshot.documents {
-            let data = document.data()
-        }
-
         
         let openAttendance = snapshot.documents.compactMap { document -> Attendance? in
             let data = document.data()
@@ -250,25 +210,33 @@ class FirestoreManager: ObservableObject {
         return openAttendance
     } // End of fetchOpenAttendance
     
+    @MainActor
     func fetchAllAttendance() async throws -> [Attendance] {
-        isLoadingStudents = true
-        defer { isLoadingStudents = false }
+        isLoadingAttendance = true
+        defer { isLoadingAttendance = false }
 
         let snapshot = try await attendanceCollection.getDocuments()
-        
+
         let fetchedAttendance = snapshot.documents.compactMap { doc -> Attendance? in
             let data = doc.data()
-            
-            let id = data["id"] as? String ?? "Unkown"
-            let studentID = data["studentID"] as? String ?? "Unknown"
-            let timeIn = data["timeIn"] as? Date ?? nil
-            let timeOut = data["timeOut"] as? Date ?? nil
+
+            guard let studentID = data["studentID"] as? String else { return nil }
+            let id = doc.documentID
+            let timeIn = (data["timeIn"] as? Timestamp)?.dateValue()
+            let timeOut = (data["timeOut"] as? Timestamp)?.dateValue()
             let totalTime = data["totalTime"] as? Double ?? 0
             let isCheckedIn = data["isCheckedIn"] as? Bool ?? false
             let isLate = data["isLate"] as? Bool ?? false
-            
-            
-            return Attendance(id: id, studentID: studentID, timeIn: timeIn, timeOut: timeOut, isCheckedIn: isCheckedIn, isLate: isLate, totalTime: totalTime)
+
+            return Attendance(
+                id: id,
+                studentID: studentID,
+                timeIn: timeIn,
+                timeOut: timeOut,
+                isCheckedIn: isCheckedIn,
+                isLate: isLate,
+                totalTime: totalTime
+            )
         }
 
         return fetchedAttendance

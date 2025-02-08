@@ -78,7 +78,7 @@ struct AttendanceTabScreen: View {
                                     Circle()
                                         .frame(width: screenWidth * 0.01, height: screenHeight * 0.01)
                                         .foregroundColor(selectedFilter == index ? .black : .gray)
-                                        .scaleEffect(selectedFilter == index ? 1.2 : 1.0) // Enlarged active dot
+                                        .scaleEffect(selectedFilter == index ? 1.2 : 1.0)
                                         .animation(.smooth, value: selectedFilter)
                                 }
                             }

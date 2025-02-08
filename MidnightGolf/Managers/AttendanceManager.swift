@@ -14,9 +14,6 @@ class AttendanceManager: ObservableObject {
     @Published var isLoading = false    
   
     
-    func updateAttendanceHistory(_ history: [Attendance]) {
-           self.attendanceHistory = history
-       }
     
     func filterCheckInToday(attendanceList: [Attendance]) -> [Attendance] {
         let calendar = Calendar.current

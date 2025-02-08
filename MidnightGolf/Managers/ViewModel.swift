@@ -1,5 +1,5 @@
 import SwiftUI
-import Combine
+
 
 class ViewModel: ObservableObject {
     @Published var firestoreManager = FirestoreManager()
@@ -15,6 +15,8 @@ class ViewModel: ObservableObject {
     init() {
         Task {
             await loadAllStudents()
+            await loadAllAttendance()
+            
         }
     }
     
@@ -29,6 +31,15 @@ class ViewModel: ObservableObject {
         }
     }
     
+    @MainActor
+    func loadAllAttendance() async {
+        do {
+            let fetched = try await firestoreManager.fetchAllAttendance()
+            self.attendance = fetched
+        } catch {
+            print("Failed to fetch users: \(error)")
+        }
+    } // End of loadAllAttendance
     
     @MainActor
     func checkInOutStudent(_ student: Student) async {
@@ -83,15 +94,7 @@ class ViewModel: ObservableObject {
         }
     }
     
-    @MainActor
-    func loadAllAttendance() async {
-        do {
-            let fetched = try await firestoreManager.fetchAllAttendance()
-            self.attendance = fetched
-        } catch {
-            print("Failed to fetch users: \(error)")
-        }
-    } // End of loadAllAttendance
+ 
     
     
     func loadAttendance(for student: Student) async {
