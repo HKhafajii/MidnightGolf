@@ -12,16 +12,18 @@ struct StudentDirectoryScreen: View {
                     .scaledToFill()
                     .ignoresSafeArea()
 
-                VStack {
+                VStack(alignment: .leading) {
                     Text("Student Directory")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.black)
                         .padding(.top, 20)
+                    
+                    Divider()
 
                     List(viewModel.students) { student in
                         NavigationLink {
-                            AttendanceView(student: student)
+                            AttendanceTabScreen(student: student)
                                 .environmentObject(viewModel)
                         } label: {
                             StudentRow(student: student)
@@ -31,15 +33,16 @@ struct StudentDirectoryScreen: View {
                     .listStyle(PlainListStyle())
                     .padding([.leading, .trailing], 10)
                 }
-                .toolbar {
-                    Button("Add Person", systemImage: "plus") {
-                        showAddStudentSheet = true
-                    }
-                    .sheet(isPresented: $showAddStudentSheet) {
-                        AddUser(showAddStudentSheet: $showAddStudentSheet)
-                            .environmentObject(viewModel)
-                    }
-                }
+                .padding()
+//                .toolbar {
+//                    Button("Add Person", systemImage: "plus") {
+//                        showAddStudentSheet = true
+//                    }
+//                    .sheet(isPresented: $showAddStudentSheet) {
+//                        AddUser(showAddStudentSheet: $showAddStudentSheet)
+//                            .environmentObject(viewModel)
+//                    }
+//                }
             }
         }
     }

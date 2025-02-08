@@ -110,7 +110,7 @@ struct CheckInScreen: View {
                             CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
                         }
                     
-                    NavigationLink(destination: AdminScreen().environmentObject(viewModel), isActive: $navigateToNextScreen) {
+                    NavigationLink(destination: AdminTest().environmentObject(viewModel), isActive: $navigateToNextScreen) {
                         EmptyView()
                     }
                 }

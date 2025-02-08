@@ -8,103 +8,174 @@
 import SwiftUI
 
 struct AttendanceTabScreen: View {
-    @EnvironmentObject var viewModel: ViewModel
-    
-    @State var todayAttendance: [Attendance] = []
-    @State var weeklyAttendance: [Attendance] = []
-    @State var monthlyAttendance: [Attendance] = []
-    
-    @State private var selectedFilter = 0
-    let filters = ["Daily", "Weekly", "Monthly"]
-    
-    var body: some View {
-        GeometryReader { geometry in
-            let screenWidth = geometry.size.width
-            let screenHeight = geometry.size.height
-            
-            NavigationStack {
-                ZStack {
-                    Image("bg")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: screenWidth, height: screenHeight)
-                        .ignoresSafeArea()
-                    
-                    VStack {
-                        VStack(alignment: .leading) {
-                            HStack(alignment: .top) {
-                                Text("Attendance")
-                                    .font(.custom("NeueMontreal-Bold", size: screenWidth * 0.06).bold())
-                                    .foregroundColor(.black)
-                                    .padding(.top, screenHeight * 0.05)
-                                    .padding(.bottom)
-                                    .padding(.leading, screenWidth * 0.07)
-                                Spacer()
-                            }
-                        }
-                        Spacer()
+        @EnvironmentObject var viewModel: ViewModel
+        
+        let student: Student
+        @State private var attendanceHistory: [Attendance] = []
+        @State private var errorMessage: String?
+        @State private var isLoading = true
+        @State private var todayAttendance: [Attendance] = []
+        @State private var weeklyAttendance: [Attendance] = []
+        @State private var monthlyAttendance: [Attendance] = []
+        
+        @State private var selectedFilter = 0
+        let filters = ["Daily", "Weekly", "Monthly"]
+        
+        var body: some View {
+            GeometryReader { geometry in
+                let screenWidth = geometry.size.width
+                let screenHeight = geometry.size.height
+                
+                NavigationStack {
+                    ZStack {
+                        BackgroundImageView(screenWidth: screenWidth, screenHeight: screenHeight)
+                        
                         VStack {
-                            CustomSegmentedPicker(selectedIndex: $selectedFilter, options: filters)
+                            HeaderView(student: student)
+                            Spacer()
+                            
+                            SegmentedPickerView(selectedFilter: $selectedFilter, filters: filters)
                                 .font(.custom("NeueMontreal-Regular", size: screenWidth * 0.015))
                                 .padding()
                             
-                            Text("Selected: \(filters[selectedFilter])")
-                                .font(.headline)
-                                .padding()
-                            
-                            // Put data here
-                            
-                            ScrollView {
-                                Group {
-                                    if selectedFilter == 0 {
-                                        ForEach(todayAttendance) { attendance in
-                                            Text(attendance.id)
-                                        }
-                                    } else if selectedFilter == 1 {
-                                        ForEach(weeklyAttendance) { attendance in
-                                            Text(attendance.id)
-                                        }
-                                    } else {
-                                        ForEach(monthlyAttendance) { attendance in
-                                            Text(attendance.id)
-                                        }
-                                    }
-                                }
-                            }
+                            AttendanceListView(
+                                selectedFilter: selectedFilter,
+                                todayAttendance: todayAttendance,
+                                weeklyAttendance: weeklyAttendance,
+                                monthlyAttendance: monthlyAttendance
+                            )
                             .frame(maxWidth: screenWidth * 0.6)
-
-                            HStack(spacing: screenWidth * 0.008) {
-                                ForEach(filters.indices, id: \.self) { index in
-                                    Circle()
-                                        .frame(width: screenWidth * 0.01, height: screenHeight * 0.01)
-                                        .foregroundColor(selectedFilter == index ? .black : .gray)
-                                        .scaleEffect(selectedFilter == index ? 1.2 : 1.0)
-                                        .animation(.smooth, value: selectedFilter)
-                                }
-                            }
-                            .padding(.top, screenHeight * 0.4)
-                            .padding(.bottom)
+                            
+                            PageIndicatorView(filters: filters, selectedFilter: selectedFilter, screenWidth: screenWidth, screenHeight: screenHeight)
+                            
                             Spacer()
                         }
                     }
                 }
+                .safeAreaInset(edge: .top) {
+                    Spacer().frame(height: screenHeight * 0.05)
+                }
             }
-            .safeAreaInset(edge: .top) {
-                Spacer().frame(height: screenHeight * 0.05)
+            .onAppear {
+                Task {
+                    isLoading = true
+                    errorMessage = nil
+                    let history = viewModel.getAttendanceHistory(studentID: student.id)
+                    attendanceHistory = history
+                    isLoading = false
+                    
+                    await viewModel.loadAllAttendance()
+                    todayAttendance = viewModel.attendanceManager.filterCheckInToday(attendanceList: attendanceHistory)
+                    weeklyAttendance = viewModel.attendanceManager.filterCheckInWeek(attendanceList: attendanceHistory)
+                    monthlyAttendance = viewModel.attendanceManager.filterCheckInMonth(attendanceList: attendanceHistory)
+                }
             }
+            .ignoresSafeArea()
         }
-        .onAppear() {
-            Task {
-                await viewModel.loadAllAttendance()
-                todayAttendance = viewModel.attendanceManager.filterCheckInToday(attendanceList: viewModel.attendance)
-                weeklyAttendance = viewModel.attendanceManager.filterCheckInWeek(attendanceList: viewModel.attendance)
-                monthlyAttendance = viewModel.attendanceManager.filterCheckInMonth(attendanceList: viewModel.attendance)
-            }
-        }
-        .ignoresSafeArea()
     }
-}
 
+    struct BackgroundImageView: View {
+        let screenWidth: CGFloat
+        let screenHeight: CGFloat
+        
+        var body: some View {
+            Image("bg")
+                .resizable()
+                .scaledToFill()
+                .frame(width: screenWidth, height: screenHeight)
+                .ignoresSafeArea()
+        }
+    }
+
+    struct HeaderView: View {
+        let student: Student
+        
+        var body: some View {
+            VStack(alignment: .leading) {
+                HStack(alignment: .top) {
+                    Text("Attendance for \(student.first) \(student.last)")
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .padding()
+                    Spacer()
+                }
+            }
+        }
+    }
+
+
+    struct SegmentedPickerView: View {
+        @Binding var selectedFilter: Int
+        let filters: [String]
+        
+        var body: some View {
+            CustomSegmentedPicker(selectedIndex: $selectedFilter, options: filters)
+        }
+    }
+
+    struct AttendanceListView: View {
+        let selectedFilter: Int
+        let todayAttendance: [Attendance]
+        let weeklyAttendance: [Attendance]
+        let monthlyAttendance: [Attendance]
+        
+        var body: some View {
+            ScrollView {
+                Group {
+                    if selectedFilter == 0 {
+                        ForEach(todayAttendance) { attendance in
+                            AttendanceRowView(attendance: attendance)
+                        }
+                    } else if selectedFilter == 1 {
+                        ForEach(weeklyAttendance) { attendance in
+                            AttendanceRowView(attendance: attendance)
+                        }
+                    } else {
+                        ForEach(monthlyAttendance) { attendance in
+                            AttendanceRowView(attendance: attendance)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    struct AttendanceRowView: View {
+        let attendance: Attendance
+        
+        var body: some View {
+            VStack(alignment: .leading) {
+                Text("Checked In: \(attendance.timeIn?.formatted() ?? "N/A")")
+                Text(attendance.timeOut != nil
+                     ? "Checked Out: \(attendance.timeOut!.formatted())"
+                     : "Currently Checked In")
+                    .foregroundColor(attendance.timeOut == nil ? .blue : .primary)
+                Text("Late Arrival: \(attendance.isLate ? "Yes" : "No")")
+                Text("Total Time: \(attendance.totalTime, specifier: "%.2f") hours")
+            }
+        }
+    }
+
+    struct PageIndicatorView: View {
+        let filters: [String]
+        let selectedFilter: Int
+        let screenWidth: CGFloat
+        let screenHeight: CGFloat
+        
+        var body: some View {
+            HStack(spacing: screenWidth * 0.008) {
+                ForEach(filters.indices, id: \.self) { index in
+                    Circle()
+                        .frame(width: screenWidth * 0.01, height: screenHeight * 0.01)
+                        .foregroundColor(selectedFilter == index ? .black : .gray)
+                        .scaleEffect(selectedFilter == index ? 1.2 : 1.0)
+                        .animation(.smooth, value: selectedFilter)
+                }
+            }
+            .padding(.top, screenHeight * 0.4)
+            .padding(.bottom)
+        }
+    }
 
 struct CustomSegmentedPicker: View {
     @Binding var selectedIndex: Int
@@ -148,6 +219,16 @@ struct CustomSegmentedPicker: View {
 }
 
 #Preview {
-    AttendanceTabScreen()
+    AttendanceTabScreen(  student: Student(
+        id: "test-id",
+        group: "Test Group",
+        first: "Test",
+        last: "User",
+        born: "2002",
+        school: "Test School",
+        gradDate: "2020",
+        qrCode: "",
+        isCheckedIn: false
+    )  )
         .environmentObject(ViewModel())
 }

@@ -27,7 +27,8 @@ struct AdminScreen: View {
                     NavigationButtons(destination: StudentDirectoryScreen().environmentObject(viewModel), destinationName: "Student Directory")
                     
                     
-                    NavigationButtons(destination: AttendanceTabScreen().environmentObject(viewModel), destinationName: "Attendance")
+//                    NavigationButtons(destination: AttendanceTabScreen().environmentObject(viewModel), destinationName: "Attendance")
+//                        .disabled(true)
                     
                     NavigationButtons(destination: EmailSenderView().environmentObject(viewModel), destinationName: "Send an Email")
                     

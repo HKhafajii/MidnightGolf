@@ -20,6 +20,31 @@ class ViewModel: ObservableObject {
         }
     }
     
+//    @MainActor
+//      func getAttendanceHistory(studentID: String) async throws -> [Attendance] {
+//          
+//          let snapshot = try await db.collection("attendance")
+//              .whereField("studentID", isEqualTo: studentID)
+//              .order(by: "timeIn", descending: true)
+//              .getDocuments()
+//          
+//          return try snapshot.documents.map { document in
+//              return try document.data(as: Attendance.self)
+//          }
+//          
+//      } // End of getAttendanceHistory()
+    
+    
+    func getAttendanceHistory(studentID: String) -> [Attendance] {
+        var tempAttendance: [Attendance] = []
+        for attendance in self.attendance {
+            if attendance.studentID == studentID {
+                tempAttendance.append(attendance)
+            }
+        }
+        return tempAttendance
+    }
+    
     @MainActor
     func loadAllStudents() async {
         do {

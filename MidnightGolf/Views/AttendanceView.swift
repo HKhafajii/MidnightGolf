@@ -47,14 +47,10 @@ struct AttendanceView: View {
         .padding()
         .task {
             isLoading = true
-                        errorMessage = nil
-                        do {
-                            let history = try await viewModel.firestoreManager.getAttendanceHistory(studentID: student.id)
-                            attendanceHistory = history
-                        } catch {
-                            errorMessage = "Failed to load attendance: \(error.localizedDescription)"
-                        }
-                        isLoading = false
+            errorMessage = nil
+            let history = viewModel.getAttendanceHistory(studentID: student.id)
+            attendanceHistory = history
+            isLoading = false
         }
         
     }

@@ -12,8 +12,6 @@ import FirebaseAuth
 
 class FirestoreManager: ObservableObject {
     
-
-    @Published var student: Student?
     @Published var students: [Student] = []
     @Published private(set) var studentQRCodes: Set<String> = []
     
@@ -23,7 +21,7 @@ class FirestoreManager: ObservableObject {
      let db = Firestore.firestore()
     
     private var userCollection: CollectionReference {
-          db.collection("users")
+        db.collection("users")
       }
       
       private var attendanceCollection: CollectionReference {
@@ -126,7 +124,7 @@ class FirestoreManager: ObservableObject {
             )
         }
 
-        return fetchedStudents
+        return  fetchedStudents.sorted { $0.last.localizedCaseInsensitiveCompare($1.last) == .orderedAscending }
     } // End of FetchAllUsers
     
     
