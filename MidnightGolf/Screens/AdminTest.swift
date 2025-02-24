@@ -10,49 +10,50 @@ import SwiftUI
 struct AdminTest: View {
     @EnvironmentObject var viewModel: ViewModel
     @State private var showAddStudentSheet = false
+    @State private var isShowingEmailSentAlert = false  // New state for alert
+
     var body: some View {
-        
         NavigationStack {
-            VStack {
-                
-                StudentDirectoryScreen()
-                    .environmentObject(viewModel)
-                
-                HStack {
-                    Button {
-                        viewModel.mailManager.sendEmail(students: viewModel.students)
-                    } label: {
-                        HStack {
+            StudentDirectoryScreen()
+                .environmentObject(viewModel)
+                .padding()
+            
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Button {
+                            viewModel.mailManager.sendEmail(students: viewModel.students)
+                            isShowingEmailSentAlert = true
+                        } label: {
+                            
+                            Text("Send student list")
+                                .font(.title3)
+                                .foregroundStyle(Color("MGPnavy"))
                             Image(systemName: "arrowshape.turn.up.right")
-                            Text("Email Student List ") 
+                                .font(.title3)
+                                .foregroundStyle(Color("MGPnavy"))
                         }
-                        .font(.title3)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 24).fill(Color("MGPnavy")))
-                        .foregroundColor(.white)
-                    }
-                    Spacer()
-                    Button {
-                        showAddStudentSheet = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "plus")
-                            Text("Add Student")
+                        Spacer()
+                        Button {
+                            showAddStudentSheet = true
+                        } label: {
+                                Text("Add student")
+                                    .font(.title3)
+                                    .foregroundStyle(Color("MGPnavy"))
+                                Image(systemName: "plus")
+                                    .font(.title3)
+                                    .foregroundStyle(Color("MGPnavy"))
                         }
-                        .font(.title3)
-                        .padding()
-                        .background(RoundedRectangle(cornerRadius: 24).fill(Color("MGPnavy")))
-                        .foregroundColor(.white)
-                        
                     }
-                    .sheet(isPresented: $showAddStudentSheet) {
-                        AddUser(showAddStudentSheet: $showAddStudentSheet)
-                            .environmentObject(viewModel)
-                    }
-                    
                 }
-            }
-            .padding()
+                .alert("Email Sent!", isPresented: $isShowingEmailSentAlert) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text("The email has been sent successfully.")
+                }
+                .sheet(isPresented: $showAddStudentSheet) {
+                    AddUser(showAddStudentSheet: $showAddStudentSheet)
+                        .environmentObject(viewModel)
+                }
         }
     }
 }
