@@ -13,7 +13,8 @@ enum CheckInError: Error {
 }
 
 class CheckInManager: ObservableObject {
-    private let lateThresholdHour = 9 // 9 AM
+    private let lateThresholdHour = 17
+    private let lateThresholdMinute = 30
     
     func handleCheckInOut(for student: Student, openAttendance: Attendance?) throws -> (Attendance, Bool) {
            
@@ -68,7 +69,7 @@ class CheckInManager: ObservableObject {
        }
        
        
-       private func isLate(checkInDate: Date) -> Bool {
+    private func isLate(checkInDate: Date) -> Bool {
            let calendar = Calendar.current
            let components = calendar.dateComponents([.hour, .minute], from: checkInDate)
            
@@ -77,10 +78,9 @@ class CheckInManager: ObservableObject {
                return false
            }
            
-           
            if hour > lateThresholdHour {
                return true
-           } else if hour == lateThresholdHour && minute > 0 {
+           } else if hour == lateThresholdHour && minute > lateThresholdMinute {
                return true
            } else {
                return false
