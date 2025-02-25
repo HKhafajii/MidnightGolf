@@ -60,7 +60,7 @@ class FirestoreManager: ObservableObject {
     
     
     
-    func postUser(first: String, last: String, born: Date, school: String, gradDate: Date, qrCode: String) async throws {
+    func postUser(first: String, last: String, born: Date, school: String, gradDate: Date, qrCode: String, cellNum: String, email: String, gender: Bool, cohort: Bool) async throws {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let birthDateString = dateFormatter.string(from: born)
@@ -106,6 +106,10 @@ class FirestoreManager: ObservableObject {
             let last = data["last"] as? String ?? "Unknown"
             let group = data["group"] as? String ?? "Unknown"
             let born = data["born"] as? String ?? "Unknown"
+            let isMale = data["isMale"] as? Bool ?? false
+            let cohort = data["cohort"] as? Bool ?? false
+            let email = data["email"] as? String ?? "Unknown"
+            let cellNumber = data["cellNumber"] as? String ?? "Unknown"
             let school = data["school"] as? String ?? "Not Specified"
             let gradDate = data["gradDate"] as? String ?? "Unknown"
             let qrCodeText = data["qrCode"] as? String ?? ""
@@ -118,6 +122,10 @@ class FirestoreManager: ObservableObject {
                 first: first,
                 last: last,
                 born: born,
+                isMale: isMale,
+                cellNumber: cellNumber,
+                email: email,
+                cohort: cohort,
                 school: school,
                 gradDate: gradDate,
                 qrCode: qrCodeText

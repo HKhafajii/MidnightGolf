@@ -13,10 +13,15 @@ struct Student: Identifiable, Codable, Hashable {
     let first: String
     let last: String
     let born: String
+    let isMale: Bool
+    let cellNumber: String
+    let email: String
+    let cohort: Bool // True if M/W, False if T/Th
     let school: String
     let gradDate: String
     var qrCode: String
     var isCheckedIn: Bool = false
+    // MARK: Later - put an image property
     
     func qrCodeImage() -> UIImage? {
           guard !qrCode.isEmpty else {

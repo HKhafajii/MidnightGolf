@@ -35,6 +35,38 @@ class ViewModel: ObservableObject {
 //      } // End of getAttendanceHistory()
     
     
+    @MainActor
+    func postUser(first: String,
+                  last: String,
+                  born: Date,
+                  school: String,
+                  gradDate: Date,
+                  cellNum: String,
+                  email: String,
+                  gender: Bool,
+                  cohort: Bool) async {
+        do {
+            let qrCodeText = first + last
+            try await firestoreManager.postUser(
+                first: first,
+                last: last,
+                born: born,
+                school: school,
+                gradDate: gradDate,
+                qrCode: qrCodeText,
+                cellNum: cellNum,
+                email: email,
+                gender: gender,
+                cohort: cohort
+            )
+            
+            await loadAllStudents()
+            
+        } catch {
+            print("Error posting user: \(error)")
+        }
+    } // End of PostUser
+    
     func getAttendanceHistory(studentID: String) -> [Attendance] {
         var tempAttendance: [Attendance] = []
         for attendance in self.attendance {
@@ -43,7 +75,7 @@ class ViewModel: ObservableObject {
             }
         }
         return tempAttendance
-    }
+    } // End of getAttendanceHistory
     
     @MainActor
     func loadAllStudents() async {
