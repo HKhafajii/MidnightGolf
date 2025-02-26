@@ -2,31 +2,35 @@ import SwiftUI
 import CoreImage.CIFilterBuiltins
 
 struct AddUser: View {
-    
     @EnvironmentObject var viewModel: ViewModel
-    @State var firstN: String = ""
-    @State var lastN: String = ""
-    
     @Binding var showAddStudentSheet: Bool
-    
-    
+
     var body: some View {
         GeometryReader { geometry in
             let screenWidth = geometry.size.width
             let screenHeight = geometry.size.height
-        
+
             NavigationStack {
                 ZStack {
-                    Image ("bg")
+                    Image("bg")
                         .resizable()
                         .scaledToFill()
                         .frame(width: screenWidth, height: screenHeight)
                         .ignoresSafeArea()
-                    
+
                     VStack(spacing: 15) {
                         
-                        AddUserTextFields( showAddStudentSheet: $showAddStudentSheet )
+                        Text("Let's Add a Student!")
+                            .font(.title)
+                            .foregroundStyle(.white)
+                            .fontWeight(.semibold)
+                            .frame(maxWidth: CheckInScreen.deviceWidth / 2.5,
+                                   maxHeight: CheckInScreen.deviceHeight * 0.05)
+                            .padding()
+                            .background(RoundedRectangle(cornerRadius: 24).fill(Color("MGPnavy")))
+                            .shadow(radius: 8, x: 0, y: 0)
                         
+                        AddUserTextFields(showAddStudentSheet: $showAddStudentSheet)
                     }
                     .padding()
                 }
@@ -38,7 +42,6 @@ struct AddUser: View {
         .ignoresSafeArea()
     }
 }
-
 
 #Preview {
     AddUser(showAddStudentSheet: .constant(false))
@@ -53,8 +56,9 @@ struct AddUserTextFields: View {
     @State var gradDate: Date = Date()
     @State var cellNumber: String = ""
     @State var email: String = ""
-    @State var isMale: Bool = false
-    @State var cohort: Bool = false
+    @State var isMale: Bool = true
+    @State var cohort: Bool = true
+    
     @Binding var showAddStudentSheet: Bool
 
     @EnvironmentObject var viewModel: ViewModel
@@ -62,7 +66,8 @@ struct AddUserTextFields: View {
     
     var body: some View {
         ScrollView {
-            VStack {
+            VStack(spacing: 15) {
+             
                 Text("First name")
                     .font(.headline)
                 TextField("First name...", text: $firstName)
@@ -71,6 +76,7 @@ struct AddUserTextFields: View {
                     .background(Color.gray.opacity(0.3))
                     .cornerRadius(16)
                 
+             
                 Text("Last name")
                     .font(.headline)
                 TextField("Last name...", text: $lastName)
@@ -79,6 +85,7 @@ struct AddUserTextFields: View {
                     .background(Color.gray.opacity(0.3))
                     .cornerRadius(16)
                 
+               
                 Text("Date of Birth")
                     .font(.headline)
                 HStack {
@@ -104,6 +111,7 @@ struct AddUserTextFields: View {
                 .background(Color.gray.opacity(0.3))
                 .cornerRadius(16)
                 
+               
                 Text("School")
                     .font(.headline)
                 TextField("Highschool...", text: $school)
@@ -112,6 +120,7 @@ struct AddUserTextFields: View {
                     .background(Color.gray.opacity(0.3))
                     .cornerRadius(16)
                 
+               
                 Text("Graduation Date")
                     .font(.headline)
                 HStack {
@@ -120,7 +129,7 @@ struct AddUserTextFields: View {
                     DatePicker("", selection: $gradDate, displayedComponents: .date)
                         .datePickerStyle(.compact)
                         .labelsHidden()
-                        .tint(.mgPblue)
+                        .tint(.mgPnavy)
                         .overlay {
                             ZStack {
                                 Color.mgPblue
@@ -137,6 +146,7 @@ struct AddUserTextFields: View {
                 .background(Color.gray.opacity(0.3))
                 .cornerRadius(16)
                 
+               
                 Text("Cell Number")
                     .font(.headline)
                 TextField("Cell Number...", text: $cellNumber)
@@ -144,6 +154,7 @@ struct AddUserTextFields: View {
                     .frame(maxWidth: CheckInScreen.deviceWidth / 2)
                     .background(Color.gray.opacity(0.3))
                     .cornerRadius(16)
+                
                 
                 Text("Email")
                     .font(.headline)
@@ -153,14 +164,31 @@ struct AddUserTextFields: View {
                     .background(Color.gray.opacity(0.3))
                     .cornerRadius(16)
                 
-                Toggle("Is Male", isOn: $isMale)
-                    .padding()
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 2)
+              
+                Text("Gender")
+                    .font(.headline)
+                Picker("Gender", selection: $isMale) {
+                    Text("Male").tag(true)
+                    Text("Female").tag(false)
+                }
+                .shadow(radius: 12, x: 0, y: 0)
+                .pickerStyle(SegmentedPickerStyle())
+                .frame(maxWidth: 200)
+                .padding()
                 
-                Toggle("Cohort", isOn: $cohort)
-                    .padding()
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 2)
+            
+                Text("Cohort")
+                    .font(.headline)
+                Picker("Cohort", selection: $cohort) {
+                    Text("Tue/Thu").tag(true)
+                    Text("Mon/Wed").tag(false)
+                }
+                .shadow(radius: 12, x: 0, y: 0)
+                .pickerStyle(SegmentedPickerStyle())
+                .frame(maxWidth: 200)
+                .padding()
                 
+              
                 Button {
                     Task {
                         await viewModel.postUser(
@@ -179,6 +207,7 @@ struct AddUserTextFields: View {
                 } label: {
                     ZStack {
                         RoundedRectangle(cornerRadius: 16)
+                            .fill(Color("MGPnavy"))
                             .frame(maxWidth: CheckInScreen.deviceWidth / 2.5,
                                    maxHeight: CheckInScreen.deviceHeight * 0.05)
                             .shadow(radius: 8, x: 0, y: 0)

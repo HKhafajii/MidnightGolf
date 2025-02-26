@@ -10,7 +10,7 @@ import SwiftUI
 struct AdminTest: View {
     @EnvironmentObject var viewModel: ViewModel
     @State private var showAddStudentSheet = false
-    @State private var isShowingEmailSentAlert = false  // New state for alert
+    @State private var isShowingEmailSentAlert = false  
 
     var body: some View {
         NavigationStack {
