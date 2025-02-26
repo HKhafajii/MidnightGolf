@@ -34,23 +34,42 @@ struct AttendanceTabScreen: View {
                         HeaderView(student: student)
                         Spacer()
                         
-                        SegmentedPickerView(selectedFilter: $selectedFilter, filters: filters)
-                            .font(.custom("NeueMontreal-Regular", size: screenWidth * 0.015))
-                            .padding()
-                        
-                        AttendanceListView(
-                            selectedFilter: selectedFilter,
-                            todayAttendance: todayAttendance,
-                            weeklyAttendance: weeklyAttendance,
-                            monthlyAttendance: monthlyAttendance
-                        )
-                        .frame(maxWidth: screenWidth * 0.9) // Increased width for more room
-                        .padding(.horizontal)
-                        
-                        PageIndicatorView(filters: filters, selectedFilter: selectedFilter, screenWidth: screenWidth, screenHeight: screenHeight)
-                        
-                        Spacer()
+                        HStack {
+                            
+                            VStack {
+                                Text("School: " + student.school)
+                                Text("Graduation Date: " + student.gradDate)
+                                Text("Mobile Phone: " + student.cellNumber)
+                                Text("Birthdate" + student.born)
+                                Text("Cohort: \(student.cohort ? "Mon/Wed" : "Tue/Thu")")
+                                Text("Email: " + student.email)
+                                
+                                Spacer()
+                            }
+                            
+                            VStack {
+                                SegmentedPickerView(selectedFilter: $selectedFilter, filters: filters)
+                                    .font(.custom("NeueMontreal-Regular", size: screenWidth * 0.015))
+                                    .padding()
+                                
+                                AttendanceListView(
+                                    selectedFilter: selectedFilter,
+                                    todayAttendance: todayAttendance,
+                                    weeklyAttendance: weeklyAttendance,
+                                    monthlyAttendance: monthlyAttendance
+                                )
+                                .frame(maxWidth: screenWidth * 0.9)
+                                .padding(.horizontal)
+                                
+                                PageIndicatorView(filters: filters, selectedFilter: selectedFilter, screenWidth: screenWidth, screenHeight: screenHeight)
+                                    .padding(.bottom)
+                                
+                                Spacer()
+                            }
+                            Spacer()
+                        }
                     }
+                    .padding()
                 }
             }
             .safeAreaInset(edge: .top) {
