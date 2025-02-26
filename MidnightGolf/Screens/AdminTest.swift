@@ -28,7 +28,7 @@ struct AdminTest: View {
                         isShowingEmailSentAlert = true
                     } label: {
                         
-                        Text("Send student list")
+                        Text("Student list")
                             .font(.title3)
                             .foregroundStyle(Color("MGPnavy"))
                         Image(systemName: "arrowshape.turn.up.right")
@@ -39,12 +39,19 @@ struct AdminTest: View {
                     Spacer()
                     
                     
-                    ShareLink(item: viewModel.generateCSVFile()) {
-                        Label("Attendance Records", systemImage: "list.bullet.rectangle.portrait")
+                    
+                        
+                        Text("Records")
                             .font(.title3)
                             .foregroundStyle(Color("MGPnavy"))
                         
-                    }
+                        ShareLink(item: viewModel.generateCSVFile()) {
+                            Label("Attendance Records", systemImage: "list.bullet.rectangle.portrait")
+                        }
+                        .imageScale(.large)
+                        .tint(Color("MGPnavy"))
+                    
+
                     
                     Spacer()
                     
