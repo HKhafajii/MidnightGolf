@@ -2,11 +2,13 @@ import SwiftUI
 
 
 class ViewModel: ObservableObject {
-    @Published var firestoreManager = FirestoreManager()
-    @Published var checkInManager = CheckInManager()
-    @Published var attendanceManager = AttendanceManager()
-    @Published var mailManager = MailManager()
-    @Published var qrManager = QRCodeManager()
+    var firestoreManager = FirestoreManager()
+    var checkInManager = CheckInManager()
+    var attendanceManager = AttendanceManager()
+    var mailManager = MailManager()
+    var qrManager = QRCodeManager()
+    var csvMnager = CSVManager()
+    
     
     @Published var students: [Student] = []
     @Published var attendance: [Attendance] = []
@@ -20,19 +22,7 @@ class ViewModel: ObservableObject {
         }
     }
     
-//    @MainActor
-//      func getAttendanceHistory(studentID: String) async throws -> [Attendance] {
-//          
-//          let snapshot = try await db.collection("attendance")
-//              .whereField("studentID", isEqualTo: studentID)
-//              .order(by: "timeIn", descending: true)
-//              .getDocuments()
-//          
-//          return try snapshot.documents.map { document in
-//              return try document.data(as: Attendance.self)
-//          }
-//          
-//      } // End of getAttendanceHistory()
+
     
     
     @MainActor
@@ -151,9 +141,6 @@ class ViewModel: ObservableObject {
         }
     }
     
- 
-    
-    
     func loadAttendance(for student: Student) async {
         attendanceManager.isLoading = true
         attendanceManager.errorMessage = nil
@@ -168,5 +155,6 @@ class ViewModel: ObservableObject {
         }
     }
 
+    func generateCSVFile() -> URL { return csvMnager.generateCSV(students: students) }
     
 }

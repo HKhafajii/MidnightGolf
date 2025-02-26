@@ -21,11 +21,8 @@ class CSVManager {
         do {
             
             let path = try FileManager.default.url(for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: false)
-
             fileURL = path.appendingPathExtension("Student-Attendance-Data.csv")
-        
             try stringData.write(to: fileURL, atomically: true, encoding: .utf8)
-            print(fileURL)
             
         } catch {
             print("Error generating the csv file")
