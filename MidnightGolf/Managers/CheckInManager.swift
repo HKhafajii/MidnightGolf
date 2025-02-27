@@ -13,8 +13,8 @@ enum CheckInError: Error {
 }
 
 class CheckInManager: ObservableObject {
-    private let lateThresholdHour = 17
-    private let lateThresholdMinute = 30
+     var lateThresholdHour = 17
+     var lateThresholdMinute = 30
     
     func handleCheckInOut(for student: Student, openAttendance: Attendance?) throws -> (Attendance, Bool) {
            

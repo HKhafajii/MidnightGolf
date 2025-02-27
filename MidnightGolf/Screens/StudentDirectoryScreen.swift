@@ -34,15 +34,6 @@ struct StudentDirectoryScreen: View {
                     .padding([.leading, .trailing], 10)
                 }
                 .padding()
-//                .toolbar {
-//                    Button("Add Person", systemImage: "plus") {
-//                        showAddStudentSheet = true
-//                    }
-//                    .sheet(isPresented: $showAddStudentSheet) {
-//                        AddUser(showAddStudentSheet: $showAddStudentSheet)
-//                            .environmentObject(viewModel)
-//                    }
-//                }
             }
         }
     }

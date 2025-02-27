@@ -22,7 +22,10 @@ class ViewModel: ObservableObject {
         }
     }
     
-
+    func updateLateThreshold(hour: Int, minute: Int) {
+        checkInManager.lateThresholdHour = hour
+        checkInManager.lateThresholdMinute = minute
+    }
     
     
     @MainActor
