@@ -11,29 +11,26 @@ struct StudentDirectoryScreen: View {
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
-
+                
                 VStack(alignment: .leading) {
-                    Text("Student Directory")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.black)
+                    StudentDirectoryHeaderView()
+                        .padding(.leading)
                         .padding(.top, 20)
                     
+                    
                     Divider()
-
+                    
                     List(viewModel.students) { student in
                         NavigationLink {
                             AttendanceTabScreen(student: student)
                                 .environmentObject(viewModel)
                         } label: {
                             StudentRow(student: student)
-                                
                         }
                     }
                     .listStyle(PlainListStyle())
                     .padding([.leading, .trailing], 10)
                 }
-                .padding()
             }
         }
     }
@@ -44,10 +41,29 @@ struct StudentDirectoryScreen: View {
         .environmentObject(ViewModel())
 }
 
-#Preview {
-    StudentDirectoryScreen()
-        .environmentObject(ViewModel())
+struct StudentDirectoryHeaderView: View {
+    var body: some View {
+        HStack {
+            Text("Student Directory")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.black)
+            
+            Spacer()
+            
+            NavigationLink {
+                AdminSettingsScreen()
+            } label: {
+                Image(systemName: "gear")
+                    .imageScale(.large)
+                    .foregroundStyle(Color("MGPnavy"))
+                
+            }
+        }
+        .padding(.top, 20)
+    }
 }
+
 
 
 

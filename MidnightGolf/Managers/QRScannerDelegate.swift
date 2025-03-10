@@ -8,8 +8,7 @@
 import SwiftUI
 import AVKit
 
-// TODO: Make sure to fix this or use the scanner frameworking
-
+// TODO: Make sure to fix this or use the scanner 
 class QRScannerDelegate: NSObject, ObservableObject, AVCaptureMetadataOutputObjectsDelegate {
     
     func captureOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {

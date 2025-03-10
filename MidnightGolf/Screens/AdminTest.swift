@@ -13,12 +13,11 @@ struct AdminTest: View {
     @State private var isShowingEmailSentAlert = false
     
     var body: some View {
+        
         NavigationStack {
             
-            ScrollView {
                 StudentDirectoryScreen()
                     .environmentObject(viewModel)
-            }
             
             .padding()
             .toolbar {
@@ -38,9 +37,6 @@ struct AdminTest: View {
                     
                     Spacer()
                     
-                    
-                    
-                        
                         Text("Records")
                             .font(.title3)
                             .foregroundStyle(Color("MGPnavy"))

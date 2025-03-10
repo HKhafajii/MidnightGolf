@@ -29,12 +29,7 @@ class FirestoreManager: ObservableObject {
       }
     
     
-    
-   
-    
-    
     //    ------ REQUESTS ---------
-    
     
         func postAttendance(_ attendance: Attendance) async throws {
             let docRef = attendanceCollection.document(attendance.id)
@@ -85,9 +80,6 @@ class FirestoreManager: ObservableObject {
                 print("Error adding document: \(error)")
             }
         }
-        
-        
-       
     } // End of Post request
     
     
@@ -113,8 +105,6 @@ class FirestoreManager: ObservableObject {
             let school = data["school"] as? String ?? "Not Specified"
             let gradDate = data["gradDate"] as? String ?? "Unknown"
             let qrCodeText = data["qrCode"] as? String ?? ""
-            
-            
             
             return Student(
                 id: studentId,

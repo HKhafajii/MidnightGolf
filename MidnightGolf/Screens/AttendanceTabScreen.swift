@@ -37,27 +37,8 @@ struct AttendanceTabScreen: View {
                         HStack {
                             
                             VStack {
-                                Text("School: " + student.school)
-                                Text("Graduation Date: " + student.gradDate)
-                                    .font(.subheadline)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.black)
-                                Text("Mobile Phone: " + student.cellNumber)
-                                    .font(.subheadline)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.black)
-                                Text("Birthdate: " + student.born)
-                                    .font(.subheadline)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.black)
-                                Text("Cohort: \(student.cohort ? "Mon/Wed" : "Tue/Thu")")
-                                    .font(.subheadline)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.black)
-                                Text("Email: " + student.email)
-                                    .font(.subheadline)
-                                    .fontWeight(.bold)
-                                    .foregroundColor(.black)
+                                StudentProfileView(student: student)
+                                    
                                 
                                 Spacer()
                             }
@@ -175,3 +156,7 @@ struct AttendanceListView: View {
     }
 }
 
+#Preview {
+    AttendanceTabScreen(student: Student(id: "234", group: "234", first: "234", last: "234", born: "234", isMale: true, cellNumber: "asdas", email: "asdasd", cohort: false, school: "asd", gradDate: "asd", qrCode: "asd"))
+        .environmentObject(ViewModel())
+}

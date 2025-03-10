@@ -8,7 +8,6 @@
 import SwiftUI
 import CodeScanner
 
-
 struct CheckInScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel

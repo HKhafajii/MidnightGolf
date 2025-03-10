@@ -57,7 +57,7 @@ struct AttendanceView: View {
 }
 
 #Preview {
-    let validQRCode = "Sample QR Code".data(using: .utf8) ?? Data()
+
     AttendanceView(
         student: Student(
             id: "test-id",
