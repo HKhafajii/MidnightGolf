@@ -41,12 +41,14 @@ struct ProfileImage: View {
     let student: Student
     
     var body: some View {
-        Image("student image")
-            .resizable()
-            .frame(width: 100, height: 100)
-            .clipShape(Circle())
+        
+        VStack(alignment: .leading) {
+            Image(systemName: "person.crop.circle")
+                .resizable()
+                .frame(width: 150, height: 150)
+                .clipShape(Circle())
+        }
     }
-    
 }
 
 
@@ -56,11 +58,11 @@ struct ProfileSection: View {
     var body: some View {
         HStack {
             Text(first)
-                .font(.headline)
-                .fontWeight(.bold)
+                .font(.title2)
+                .fontWeight(.semibold)
 
             Text(second)
-                .font(.body)
+                .font(.title2)
         }
     }
 }

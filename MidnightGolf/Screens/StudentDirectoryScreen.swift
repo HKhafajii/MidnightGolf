@@ -17,7 +17,6 @@ struct StudentDirectoryScreen: View {
                         .padding(.leading)
                         .padding(.top, 20)
                     
-                    
                     Divider()
                     
                     List(viewModel.students) { student in
@@ -54,17 +53,25 @@ struct StudentDirectoryHeaderView: View {
             NavigationLink {
                 AdminSettingsScreen()
             } label: {
-                Image(systemName: "gear")
-                    .imageScale(.large)
-                    .foregroundStyle(Color("MGPnavy"))
+                
+                HStack {
+                    Text("Attendance Settings")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color("MGPnavy"))
+                    
+                    Image(systemName: "gear")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color("MGPnavy"))
+                        .padding(.trailing)
+                }
                 
             }
         }
         .padding(.top, 20)
     }
 }
-
-
 
 
 struct StudentRow: View {

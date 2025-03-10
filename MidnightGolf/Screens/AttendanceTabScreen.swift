@@ -35,10 +35,9 @@ struct AttendanceTabScreen: View {
                         Spacer()
                         
                         HStack {
-                            
                             VStack {
                                 StudentProfileView(student: student)
-                                    
+                                    .padding()
                                 
                                 Spacer()
                             }
@@ -62,14 +61,11 @@ struct AttendanceTabScreen: View {
                                 
                                 Spacer()
                             }
-                            Spacer()
+                            
                         }
                     }
                     .padding()
                 }
-            }
-            .safeAreaInset(edge: .top) {
-                Spacer().frame(height: screenHeight * 0.05)
             }
         }
         .onAppear {

@@ -8,8 +8,15 @@
 import SwiftUI
 
 struct AdminSettingsScreen: View {
+    @State private var showChangeLateThreshold: Bool = false
+//    @State private var show
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack {
+            
+           
+
+            
+        }
     }
 }
 

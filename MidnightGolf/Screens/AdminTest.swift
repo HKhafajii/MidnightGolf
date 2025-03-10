@@ -8,18 +8,18 @@
 import SwiftUI
 
 struct AdminTest: View {
+    
     @EnvironmentObject var viewModel: ViewModel
     @State private var showAddStudentSheet = false
     @State private var isShowingEmailSentAlert = false
     
     var body: some View {
-        
         NavigationStack {
             
                 StudentDirectoryScreen()
                     .environmentObject(viewModel)
-            
             .padding()
+            
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button {
@@ -30,24 +30,28 @@ struct AdminTest: View {
                         Text("Student list")
                             .font(.title3)
                             .foregroundStyle(Color("MGPnavy"))
+                            .fontWeight(.semibold)
+                        
                         Image(systemName: "arrowshape.turn.up.right")
                             .font(.title3)
                             .foregroundStyle(Color("MGPnavy"))
+                            .fontWeight(.semibold)
                     }
                     
                     Spacer()
                     
                         Text("Records")
                             .font(.title3)
+                            .fontWeight(.semibold)
                             .foregroundStyle(Color("MGPnavy"))
                         
                         ShareLink(item: viewModel.generateCSVFile()) {
                             Label("Attendance Records", systemImage: "list.bullet.rectangle.portrait")
+                                .fontWeight(.semibold)
                         }
                         .imageScale(.large)
+                        .fontWeight(.semibold)
                         .tint(Color("MGPnavy"))
-                    
-
                     
                     Spacer()
                     
@@ -57,12 +61,18 @@ struct AdminTest: View {
                         Text("Add student")
                             .font(.title3)
                             .foregroundStyle(Color("MGPnavy"))
+                            .fontWeight(.semibold)
+                        
                         Image(systemName: "plus")
                             .font(.title3)
                             .foregroundStyle(Color("MGPnavy"))
+                            .fontWeight(.semibold)
                     }
                 }
             }
+            .toolbarBackground(Color.white, for: .bottomBar)
+            .toolbarBackground(.visible, for: .bottomBar)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
             .alert("Email Sent!", isPresented: $isShowingEmailSentAlert) {
                 Button("OK", role: .cancel) { }
             } message: {
