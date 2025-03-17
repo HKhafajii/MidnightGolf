@@ -16,6 +16,8 @@ struct CheckInScreen: View {
     @State var searchTitle = ""
     @State private var showAdminSheet = false
     @State private var showScanSheet = false
+    @State private var showScanAlert: Bool = false
+    @State private var scanAlertMessage: String = ""
     @State private var navigateToNextScreen = false
     static var deviceWidth: CGFloat {
         UIScreen.main.bounds.width
@@ -55,7 +57,6 @@ struct CheckInScreen: View {
                             showAdminSheet = true
                         } label: {
                             Image(systemName: "person.badge.key.fill")
-                            
                                 .resizable()
                                 .frame(maxWidth: 45, maxHeight: 40)
                                 .foregroundStyle(Color("MGPnavy"))
@@ -70,7 +71,6 @@ struct CheckInScreen: View {
                         .shadow(radius: 16, x: 0, y: 5)
                         .fontWeight(.bold)
                         .foregroundStyle(Color("MGPnavy"))
-                    
                     
                     VStack {
                         
@@ -96,8 +96,6 @@ struct CheckInScreen: View {
                         .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
                     }
                     
-
-                    
                     Button("Scan", systemImage: "qrcode.viewfinder") { showScanSheet = true }
                         .disabled(viewModel.firestoreManager.isLoadingStudents)
                         .font(.largeTitle)
@@ -106,7 +104,16 @@ struct CheckInScreen: View {
                         .frame(maxWidth: CheckInScreen.deviceWidth / 5)
                         .shadow(radius: 12, x: 0, y: 5)
                         .sheet(isPresented: $showScanSheet) {
-                            CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
+                            VStack {
+                                CodeScannerView(codeTypes: [.qr], simulatedData: "Hassan alkhafaji\nalkhafajihassan@gmail.com", completion: handleScan)
+                            }
+                            .alert("Scan Result", isPresented: $showScanAlert) {
+                                Button("OK", role: .cancel) {
+                                    showScanSheet = false
+                                }
+                            } message: {
+                                Text(scanAlertMessage)
+                            }
                         }
                     
                     NavigationLink(destination: AdminTest().environmentObject(viewModel), isActive: $navigateToNextScreen) {
@@ -123,43 +130,48 @@ struct CheckInScreen: View {
             }
         }
     }
+    
     func handleScan(result: Result<ScanResult, ScanError>) {
-        showScanSheet = false
-
         switch result {
         case .success(let result):
             Task {
-                do {
-                    let scannedText = result.string.trimmingCharacters(in: .whitespacesAndNewlines)
-                    print("Scanned QR Code Text:", scannedText)
-
+                let scannedText = result.string.trimmingCharacters(in: .whitespacesAndNewlines)
+                print("Scanned QR Code Text:", scannedText)
+                
+                if let qrCodeImage = QRCodeManager().generateQRCode(from: scannedText),
+                   let qrCodeData = qrCodeImage.pngData() {
                     
-                    if let qrCodeImage = QRCodeManager().generateQRCode(from: scannedText),
-                       let qrCodeData = qrCodeImage.pngData() {
-                        
-                        let scannedBase64 = qrCodeData.base64EncodedString()
-                        print("Scanned QR Code Base64:", scannedBase64.prefix(20), "...")
-
-                        
-                        if let student = viewModel.students.first(where: { $0.qrCode == scannedBase64 }) {
-                            print(" Matched student:", student.first, student.last)
-                            await viewModel.checkInOutStudent(student)
-                        } else {
-                            print(" No student matched the scanned QR Code.")
-                            throw CheckInError.studentNotFound
+                    let scannedBase64 = qrCodeData.base64EncodedString()
+                    print("Scanned QR Code Base64:", scannedBase64.prefix(20), "...")
+                    
+                    if let student = viewModel.students.first(where: { $0.qrCode == scannedBase64 }) {
+                        print("Matched student:", student.first, student.last)
+                        await viewModel.checkInOutStudent(student)
+                        DispatchQueue.main.async {
+                            scanAlertMessage = "Checked in \(student.first) \(student.last)!"
+                            showScanAlert = true
                         }
                     } else {
-                        throw CheckInError.studentNotFound
+                        print("No student matched the scanned QR Code.")
+                        DispatchQueue.main.async {
+                            scanAlertMessage = "No student matched the scanned QR Code"
+                            showScanAlert = true
+                        }
                     }
-
-                    await viewModel.loadAllStudents()
-                
-                } catch {
-                    print("❌ Error: \(error.localizedDescription)")
+                } else {
+                    DispatchQueue.main.async {
+                        scanAlertMessage = "Invalid QR Code data."
+                        showScanAlert = true
+                    }
                 }
+                
+                await viewModel.loadAllStudents()
             }
         case .failure(let error):
-            print("❌ Scanning failed: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                scanAlertMessage = "Scanning failed: \(error.localizedDescription)"
+                showScanAlert = true
+            }
         }
     }
 }
@@ -170,8 +182,7 @@ struct CheckInScreen: View {
 
 
 struct TimeView: View {
-    
-    
+
     @ObservedObject var viewModel: TimerManager
     
     var body: some View {

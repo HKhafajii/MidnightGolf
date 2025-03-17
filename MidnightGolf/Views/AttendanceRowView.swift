@@ -50,7 +50,7 @@ struct PageIndicatorView: View {
                     .animation(.smooth, value: selectedFilter)
             }
         }
-        .padding(.top, screenHeight * 0.4)
+        .padding(.top, screenHeight * 0.6)
         .padding(.bottom)
     }
 }

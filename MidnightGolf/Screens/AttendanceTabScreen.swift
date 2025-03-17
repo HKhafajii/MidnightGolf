@@ -27,18 +27,18 @@ struct AttendanceTabScreen: View {
             let screenHeight = geometry.size.height
             
             NavigationStack {
-                ZStack {
+                ZStack() {
                     BackgroundImageView(screenWidth: screenWidth, screenHeight: screenHeight)
-                    
                     VStack {
+                        
                         HeaderView(student: student)
+                        
                         Spacer()
                         
                         HStack {
                             VStack {
                                 StudentProfileView(student: student)
                                     .padding()
-                                
                                 Spacer()
                             }
                             
@@ -53,8 +53,7 @@ struct AttendanceTabScreen: View {
                                     weeklyAttendance: weeklyAttendance,
                                     monthlyAttendance: monthlyAttendance
                                 )
-                                .frame(maxWidth: screenWidth * 0.9)
-                                .padding(.horizontal)
+                                .frame(maxWidth: .infinity)
                                 
                                 PageIndicatorView(filters: filters, selectedFilter: selectedFilter, screenWidth: screenWidth, screenHeight: screenHeight)
                                     .padding(.bottom)
@@ -62,9 +61,11 @@ struct AttendanceTabScreen: View {
                                 Spacer()
                             }
                             
+                            
                         }
                     }
-                    .padding()
+                    .frame(maxHeight: screenHeight * 0.8)
+                    .padding([.leading, .top])
                 }
             }
         }
