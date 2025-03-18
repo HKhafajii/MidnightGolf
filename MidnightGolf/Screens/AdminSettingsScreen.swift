@@ -5,46 +5,71 @@
 //  Created by Hassan Alkhafaji on 3/10/25.
 //
 
+//
+//  AdminSettingsScreen.swift
+//  MidnightGolf
+//
+//  Created by Hassan Alkhafaji on 3/10/25.
+//
+
 import SwiftUI
+
+enum AdminSettings: String, Identifiable, CaseIterable {
+    var id: String { rawValue }
+    case changeLateThreshold = "Change Late Threshold"
+    case somethingElse = "Something Else"
+}
 
 struct AdminSettingsScreen: View {
     
-    @State private var showChangeLateThreshold: Bool = false
-    @State private var showSomethingSheet: Bool = false
+    @State private var selectedSetting: AdminSettings? = .changeLateThreshold
     
     var body: some View {
-        VStack {
-            TitleComponent(title: "Settings")
+        NavigationSplitView {
+            List(AdminSettings.allCases, selection: $selectedSetting) { setting in
+                NavigationLink(value: setting) {
+                                   Text(setting.rawValue)
+                                       .foregroundStyle(Color("MGPnavy"))
+                                       .font(.headline)
+                               }
+            }
+            .navigationTitle("Admin Settings")
             
-            
-            List {
-                
-                Button {
-                    showChangeLateThreshold = true
-                } label: {
-                    Text("Change Late Threshold")
-                        .foregroundStyle(Color("MGPnavy"))
-                        .font(.headline)
-                }
-                
-                Button {
-                    showSomethingSheet = true
-                } label: {
-                    Text("Show something else")
-                        .foregroundStyle(Color("MGPnavy"))
-                        .font(.headline)
-                }
-                
-                .sheet(isPresented: $showChangeLateThreshold) {
+        } detail: {
+            DetailView(selectedSetting: selectedSetting)
+        }
+    }
+}
+
+struct DetailView: View {
+    let selectedSetting: AdminSettings?
+    
+    var body: some View {
+        Group {
+            if let setting = selectedSetting {
+                switch setting {
+                case .changeLateThreshold:
                     LateThresholdChanges()
+                case .somethingElse:
+                    SomethingElseView()
                 }
+            } else {
+                Text("Select a setting")
+                    .foregroundStyle(Color("MGPnavy"))
             }
         }
+        .animation(.easeInOut, value: selectedSetting)
     }
 }
 
 #Preview {
     AdminSettingsScreen()
+}
+
+struct SomethingElseView: View {
+    var body: some View {
+        Text("Hello, World!")
+    }
 }
 
 
@@ -57,8 +82,28 @@ struct LateThresholdChanges: View {
             NumberFieldComponent(title: "Threshold Minute", description: "Type an hour", intValue: intValue)
             
             
+            Button {
+                // Function for saving late threshold changes
+            } label: {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color("MGPnavy"))
+                        .frame(maxWidth: CheckInScreen.deviceWidth / 2.5,
+                               maxHeight: CheckInScreen.deviceHeight * 0.05)
+                        .shadow(radius: 8, x: 0, y: 0)
+                    
+                    Text("Save Changes")
+                        .font(.title2)
+                        .foregroundStyle(.white)
+                        .fontWeight(.semibold)
+                        .padding()
+                        .frame(maxWidth: CheckInScreen.deviceWidth / 2.5)
+                }
+            }
+            
             
         }
+        .padding()
     }
 }
 

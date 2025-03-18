@@ -7,6 +7,8 @@
 
 import Foundation
 import SwiftUI
+
+
 struct Student: Identifiable, Codable, Hashable {
     let id: String
     let group: String
@@ -22,6 +24,9 @@ struct Student: Identifiable, Codable, Hashable {
     var qrCode: String
     var isCheckedIn: Bool = false
     // MARK: Later - put an image property
+    
+    // MARK: Put a Mentor property
+    //    let mentor: String?
     
     func qrCodeImage() -> UIImage? {
           guard !qrCode.isEmpty else {

@@ -61,7 +61,7 @@ struct AddUserTextFields: View {
         ScrollView {
             VStack(spacing: 15) {
             
-                TextfieldComponent(title: "Fire Name", description: "First name...", bindingString: firstName)
+                TextfieldComponent(title: "First Name", description: "First name...", bindingString: firstName)
                 
                 TextfieldComponent(title: "Last Name", description: "Last name...", bindingString: lastName)
                  
@@ -101,7 +101,7 @@ struct AddUserTextFields: View {
                     DatePicker("", selection: $gradDate, displayedComponents: .date)
                         .datePickerStyle(.compact)
                         .labelsHidden()
-                        .tint(.mgPnavy)
+                        .tint(Color("MGPnavy"))
                         .overlay {
                             ZStack {
                                 Color.mgPblue
