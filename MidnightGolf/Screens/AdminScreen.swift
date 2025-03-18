@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AdminTest: View {
+struct AdminScreen: View {
     
     @EnvironmentObject var viewModel: ViewModel
     @State private var showAddStudentSheet = false
@@ -87,6 +87,6 @@ struct AdminTest: View {
 }
 
 #Preview {
-    AdminTest()
+    AdminScreen()
         .environmentObject(ViewModel())
 }

@@ -67,25 +67,11 @@ struct AddUserTextFields: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 15) {
-             
-                Text("First name")
-                    .font(.headline)
-                TextField("First name...", text: $firstName)
-                    .padding()
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 2)
-                    .background(Color.gray.opacity(0.3))
-                    .cornerRadius(16)
+            
+                TextfieldComponent(title: "Fire Name", description: "First name...", bindingString: firstName)
                 
-             
-                Text("Last name")
-                    .font(.headline)
-                TextField("Last name...", text: $lastName)
-                    .padding()
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 2)
-                    .background(Color.gray.opacity(0.3))
-                    .cornerRadius(16)
-                
-               
+                TextfieldComponent(title: "Last Name", description: "Last name...", bindingString: lastName)
+                 
                 Text("Date of Birth")
                     .font(.headline)
                 HStack {
@@ -111,14 +97,7 @@ struct AddUserTextFields: View {
                 .background(Color.gray.opacity(0.3))
                 .cornerRadius(16)
                 
-               
-                Text("School")
-                    .font(.headline)
-                TextField("Highschool...", text: $school)
-                    .padding()
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 2)
-                    .background(Color.gray.opacity(0.3))
-                    .cornerRadius(16)
+                TextfieldComponent(title: "School", description: "Highschool...", bindingString: school)
                 
                
                 Text("Graduation Date")
@@ -147,23 +126,9 @@ struct AddUserTextFields: View {
                 .cornerRadius(16)
                 
                
-                Text("Cell Number")
-                    .font(.headline)
-                TextField("Cell Number...", text: $cellNumber)
-                    .padding()
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 2)
-                    .background(Color.gray.opacity(0.3))
-                    .cornerRadius(16)
+                TextfieldComponent(title: "Cell Phone Number...", description: "Cell number...", bindingString: cellNumber)
                 
-                
-                Text("Email")
-                    .font(.headline)
-                TextField("Email...", text: $email)
-                    .padding()
-                    .frame(maxWidth: CheckInScreen.deviceWidth / 2)
-                    .background(Color.gray.opacity(0.3))
-                    .cornerRadius(16)
-                
+                TextfieldComponent(title: "Email", description: "Email...", bindingString: email)
               
                 Text("Gender")
                     .font(.headline)
