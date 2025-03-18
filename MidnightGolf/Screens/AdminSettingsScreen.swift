@@ -13,9 +13,11 @@ struct AdminSettingsScreen: View {
     @State private var showSomethingSheet: Bool = false
     
     var body: some View {
+        VStack {
+            TitleComponent(title: "Settings")
+            
             
             List {
-                
                 
                 Button {
                     showChangeLateThreshold = true
@@ -37,6 +39,7 @@ struct AdminSettingsScreen: View {
                     LateThresholdChanges()
                 }
             }
+        }
     }
 }
 

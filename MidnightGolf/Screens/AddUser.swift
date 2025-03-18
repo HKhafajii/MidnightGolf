@@ -19,16 +19,7 @@ struct AddUser: View {
                         .ignoresSafeArea()
 
                     VStack(spacing: 15) {
-                        
-                        Text("Let's Add a Student!")
-                            .font(.title)
-                            .foregroundStyle(.white)
-                            .fontWeight(.semibold)
-                            .frame(maxWidth: CheckInScreen.deviceWidth / 2.5,
-                                   maxHeight: CheckInScreen.deviceHeight * 0.05)
-                            .padding()
-                            .background(RoundedRectangle(cornerRadius: 24).fill(Color("MGPnavy")))
-                            .shadow(radius: 8, x: 0, y: 0)
+                        TitleComponent(title: "Let's Add a Student!")
                         
                         AddUserTextFields(showAddStudentSheet: $showAddStudentSheet)
                     }
@@ -49,6 +40,8 @@ struct AddUser: View {
 }
 
 struct AddUserTextFields: View {
+    
+    // TODO: Change all these variables into one dictionary so that the app doesnt have to watch the state of every single variable and only one variable that has key values
     @State var firstName: String = ""
     @State var lastName: String = ""
     @State var birthDate: Date = Date()
