@@ -65,7 +65,7 @@ struct InfoRow: View {
         HStack(alignment: .top) {
             Text(label)
                 .font(.subheadline)
-                .foregroundColor(.secondary)
+//                .foregroundColor(.secondary)
                 .frame(width: 90, alignment: .leading)
             
             Text(value)

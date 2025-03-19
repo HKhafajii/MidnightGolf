@@ -70,27 +70,16 @@ struct AttendanceTabScreen: View {
             }
         }
         .onAppear {
-            
             Task {
                 isLoading = true
                 errorMessage = nil
                 
                 await viewModel.loadAllAttendance()
+                attendanceHistory = viewModel.getAttendanceHistory(studentID: student.id)
                 
-                    let fetchedAttendance = viewModel.getAttendanceHistory(studentID: student.id)
-                    print("Attendance history count: \(attendanceHistory.count)")
-                
-                
-                
-                DispatchQueue.main.async {
-                    self.attendanceHistory = fetchedAttendance
-                    todayAttendance = viewModel.attendanceManager.filterCheckInToday(attendanceList: attendanceHistory)
-                    weeklyAttendance = viewModel.attendanceManager.filterCheckInWeek(attendanceList: attendanceHistory)
-                    monthlyAttendance = viewModel.attendanceManager.filterCheckInMonth(attendanceList: attendanceHistory)
-                    
-                    print("Updated attendance in main threat: \(self.todayAttendance.count) records")
-                    
-                }
+                todayAttendance = viewModel.attendanceManager.filterCheckInToday(attendanceList: attendanceHistory)
+                weeklyAttendance = viewModel.attendanceManager.filterCheckInWeek(attendanceList: attendanceHistory)
+                monthlyAttendance = viewModel.attendanceManager.filterCheckInMonth(attendanceList: attendanceHistory)
                 isLoading = false
             }
         }
@@ -117,7 +106,7 @@ struct HeaderView: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack(alignment: .top) {
-                Text("Attendance for \(student.first) \(student.last)")
+                Text("Attendance for")
                     .font(.title)
                     .fontWeight(.bold)
                     .padding()
@@ -145,28 +134,17 @@ struct AttendanceListView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
-                
                 if selectedFilter == 0 {
                     ForEach(todayAttendance) { attendance in
-
                         AttendanceRowView(attendance: attendance)
-                            .onAppear {
-                                print("Displaying attendance ID:", attendance.id)
-                            }
                     }
                 } else if selectedFilter == 1 {
                     ForEach(weeklyAttendance) { attendance in
                         AttendanceRowView(attendance: attendance)
-                            .onAppear {
-                                print("Displaying attendance ID:", attendance.id)
-                            }
                     }
                 } else {
                     ForEach(monthlyAttendance) { attendance in
                         AttendanceRowView(attendance: attendance)
-                            .onAppear {
-                                print("Displaying attendance ID:", attendance.id)
-                            }
                     }
                 }
             }
