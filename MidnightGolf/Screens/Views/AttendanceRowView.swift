@@ -12,6 +12,7 @@ struct AttendanceRowView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
+            Text("Attendance ID: \(attendance.id)")
             Text("Checked In: \(attendance.timeIn?.formatted() ?? "N/A")")
                 .font(.headline)
             Text(attendance.timeOut != nil

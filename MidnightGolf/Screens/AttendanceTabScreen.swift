@@ -70,16 +70,27 @@ struct AttendanceTabScreen: View {
             }
         }
         .onAppear {
+            
             Task {
                 isLoading = true
                 errorMessage = nil
                 
                 await viewModel.loadAllAttendance()
-                attendanceHistory = viewModel.getAttendanceHistory(studentID: student.id)
                 
-                todayAttendance = viewModel.attendanceManager.filterCheckInToday(attendanceList: attendanceHistory)
-                weeklyAttendance = viewModel.attendanceManager.filterCheckInWeek(attendanceList: attendanceHistory)
-                monthlyAttendance = viewModel.attendanceManager.filterCheckInMonth(attendanceList: attendanceHistory)
+                    let fetchedAttendance = viewModel.getAttendanceHistory(studentID: student.id)
+                    print("Attendance history count: \(attendanceHistory.count)")
+                
+                
+                
+                DispatchQueue.main.async {
+                    self.attendanceHistory = fetchedAttendance
+                    todayAttendance = viewModel.attendanceManager.filterCheckInToday(attendanceList: attendanceHistory)
+                    weeklyAttendance = viewModel.attendanceManager.filterCheckInWeek(attendanceList: attendanceHistory)
+                    monthlyAttendance = viewModel.attendanceManager.filterCheckInMonth(attendanceList: attendanceHistory)
+                    
+                    print("Updated attendance in main threat: \(self.todayAttendance.count) records")
+                    
+                }
                 isLoading = false
             }
         }
@@ -134,17 +145,28 @@ struct AttendanceListView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 16) {
+                
                 if selectedFilter == 0 {
                     ForEach(todayAttendance) { attendance in
+
                         AttendanceRowView(attendance: attendance)
+                            .onAppear {
+                                print("Displaying attendance ID:", attendance.id)
+                            }
                     }
                 } else if selectedFilter == 1 {
                     ForEach(weeklyAttendance) { attendance in
                         AttendanceRowView(attendance: attendance)
+                            .onAppear {
+                                print("Displaying attendance ID:", attendance.id)
+                            }
                     }
                 } else {
                     ForEach(monthlyAttendance) { attendance in
                         AttendanceRowView(attendance: attendance)
+                            .onAppear {
+                                print("Displaying attendance ID:", attendance.id)
+                            }
                     }
                 }
             }
