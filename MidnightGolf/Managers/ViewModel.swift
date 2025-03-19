@@ -18,8 +18,10 @@ class ViewModel: ObservableObject {
         Task {
             await loadAllStudents()
             await loadAllAttendance()
-            
         }
+            
+        
+        
     }
     
     func updateLateThreshold(hour: Int, minute: Int) {
@@ -65,6 +67,7 @@ class ViewModel: ObservableObject {
         for attendance in self.attendance {
             if attendance.studentID == studentID {
                 tempAttendance.append(attendance)
+                print("Fetched attendance for \(attendance.studentID)")
             }
         }
         return tempAttendance
@@ -86,6 +89,7 @@ class ViewModel: ObservableObject {
         do {
             let fetched = try await firestoreManager.fetchAllAttendance()
             self.attendance = fetched
+            
         } catch {
             print("Failed to fetch users: \(error)")
         }
@@ -112,7 +116,7 @@ class ViewModel: ObservableObject {
                     "isCheckedIn": false
                 ]
 
-                try await firestoreManager.updateAttendance(existingAttendance.id, fields: updatedFields)
+                try await firestoreManager.updateAttendance(for: student.id,existingAttendance.id, fields: updatedFields)
                 print("Successfully updated attendance record:", existingAttendance.id)
 
                 try await firestoreManager.updateStudentStatus(studentID: student.id, isCheckedIn: false)

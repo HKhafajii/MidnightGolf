@@ -129,6 +129,7 @@ struct CheckInScreen: View {
                 await viewModel.loadAllStudents()
             }
         }
+        .tint(Color("MGPnavy"))
     }
     
     func handleScan(result: Result<ScanResult, ScanError>) {
@@ -173,7 +174,8 @@ struct CheckInScreen: View {
                 showScanAlert = true
             }
         }
-    }
+    } // End of HandScan
+    
 }
 #Preview {
     CheckInScreen()

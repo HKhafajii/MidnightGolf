@@ -24,15 +24,17 @@ class FirestoreManager: ObservableObject {
         db.collection("users")
       }
       
-      private var attendanceCollection: CollectionReference {
-          db.collection("attendance")
-      }
+//      private var attendanceCollection: CollectionReference {
+//          db.collection("attendance")
+//      }
     
     
     //    ------ REQUESTS ---------
     
         func postAttendance(_ attendance: Attendance) async throws {
-            let docRef = attendanceCollection.document(attendance.id)
+//            let docRef = attendanceCollection.document(attendance.id)
+            let studentAttendance = userCollection.document(attendance.studentID).collection("attendance")
+            let docRef = studentAttendance.document(attendance.id)
                
                var docData: [String: Any] = [
                    "id": attendance.id,
@@ -136,8 +138,7 @@ class FirestoreManager: ObservableObject {
     @MainActor
       func getAttendanceHistory(studentID: String) async throws -> [Attendance] {
           
-          let snapshot = try await db.collection("attendance")
-              .whereField("studentID", isEqualTo: studentID)
+          let snapshot = try await userCollection.document(studentID).collection("attendance")
               .order(by: "timeIn", descending: true)
               .getDocuments()
           
@@ -149,14 +150,15 @@ class FirestoreManager: ObservableObject {
     
     
     func createAttendance(_ attendance: Attendance) async throws {
-        let docRef = attendanceCollection.document()
+        let studentAttendanceReference = userCollection.document(attendance.studentID).collection("attendance")
+        let docRef = studentAttendanceReference.document()
         let newAttendance = attendance
         try docRef.setData(from: newAttendance)
     } // End of createAttendance
     
-    func updateAttendance(_ attendanceID: String, fields: [String: Any]) async throws {
+    func updateAttendance(for studentID: String,_ attendanceID: String, fields: [String: Any]) async throws {
         
-        let docRef = attendanceCollection.document(attendanceID)
+        let docRef = userCollection.document(studentID).collection("attendance").document(attendanceID)
         print("Updating the attendance record for: ", attendanceID, fields)
         
         try await docRef.updateData(fields)
@@ -165,7 +167,7 @@ class FirestoreManager: ObservableObject {
        } // End of updateAttendance
     
     func fetchAttendance(for studentID: String) async throws -> [Attendance] {
-         let snapshot = try await attendanceCollection
+        let snapshot = try await userCollection.document(studentID).collection("attendance")
              .whereField("studentID", isEqualTo: studentID)
              .order(by: "timeIn", descending: true)
              .getDocuments()
@@ -175,7 +177,7 @@ class FirestoreManager: ObservableObject {
      
      
     func fetchOpenAttendance(for studentID: String) async throws -> Attendance? {
-        let snapshot = try await attendanceCollection
+        let snapshot = try await userCollection.document(studentID).collection("attendance")
             .whereField("studentID", isEqualTo: studentID)
             .getDocuments()
 
@@ -198,7 +200,6 @@ class FirestoreManager: ObservableObject {
                     totalTime: data["totalTime"] as? Double ?? 0
                 )
             } else {
-                
                 return nil
             }
         }.first
@@ -211,7 +212,7 @@ class FirestoreManager: ObservableObject {
         isLoadingAttendance = true
         defer { isLoadingAttendance = false }
 
-        let snapshot = try await attendanceCollection.getDocuments()
+        let snapshot = try await db.collectionGroup("attendance").getDocuments()
 
         let fetchedAttendance = snapshot.documents.compactMap { doc -> Attendance? in
             let data = doc.data()
@@ -223,7 +224,7 @@ class FirestoreManager: ObservableObject {
             let totalTime = data["totalTime"] as? Double ?? 0
             let isCheckedIn = data["isCheckedIn"] as? Bool ?? false
             let isLate = data["isLate"] as? Bool ?? false
-
+            
             return Attendance(
                 id: id,
                 studentID: studentID,

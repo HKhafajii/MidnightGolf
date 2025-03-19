@@ -83,6 +83,7 @@ struct AdminScreen: View {
                     .environmentObject(viewModel)
             }
         }
+        .tint(Color("MGPnavy"))
     }
 }
 

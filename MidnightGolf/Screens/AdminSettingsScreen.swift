@@ -5,12 +5,6 @@
 //  Created by Hassan Alkhafaji on 3/10/25.
 //
 
-//
-//  AdminSettingsScreen.swift
-//  MidnightGolf
-//
-//  Created by Hassan Alkhafaji on 3/10/25.
-//
 
 import SwiftUI
 
@@ -28,16 +22,17 @@ struct AdminSettingsScreen: View {
         NavigationSplitView {
             List(AdminSettings.allCases, selection: $selectedSetting) { setting in
                 NavigationLink(value: setting) {
-                                   Text(setting.rawValue)
-                                       .foregroundStyle(Color("MGPnavy"))
-                                       .font(.headline)
-                               }
+                    Text(setting.rawValue)
+                        .foregroundStyle(Color("MGPnavy"))
+                        .font(.headline)
+                }
             }
             .navigationTitle("Admin Settings")
             
         } detail: {
             DetailView(selectedSetting: selectedSetting)
         }
+        .tint(Color("MGPnavy"))
     }
 }
 

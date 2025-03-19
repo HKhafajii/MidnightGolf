@@ -73,14 +73,14 @@ struct AttendanceTabScreen: View {
             Task {
                 isLoading = true
                 errorMessage = nil
-                let history = viewModel.getAttendanceHistory(studentID: student.id)
-                attendanceHistory = history
-                isLoading = false
                 
                 await viewModel.loadAllAttendance()
+                attendanceHistory = viewModel.getAttendanceHistory(studentID: student.id)
+                
                 todayAttendance = viewModel.attendanceManager.filterCheckInToday(attendanceList: attendanceHistory)
                 weeklyAttendance = viewModel.attendanceManager.filterCheckInWeek(attendanceList: attendanceHistory)
                 monthlyAttendance = viewModel.attendanceManager.filterCheckInMonth(attendanceList: attendanceHistory)
+                isLoading = false
             }
         }
         .ignoresSafeArea()
