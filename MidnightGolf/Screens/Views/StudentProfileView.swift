@@ -9,26 +9,70 @@ import SwiftUI
 
 struct StudentProfileView: View {
     let student: Student
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 15) {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack {
+                Text("\(student.first) \(student.last)")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                Spacer()
+            }
             
-            ProfileImage(student: student)
+            Divider()
             
-            ProfileSection(first: "School:", second: student.school)
+            Group {
+                InfoRow(label: "School", value: student.school)
+                InfoRow(label: "Graduation", value: student.gradDate)
+                InfoRow(label: "Email", value: student.email)
+                InfoRow(label: "Phone", value: student.cellNumber)
+                InfoRow(label: "Date of Birth", value: student.born)
+            }
             
-            ProfileSection(first: "Graduation Date:", second: student.gradDate)
+            Spacer()
             
-            ProfileSection(first: "Mobile Phone:", second: student.cellNumber)
-            
-            ProfileSection(first: "Birthdate:", second: student.born)
-            
-            ProfileSection(first: "Cohort:", second: student.cohort ? "Mon/Wed" : "Tue/Thu")
-          
-            ProfileSection(first: "Email:", second: student.email)
-            
+            if !student.qrCode.isEmpty {
+                Text("Student QR Code")
+                    .font(.headline)
+                    .padding(.top)
+                
+                if let qrImage = decodeBase64QRCode(student.qrCode) {
+                    Image(uiImage: qrImage)
+                        .resizable()
+                        .interpolation(.none)
+                        .scaledToFit()
+                        .frame(width: 150, height: 150)
+                } else {
+                    Text("QR Code not available")
+                        .foregroundColor(.secondary)
+                }
+            }
         }
-        .padding()
-        
+      
+    }
+    
+    private func decodeBase64QRCode(_ base64String: String) -> UIImage? {
+        guard let data = Data(base64Encoded: base64String) else { return nil }
+        return UIImage(data: data)
+    }
+}
+
+struct InfoRow: View {
+    let label: String
+    let value: String
+    
+    var body: some View {
+        HStack(alignment: .top) {
+            Text(label)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
+                .frame(width: 90, alignment: .leading)
+            
+            Text(value)
+                .font(.subheadline)
+            
+            Spacer()
+        }
     }
 }
 

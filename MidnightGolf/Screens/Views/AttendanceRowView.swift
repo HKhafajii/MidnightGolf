@@ -11,27 +11,76 @@ struct AttendanceRowView: View {
     let attendance: Attendance
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Attendance ID: \(attendance.id)")
-            Text("Checked In: \(attendance.timeIn?.formatted() ?? "N/A")")
-                .font(.headline)
-            Text(attendance.timeOut != nil
-                 ? "Checked Out: \(attendance.timeOut!.formatted())"
-                 : "Currently Checked In")
-                .font(.subheadline)
-                .foregroundColor(attendance.timeOut == nil ? .blue : .primary)
-            Text("Late Arrival: \(attendance.isLate ? "Yes" : "No")")
-                .font(.subheadline)
-            Text("Total Time: \(attendance.totalTime, specifier: "%.2f") hours")
-                .font(.subheadline)
+        HStack {
+            VStack(alignment: .leading, spacing: 5) {
+
+                HStack {
+                    Image(systemName: "clock")
+                        .foregroundColor(.blue)
+                    
+                    Text(formatDate(attendance.timeIn))
+                        .font(.headline)
+                }
+                
+                // Check-in/out status
+                HStack {
+                    Image(systemName: attendance.isCheckedIn ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        .foregroundColor(attendance.isCheckedIn ? .green : .red)
+                    
+                    Text(attendance.isCheckedIn ? "Checked In" : "Checked Out")
+                        .font(.subheadline)
+                }
+                
+                // Duration info
+                if let timeOut = attendance.timeOut {
+                    HStack {
+                        Image(systemName: "hourglass")
+                            .foregroundColor(.orange)
+                        
+                        Text("Duration: \(formatDuration(attendance.totalTime))")
+                            .font(.caption)
+                    }
+                    
+                    Text("Checked out: \(formatDate(timeOut))")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                
+                // Late status if applicable
+                if attendance.isLate {
+                    Text("Late Arrival")
+                        .font(.caption)
+                        .foregroundColor(.orange)
+                        .padding(.top, 2)
+                }
+            }
+            
+            Spacer()
         }
         .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(Color.white.opacity(0.8))
-                .shadow(radius: 5)
-        )
-        .padding(.horizontal)
+        .background(Color(UIColor.secondarySystemBackground).opacity(0.9))
+        .cornerRadius(10)
+        .shadow(radius: 1)
+    }
+    
+    private func formatDate(_ date: Date?) -> String {
+        guard let date = date else { return "N/A" }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        formatter.timeStyle = .short
+        return formatter.string(from: date)
+    }
+    
+    private func formatDuration(_ hours: Double) -> String {
+        let totalMinutes = Int(hours * 60)
+        let hrs = totalMinutes / 60
+        let mins = totalMinutes % 60
+        
+        if hrs > 0 {
+            return "\(hrs)h \(mins)m"
+        } else {
+            return "\(mins) min"
+        }
     }
 }
 
@@ -42,17 +91,13 @@ struct PageIndicatorView: View {
     let screenHeight: CGFloat
     
     var body: some View {
-        HStack(spacing: screenWidth * 0.008) {
-            ForEach(filters.indices, id: \.self) { index in
+        HStack(spacing: 8) {
+            ForEach(0..<filters.count, id: \.self) { index in
                 Circle()
-                    .frame(width: screenWidth * 0.01, height: screenHeight * 0.01)
-                    .foregroundColor(selectedFilter == index ? .black : .gray)
-                    .scaleEffect(selectedFilter == index ? 1.2 : 1.0)
-                    .animation(.smooth, value: selectedFilter)
+                    .fill(index == selectedFilter ? Color.blue : Color.gray.opacity(0.5))
+                    .frame(width: 8, height: 8)
             }
         }
-        .padding(.top, screenHeight * 0.6)
-        .padding(.bottom)
     }
 }
 
@@ -63,34 +108,26 @@ struct CustomSegmentedPicker: View {
     var body: some View {
         HStack {
             ForEach(options.indices, id: \.self) { index in
-                Text(options[index])
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, 30)
-                    .background(
-                        ZStack {
-                            if selectedIndex == index {
-                                RoundedRectangle(cornerRadius: 25)
-                                    .fill(Color.white)
-                                    .matchedGeometryEffect(id: "selector", in: animation)
-                                    .shadow(radius: 10, x: 0, y: 8)
-                            }
-                        }
-                    )
-                    .foregroundColor(.black)
-                    .onTapGesture {
-                        withAnimation(.smooth) {
-                            selectedIndex = index
-                        }
-                    }
+                Button(action: {
+                    selectedIndex = index
+                }) {
+                    Text(options[index])
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 16)
+                        .background(
+                            selectedIndex == index ?
+                                Color.blue :
+                                Color.gray.opacity(0.2)
+                        )
+                        .foregroundColor(selectedIndex == index ? .white : .primary)
+                        .cornerRadius(8)
+                }
             }
         }
-        .padding(5)
-        .background(Color(.systemGray4))
-        .clipShape(RoundedRectangle(cornerRadius: 30))
-        .shadow(radius: 20, x: 0, y: 8)
+        .padding(4)
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(12)
     }
-    
-    @Namespace private var animation
 }
 
 #Preview {
