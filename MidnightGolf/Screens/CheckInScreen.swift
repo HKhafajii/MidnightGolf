@@ -17,6 +17,10 @@ struct CheckInScreen: View {
     @State private var showAdminSheet = false
     @State private var showScanSheet = false
     @State private var navigateToNextScreen = false
+    
+    @State private var showConfirmationSheet = false
+    @State private var checkInMessage = ("", false)
+    
     static var deviceWidth: CGFloat {
         UIScreen.main.bounds.width
     }
@@ -116,6 +120,9 @@ struct CheckInScreen: View {
                 .sheet(isPresented: $showAdminSheet) {
                     AdminVerificationSheetView(navigateToNextScreen: $navigateToNextScreen, showAdminSheet: $showAdminSheet)
                 }
+                .sheet(isPresented: $showConfirmationSheet) {
+                    CheckInResultSheet(message: checkInMessage.0, result: checkInMessage.1)
+                }
                 .padding()
             }
             .task {
@@ -133,36 +140,51 @@ struct CheckInScreen: View {
                     let scannedText = result.string.trimmingCharacters(in: .whitespacesAndNewlines)
                     print("Scanned QR Code Text:", scannedText)
 
+                    guard let qrCodeImage = QRCodeManager().generateQRCode(from: scannedText),
+                          let qrCodeData = qrCodeImage.pngData() else {
+                        throw CheckInError.invalidQRCode
+                    }
                     
-                    if let qrCodeImage = QRCodeManager().generateQRCode(from: scannedText),
-                       let qrCodeData = qrCodeImage.pngData() {
-                        
-                        let scannedBase64 = qrCodeData.base64EncodedString()
-                        print("Scanned QR Code Base64:", scannedBase64.prefix(20), "...")
+                    let scannedBase64 = qrCodeData.base64EncodedString()
+                    print("Scanned QR Code Base64:", scannedBase64.prefix(20), "...")
 
-                        
-                        if let student = viewModel.students.first(where: { $0.qrCode == scannedBase64 }) {
-                            print(" Matched student:", student.first, student.last)
-                            await viewModel.checkInOutStudent(student)
-                        } else {
-                            print(" No student matched the scanned QR Code.")
-                            throw CheckInError.studentNotFound
-                        }
-                    } else {
+                    guard let student = viewModel.students.first(where: { $0.qrCode == scannedBase64 }) else {
                         throw CheckInError.studentNotFound
                     }
 
+                    print("✅ Matched student:", student.first, student.last)
+                    await viewModel.checkInOutStudent(student)
+
+                    checkInMessage = ("✅ Welcome, \(student.first) \(student.last)!", true)
+                    showConfirmationSheet = true
+
                     await viewModel.loadAllStudents()
                 
+                } catch CheckInError.studentNotFound {
+                    print("❌ No student matched the scanned QR Code.")
+                    checkInMessage = ("Student not found. Please try again.", false)
+                    showConfirmationSheet = true
+
+                } catch CheckInError.invalidQRCode {
+                    print("❌ Invalid QR code.")
+                    checkInMessage = ("Invalid QR code. Please try again.", false)
+                    showConfirmationSheet = true
+
                 } catch {
-                    print("❌ Error: \(error.localizedDescription)")
+                    print("❌ Unexpected Error: \(error.localizedDescription)")
+                    checkInMessage = ("An error occurred. Please try again.", false)
+                    showConfirmationSheet = true
                 }
             }
         case .failure(let error):
             print("❌ Scanning failed: \(error.localizedDescription)")
+            checkInMessage = ("Scanning failed. Please try again.", false)
+            showConfirmationSheet = true
         }
     }
-}
+
+    }
+
 #Preview {
     CheckInScreen()
         .environmentObject(ViewModel())

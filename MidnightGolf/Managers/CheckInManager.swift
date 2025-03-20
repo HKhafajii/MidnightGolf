@@ -9,7 +9,7 @@ import Foundation
 
 
 enum CheckInError: Error {
-    case alreadyCheckedIn, invalidClockInDay, notCheckedIn,missingTimeIn, noOpenAttendance, studentNotFound
+    case alreadyCheckedIn, invalidClockInDay, invalidQRCode, notCheckedIn,missingTimeIn, noOpenAttendance, studentNotFound
 }
 
 class CheckInManager: ObservableObject {
