@@ -48,7 +48,6 @@ struct CheckInScreen: View {
 
                 
                 VStack(spacing: 25) {
-                    
                     HStack {
                         
                         TimeView(viewModel: timerManager)
@@ -77,6 +76,7 @@ struct CheckInScreen: View {
                         SearchView()
                             .environmentObject(viewModel)
                             .frame(maxWidth: CheckInScreen.deviceWidth / 1.5)
+                            
                         
                         HStack {
                             Spacer()
