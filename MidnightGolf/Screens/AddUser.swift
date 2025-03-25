@@ -61,9 +61,9 @@ struct AddUserTextFields: View {
         ScrollView {
             VStack(spacing: 15) {
             
-                TextfieldComponent(title: "First Name", description: "First name...", bindingString: firstName)
+                TextfieldComponent(title: "First Name", description: "First name...", bindingString: $firstName)
                 
-                TextfieldComponent(title: "Last Name", description: "Last name...", bindingString: lastName)
+                TextfieldComponent(title: "Last Name", description: "Last name...", bindingString: $lastName)
                  
                 Text("Date of Birth")
                     .font(.headline)
@@ -90,7 +90,7 @@ struct AddUserTextFields: View {
                 .background(Color.gray.opacity(0.3))
                 .cornerRadius(16)
                 
-                TextfieldComponent(title: "School", description: "Highschool...", bindingString: school)
+                TextfieldComponent(title: "School", description: "Highschool...", bindingString: $school)
                 
                
                 Text("Graduation Date")
@@ -119,9 +119,9 @@ struct AddUserTextFields: View {
                 .cornerRadius(16)
                 
                
-                TextfieldComponent(title: "Cell Phone Number...", description: "Cell number...", bindingString: cellNumber)
+                TextfieldComponent(title: "Cell Phone Number...", description: "Cell number...", bindingString: $cellNumber)
                 
-                TextfieldComponent(title: "Email", description: "Email...", bindingString: email)
+                TextfieldComponent(title: "Email", description: "Email...", bindingString: $email)
               
                 Text("Gender")
                     .font(.headline)
@@ -149,17 +149,21 @@ struct AddUserTextFields: View {
               
                 Button {
                     Task {
-                        await viewModel.postUser(
-                            first: firstName,
-                            last: lastName,
-                            born: birthDate,
-                            school: school,
-                            gradDate: gradDate,
-                            cellNum: cellNumber,
-                            email: email,
-                            gender: isMale,
-                            cohort: cohort
-                        )
+                        do {
+                            try await viewModel.postUser(
+                                first: firstName,
+                                last: lastName,
+                                born: birthDate,
+                                school: school,
+                                gradDate: gradDate,
+                                cellNum: cellNumber,
+                                email: email,
+                                gender: isMale,
+                                cohort: cohort
+                            )
+                        } catch {
+                            print("Failed to add user: \(error.localizedDescription)")
+                        }
                     }
                     showAddStudentSheet = false
                 } label: {

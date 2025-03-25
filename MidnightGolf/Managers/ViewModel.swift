@@ -30,6 +30,7 @@ class ViewModel: ObservableObject {
     }
     
     
+    
     @MainActor
     func postUser(first: String,
                   last: String,
@@ -39,7 +40,7 @@ class ViewModel: ObservableObject {
                   cellNum: String,
                   email: String,
                   gender: Bool,
-                  cohort: Bool) async {
+                  cohort: Bool) async throws {
         do {
             let qrCodeText = first + last
             try await firestoreManager.postUser(

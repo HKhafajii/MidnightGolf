@@ -77,7 +77,7 @@ struct InfoRow: View {
 }
 
 #Preview {
-    StudentProfileView(student: Student(id: "234", group: "234", first: "234", last: "234", born: "234", isMale: true, cellNumber: "asdas", email: "asdasd", cohort: false, school: "asd", gradDate: "asd", qrCode: "asd"))
+    StudentProfileView(student: Student(id: "234", first: "234", last: "234", born: "234", isMale: true, cellNumber: "asdas", email: "asdasd", cohort: false, school: "asd", gradDate: "asd", qrCode: "asd"))
 }
 
 struct ProfileImage: View {

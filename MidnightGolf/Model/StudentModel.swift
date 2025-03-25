@@ -31,7 +31,6 @@ import SwiftUI
 
 struct Student: Identifiable, Codable, Hashable {
     let id: String
-    let group: String
     let first: String
     let last: String
     let born: String

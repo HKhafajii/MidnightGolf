@@ -117,7 +117,6 @@ struct CustomSegmentedPicker: View {
     AttendanceTabScreen(
         student: Student(
             id: "test-id",
-            group: "Test Group",
             first: "Test",
             last: "User",
             born: "2002",

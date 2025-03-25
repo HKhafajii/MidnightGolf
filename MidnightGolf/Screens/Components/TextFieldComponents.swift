@@ -11,7 +11,7 @@ struct TextfieldComponent: View {
     
     let title: String
     @State var description: String
-    @State var bindingString: String
+    @Binding var bindingString: String
     
     var body: some View {
         VStack {

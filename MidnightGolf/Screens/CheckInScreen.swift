@@ -70,6 +70,7 @@ struct CheckInScreen: View {
                         .shadow(radius: 16, x: 0, y: 5)
                         .fontWeight(.bold)
                         .foregroundStyle(Color("MGPnavy"))
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
                     
                     VStack {
                         
@@ -124,6 +125,7 @@ struct CheckInScreen: View {
                     AdminVerificationSheetView(navigateToNextScreen: $navigateToNextScreen, showAdminSheet: $showAdminSheet)
                 }
                 .padding()
+                
             }
             .task {
                 await viewModel.loadAllStudents()

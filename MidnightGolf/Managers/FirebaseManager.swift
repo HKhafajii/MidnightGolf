@@ -6,9 +6,7 @@
 //
 import Foundation
 import UIKit
-import FirebaseCore
 import FirebaseFirestore
-import FirebaseAuth
 
 class FirestoreManager: ObservableObject {
     
@@ -23,6 +21,8 @@ class FirestoreManager: ObservableObject {
     private var userCollection: CollectionReference {
         db.collection("users")
       }
+    
+    
       
 //      private var attendanceCollection: CollectionReference {
 //          db.collection("attendance")
@@ -56,16 +56,18 @@ class FirestoreManager: ObservableObject {
     } // End of postAttendance()
     
     
-    
     func postUser(first: String, last: String, born: Date, school: String, gradDate: Date, qrCode: String, cellNum: String, email: String, gender: Bool, cohort: Bool) async throws {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let birthDateString = dateFormatter.string(from: born)
         let gradDateString = dateFormatter.string(from: gradDate)
         let studentID = UUID().uuidString
+      
+        
         
         if let qrCodeImage = QRCodeManager().generateQRCode(from: qrCode), let qrCodeData = qrCodeImage.pngData() {
             let qrCodeBase64 = qrCodeData.base64EncodedString()
+            
             do {
                 try await userCollection.document(studentID).setData([
                     "id": studentID,
@@ -75,14 +77,32 @@ class FirestoreManager: ObservableObject {
                     "school": school,
                     "gradDate": gradDateString,
                     "qrCode": qrCodeBase64,
+                    "cellNumber": cellNum,
+                    "email": email,
+                    "isMale": gender,
+                    "cohort": cohort,
                     "isCheckedIn": false
                 ])
                 print("Successfully added student with QR content: \(qrCode)")
             } catch {
                 print("Error adding document: \(error)")
             }
+        } else {
+            print("❌ Failed to generate QR code or convert it to PNG data.")
         }
     } // End of Post request
+    
+//    @MainActor
+//    func fetchStudentCheckedInStatus(for studentId: String) async throws -> Bool {
+//        let document = try await userCollection.document(studentId).getDocument()
+//            guard let data = document.data() else {
+//                print("Problem parsing document data")
+//            }
+//            guard let isCheckedIn = data["isCheckedIn"] as? Bool else {
+//                print("Problem parsing document data")
+//            }
+//            return isCheckedIn
+//    }
     
     
     @MainActor
@@ -110,7 +130,6 @@ class FirestoreManager: ObservableObject {
             
             return Student(
                 id: studentId,
-                group: group,
                 first: first,
                 last: last,
                 born: born,
@@ -206,6 +225,8 @@ class FirestoreManager: ObservableObject {
         
         return openAttendance
     } // End of fetchOpenAttendance
+
+    
     
     @MainActor
     func fetchAllAttendance() async throws -> [Attendance] {

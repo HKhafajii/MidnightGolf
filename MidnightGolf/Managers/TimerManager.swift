@@ -16,7 +16,7 @@ final class TimerManager: ObservableObject {
     private let dateFormatter: DateFormatter = {
         let df = DateFormatter()
         // Set your desired format here
-        df.dateFormat = "LLLL dd, hh:mm:ss a"
+        df.dateFormat = "LLLL dd, hh:mm a"
         return df
     }()
     

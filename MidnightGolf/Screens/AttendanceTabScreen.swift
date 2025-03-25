@@ -154,6 +154,6 @@ struct AttendanceListView: View {
 }
 
 #Preview {
-    AttendanceTabScreen(student: Student(id: "234", group: "234", first: "234", last: "234", born: "234", isMale: true, cellNumber: "asdas", email: "asdasd", cohort: false, school: "asd", gradDate: "asd", qrCode: "asd"))
+    AttendanceTabScreen(student: Student(id: "234", first: "234", last: "234", born: "234", isMale: true, cellNumber: "asdas", email: "asdasd", cohort: false, school: "asd", gradDate: "asd", qrCode: "asd"))
         .environmentObject(ViewModel())
 }
