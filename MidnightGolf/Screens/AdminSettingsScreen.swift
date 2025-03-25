@@ -17,6 +17,7 @@ enum AdminSettings: String, Identifiable, CaseIterable {
 struct AdminSettingsScreen: View {
     
     @State private var selectedSetting: AdminSettings? = .changeLateThreshold
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         NavigationSplitView {
@@ -59,6 +60,7 @@ struct DetailView: View {
 
 #Preview {
     AdminSettingsScreen()
+        .environmentObject(ViewModel())
 }
 
 struct SomethingElseView: View {
@@ -70,6 +72,7 @@ struct SomethingElseView: View {
 
 struct LateThresholdChanges: View {
     @State var intValue: Int = 0
+    @EnvironmentObject var viewModel: ViewModel
     var body: some View {
         VStack {
             
@@ -78,7 +81,7 @@ struct LateThresholdChanges: View {
             
             
             Button {
-                // Function for saving late threshold changes
+                
             } label: {
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)

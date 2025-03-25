@@ -118,7 +118,6 @@ class FirestoreManager: ObservableObject {
             let studentId = doc.documentID
             let first = data["first"] as? String ?? "Unknown"
             let last = data["last"] as? String ?? "Unknown"
-            let group = data["group"] as? String ?? "Unknown"
             let born = data["born"] as? String ?? "Unknown"
             let isMale = data["isMale"] as? Bool ?? false
             let cohort = data["cohort"] as? Bool ?? false

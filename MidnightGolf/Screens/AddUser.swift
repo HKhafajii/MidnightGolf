@@ -119,9 +119,9 @@ struct AddUserTextFields: View {
                 .cornerRadius(16)
                 
                
-                TextfieldComponent(title: "Cell Phone Number...", description: "Cell number...", bindingString: $cellNumber)
+                CellFieldComponent(title: "Cell Phone Number...", description: "Cell number...", bindingString: $cellNumber)
                 
-                TextfieldComponent(title: "Email", description: "Email...", bindingString: $email)
+                EmailFieldComponent(title: "Email", description: "Enter an email address...", bindingString: $email)
               
                 Text("Gender")
                     .font(.headline)
@@ -133,7 +133,6 @@ struct AddUserTextFields: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .frame(maxWidth: 200)
                 .padding()
-                
             
                 Text("Cohort")
                     .font(.headline)

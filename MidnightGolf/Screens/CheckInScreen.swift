@@ -19,6 +19,7 @@ struct CheckInScreen: View {
     @State private var showScanAlert: Bool = false
     @State private var scanAlertMessage: String = ""
     @State private var navigateToNextScreen = false
+    @State var isAnimating: Bool = false
     static var deviceWidth: CGFloat {
         UIScreen.main.bounds.width
     }
@@ -65,12 +66,7 @@ struct CheckInScreen: View {
                     
                     Spacer()
                     
-                    Text("Check In")
-                        .font(.custom("NeueMontreal-Regular", size: CheckInScreen.deviceWidth * 0.03))
-                        .shadow(radius: 16, x: 0, y: 5)
-                        .fontWeight(.bold)
-                        .foregroundStyle(Color("MGPnavy"))
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                  
                     
                     VStack {
                         

@@ -17,7 +17,7 @@ struct TitleComponent: View {
             .frame(maxWidth: CheckInScreen.deviceWidth / 2.5,
                    maxHeight: CheckInScreen.deviceHeight * 0.05)
             .padding()
-            .background(RoundedRectangle(cornerRadius: 24).fill(Color("MGPnavy")))
+            .background(RoundedRectangle(cornerRadius: 20).fill(Color("MGPnavy")))
             .shadow(radius: 8, x: 0, y: 0)
     }
 }

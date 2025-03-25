@@ -2,13 +2,12 @@ import SwiftUI
 
 
 class ViewModel: ObservableObject {
-    var firestoreManager = FirestoreManager()
-    var checkInManager = CheckInManager()
-    var attendanceManager = AttendanceManager()
-    var mailManager = MailManager()
-    var qrManager = QRCodeManager()
-    var csvMnager = CSVManager()
-    
+     var firestoreManager = FirestoreManager()
+     var checkInManager = CheckInManager()
+     var attendanceManager = AttendanceManager()
+     var mailManager = MailManager()
+     var qrManager = QRCodeManager()
+     var csvMnager = CSVManager()
     
     @Published var students: [Student] = []
     @Published var attendance: [Attendance] = []
@@ -19,10 +18,11 @@ class ViewModel: ObservableObject {
             await loadAllStudents()
             await loadAllAttendance()
         }
-            
-        
         
     }
+    
+ 
+    
     
     func updateLateThreshold(hour: Int, minute: Int) {
         checkInManager.lateThresholdHour = hour
