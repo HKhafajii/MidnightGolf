@@ -21,11 +21,8 @@ class ViewModel: ObservableObject {
         
     }
     
- 
-    
-    
     func updateLateThreshold(hour: Int, minute: Int) {
-        checkInManager.lateThresholdHour = hour
+        checkInManager.lateThresholdHour = hour + 12 // to put it into millitary time
         checkInManager.lateThresholdMinute = minute
     }
     

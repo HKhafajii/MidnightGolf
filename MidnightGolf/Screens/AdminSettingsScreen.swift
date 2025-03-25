@@ -74,34 +74,49 @@ struct LateThresholdChanges: View {
     @State var intValue: Int = 0
     @EnvironmentObject var viewModel: ViewModel
     var body: some View {
-        VStack {
+        ZStack {
+            Image("bg")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
             
-            NumberFieldComponent(title: "Threshold Hour", description: "Type an hour", intValue: intValue)
-            NumberFieldComponent(title: "Threshold Minute", description: "Type an hour", intValue: intValue)
-            
-            
-            Button {
+            VStack {
                 
-            } label: {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color("MGPnavy"))
-                        .frame(maxWidth: CheckInScreen.deviceWidth / 2.5,
-                               maxHeight: CheckInScreen.deviceHeight * 0.05)
-                        .shadow(radius: 8, x: 0, y: 0)
+                TitleComponent(title: "Change Late Threshold")
+                
+                Text("Enter an hour and a minute to change when a student is considered late")
+                    .font(.headline)
+                    .padding()
+                
+                Spacer()
+                
+                NumberFieldComponent(title: "Threshold Hour", description: "Type an hour", intValue: intValue)
+                NumberFieldComponent(title: "Threshold Minute", description: "Type an hour", intValue: intValue)
+                
+                
+                Button {
                     
-                    Text("Save Changes")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                        .fontWeight(.semibold)
-                        .padding()
-                        .frame(maxWidth: CheckInScreen.deviceWidth / 2.5)
+                } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color("MGPnavy"))
+                            .frame(maxWidth: CheckInScreen.deviceWidth / 2.5,
+                                   maxHeight: CheckInScreen.deviceHeight * 0.05)
+                            .shadow(radius: 8, x: 0, y: 0)
+                        
+                        Text("Save Changes")
+                            .font(.title2)
+                            .foregroundStyle(.white)
+                            .fontWeight(.semibold)
+                            .padding()
+                            .frame(maxWidth: CheckInScreen.deviceWidth / 2.5)
+                    }
                 }
+                
+                Spacer()
             }
-            
-            
+            .padding()
         }
-        .padding()
     }
 }
 
