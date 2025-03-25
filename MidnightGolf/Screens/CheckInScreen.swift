@@ -20,6 +20,7 @@ struct CheckInScreen: View {
     @State private var scanAlertMessage: String = ""
     @State private var navigateToNextScreen = false
     @State var isAnimating: Bool = false
+    @State var animateLogo = false
     static var deviceWidth: CGFloat {
         UIScreen.main.bounds.width
     }
@@ -44,10 +45,14 @@ struct CheckInScreen: View {
                         maxWidth: CheckInScreen.deviceWidth / 4,
                         maxHeight: CheckInScreen.deviceHeight / 3
                     )
+                    .rotation3DEffect(
+                        .degrees(animateLogo ? 20 : 0),axis: (x: 0, y: 1.5, z: 0))
+                    .rotation3DEffect(
+                        .degrees(animateLogo ? 20 : 0),axis: (x: 1.5, y: 0, z: 0))
+                    .animation(.easeInOut(duration: 3).repeatForever(autoreverses: true), value: animateLogo)
                     .shadow(radius: 8, x: 0, y: 8)
                     .offset(y: -100)
 
-                
                 VStack(spacing: 25) {
                     HStack {
                         
@@ -65,8 +70,6 @@ struct CheckInScreen: View {
                     }
                     
                     Spacer()
-                    
-                  
                     
                     VStack {
                         
@@ -126,6 +129,9 @@ struct CheckInScreen: View {
             .task {
                 await viewModel.loadAllStudents()
             }
+            .onAppear {
+                            animateLogo = true
+                        }
         }
         .tint(Color("MGPnavy"))
     }

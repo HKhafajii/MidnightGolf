@@ -18,15 +18,12 @@ class ViewModel: ObservableObject {
             await loadAllStudents()
             await loadAllAttendance()
         }
-        
     }
     
     func updateLateThreshold(hour: Int, minute: Int) {
         checkInManager.lateThresholdHour = hour + 12 // to put it into millitary time
         checkInManager.lateThresholdMinute = minute
     }
-    
-    
     
     @MainActor
     func postUser(first: String,
