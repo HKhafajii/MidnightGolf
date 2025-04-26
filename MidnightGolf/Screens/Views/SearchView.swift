@@ -39,7 +39,7 @@ struct SearchView: View {
                         Text(student.first + " " + student.last)
                             .font(.custom("NeueMontreal-Regular", size: CheckInScreen.deviceWidth * 0.015))
                             .foregroundStyle(Color("MGPnavy"))
-                            .fontWeight(.semibold)
+                            
                         
                         Spacer()
                         

@@ -21,6 +21,10 @@ struct CheckInScreen: View {
     @State private var navigateToNextScreen = false
     @State var isAnimating: Bool = false
     @State var animateLogo = false
+    
+    private var xAxis: CGFloat = 1.0
+    private var zAxis: CGFloat = 1.0
+    
     static var deviceWidth: CGFloat {
         UIScreen.main.bounds.width
     }
@@ -45,11 +49,6 @@ struct CheckInScreen: View {
                         maxWidth: CheckInScreen.deviceWidth / 4,
                         maxHeight: CheckInScreen.deviceHeight / 3
                     )
-                    .rotation3DEffect(
-                        .degrees(animateLogo ? 20 : 0),axis: (x: 0, y: 1.5, z: 0))
-                    .rotation3DEffect(
-                        .degrees(animateLogo ? 20 : 0),axis: (x: 1.5, y: 0, z: 0))
-                    .animation(.easeInOut(duration: 3).repeatForever(autoreverses: true), value: animateLogo)
                     .shadow(radius: 8, x: 0, y: 8)
                     .offset(y: -100)
 
@@ -169,7 +168,6 @@ struct CheckInScreen: View {
                         showScanAlert = true
                     }
                 }
-                
                 await viewModel.loadAllStudents()
             }
         case .failure(let error):

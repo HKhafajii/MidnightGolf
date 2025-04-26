@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6210371E2D3AA78B003921EC /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 6210371D2D3AA78B003921EC /* CodeScanner */; };
+		6258C2CB2DBC937C00BFF8D9 /* SwiftCSV in Frameworks */ = {isa = PBXBuildFile; productRef = 6258C2CA2DBC937C00BFF8D9 /* SwiftCSV */; };
 		6293C94C2CECCFFD00D69153 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C94B2CECCFFD00D69153 /* FirebaseAnalytics */; };
 		6293C94E2CECCFFD00D69153 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C94D2CECCFFD00D69153 /* FirebaseAuth */; };
 		6293C9502CECCFFD00D69153 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 6293C94F2CECCFFD00D69153 /* FirebaseCore */; };
@@ -79,6 +80,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6293C95A2CECCFFD00D69153 /* FirebaseMessaging in Frameworks */,
+				6258C2CB2DBC937C00BFF8D9 /* SwiftCSV in Frameworks */,
 				6293C9542CECCFFD00D69153 /* FirebaseDatabase in Frameworks */,
 				6293C95C2CECCFFD00D69153 /* FirebaseStorage in Frameworks */,
 				6293C9582CECCFFD00D69153 /* FirebaseFunctions in Frameworks */,
@@ -158,6 +160,7 @@
 				6293C9592CECCFFD00D69153 /* FirebaseMessaging */,
 				6293C95B2CECCFFD00D69153 /* FirebaseStorage */,
 				6210371D2D3AA78B003921EC /* CodeScanner */,
+				6258C2CA2DBC937C00BFF8D9 /* SwiftCSV */,
 			);
 			productName = MidnightGolf;
 			productReference = 622E99B12CA445EC00C5C66F /* MidnightGolf.app */;
@@ -244,6 +247,7 @@
 			packageReferences = (
 				6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				6210371C2D3A93DD003921EC /* XCRemoteSwiftPackageReference "CodeScanner" */,
+				6258C2C92DBC937C00BFF8D9 /* XCRemoteSwiftPackageReference "SwiftCSV" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 622E99B22CA445EC00C5C66F /* Products */;
@@ -626,6 +630,14 @@
 				minimumVersion = 2.5.2;
 			};
 		};
+		6258C2C92DBC937C00BFF8D9 /* XCRemoteSwiftPackageReference "SwiftCSV" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/swiftcsv/SwiftCSV.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
+			};
+		};
 		6293C94A2CECCFFD00D69153 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -641,6 +653,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6210371C2D3A93DD003921EC /* XCRemoteSwiftPackageReference "CodeScanner" */;
 			productName = CodeScanner;
+		};
+		6258C2CA2DBC937C00BFF8D9 /* SwiftCSV */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6258C2C92DBC937C00BFF8D9 /* XCRemoteSwiftPackageReference "SwiftCSV" */;
+			productName = SwiftCSV;
 		};
 		6293C94B2CECCFFD00D69153 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
