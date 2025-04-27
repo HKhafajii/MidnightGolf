@@ -17,13 +17,13 @@ class CSVManager: ObservableObject {
     
     func parseCSV(content: String) {
         do {
-          // 1. Parse into a CSV<Named> (header → keys)
+        
           let csv = try CSV<Named>(string: content, delimiter: .comma)
           
-          // 2. Pull out the array of row-dictionaries
+        
           let namedRows: [[String:String]] = csv.rows
           
-          // 3. Turn each dictionary into a Student
+         
           mapRowsToStudents(namedRows)
           
         } catch {
@@ -48,7 +48,7 @@ class CSVManager: ObservableObject {
             let gradDate   = row["gradDate"],
             let qrCode     = row["qrCode"]
           else {
-            // skip any malformed row
+           
             continue
           }
           
