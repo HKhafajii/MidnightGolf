@@ -11,7 +11,7 @@ import UniformTypeIdentifiers
 struct CSVImportButton: View {
     
     @State private var isPresented: Bool = false
-    @ObservedObject var viewModel: CSVViewModel
+    @EnvironmentObject var viewModel: ViewModel
     
     var body: some View {
         Button {
@@ -20,11 +20,12 @@ struct CSVImportButton: View {
             Label("Import CSV", systemImage: "square.and.arrow.down")
         }
         .fileImporter(isPresented: $isPresented, allowedContentTypes: [UTType.commaSeparatedText]) { result in
-            viewModel.handleFileImport(for: result)
+            viewModel.csvMnager.handleFileImport(for: result)
         }
     }
 }
 
 #Preview {
-    CSVImportButton(viewModel: CSVViewModel())
+    CSVImportButton()
+        .environmentObject(ViewModel())
 }
