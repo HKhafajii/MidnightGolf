@@ -7,7 +7,7 @@ class ViewModel: ObservableObject {
      var attendanceManager = AttendanceManager()
      var mailManager = MailManager()
      var qrManager = QRCodeManager()
-     var csvMnager = CSVManager()
+     var csvManager = CSVManager()
     
     @Published var students: [Student] = []
     @Published var attendance: [Attendance] = []
@@ -23,6 +23,53 @@ class ViewModel: ObservableObject {
     func updateLateThreshold(hour: Int, minute: Int) {
         checkInManager.lateThresholdHour = hour + 12 // to put it into millitary time
         checkInManager.lateThresholdMinute = minute
+    }
+    
+    @MainActor
+    func importStudents(from url: URL) async {
+        do {
+            let parsed = try await csvManager.loadStudents(from: url)
+        
+
+            students = parsed
+
+            for s in parsed {
+                await upload(s)
+            }
+
+            await loadAllStudents()
+
+        } catch {
+            print("mportStudents error:", error)
+        }
+    }
+    
+    @MainActor
+    func upload(_ s: Student) async {
+        let fmt = DateFormatter()
+        fmt.dateFormat = "yyyy-MM-dd"
+
+      
+        let bornDate   = fmt.date(from: s.born)    ?? Date()
+        let gradDate   = fmt.date(from: s.gradDate) ?? Date()
+
+      
+        do {
+            try await firestoreManager.postUser(
+                first: s.first,
+                last: s.last,
+                born: bornDate,
+                school: s.school,
+                gradDate: gradDate,
+                qrCode: s.qrCode,
+                cellNum: s.cellNumber,
+                email: s.email,
+                gender: s.isMale,
+                cohort: s.cohort
+            )
+        } catch {
+            print("upload failed for \(s.first) \(s.last):", error)
+        }
     }
     
     @MainActor
@@ -157,6 +204,6 @@ class ViewModel: ObservableObject {
         }
     }
 
-    func generateCSVFile() -> URL { return csvMnager.generateCSV(students: students) }
+    func generateCSVFile() -> URL { return csvManager.generateCSV(students: students) }
     
 }

@@ -10,7 +10,9 @@ struct MidnightGolfApp: App {
     
     var body: some Scene {
         WindowGroup {
-            CheckInScreen()
+//            CheckInScreen()
+//                .environmentObject(ViewModel())
+            CSVImportButton()
                 .environmentObject(ViewModel())
         }
     }

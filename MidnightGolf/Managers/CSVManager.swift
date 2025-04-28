@@ -8,95 +8,35 @@
 import SwiftUI
 import SwiftCSV
 
-class CSVManager: ObservableObject {
-    @Published var csvData: String = ""
-    @Published var headers: [String] = []
-    @Published var rows: [[String]] = []
-    @Published var students: [Student] = []
-    
-    
-    func parseCSV(content: String) {
-        do {
-        
-          let csv = try CSV<Named>(string: content, delimiter: .comma)
-          
-        
-          let namedRows: [[String:String]] = csv.rows
-          
-         
-          mapRowsToStudents(namedRows)
-          
-        } catch {
-          print("CSV parsing failed:", error)
-        }
-      }
+
+
+final class CSVManager: ObservableObject {
+
+
+    func loadStudents(from url: URL) async throws -> [Student] {
       
-      private func mapRowsToStudents(_ rows: [[String:String]]) {
-        var parsed: [Student] = []
-        
-        for row in rows {
-          guard
-            let id         = row["id"],
-            let first      = row["first"],
-            let last       = row["last"],
-            let born       = row["born"],
-            let isMaleStr  = row["isMale"],
-            let cell       = row["cellNumber"],
-            let email      = row["email"],
-            let cohortStr  = row["cohort"],
-            let school     = row["school"],
-            let gradDate   = row["gradDate"],
-            let qrCode     = row["qrCode"]
-          else {
+
+        guard url.startAccessingSecurityScopedResource() else {
+   
+            throw CocoaError(.fileReadNoPermission)
+        }
+        defer { url.stopAccessingSecurityScopedResource() }
+
+  
+        let rawData = try Data(contentsOf: url)
+  
+        let csvString = String(decoding: rawData, as: UTF8.self)
+       
+
+
+        return try await Task.detached(priority: .userInitiated) {
+            let parsed = try self.parseStudents(csvString)
            
-            continue
-          }
-          
-          let student = Student(
-            id:         id,
-            first:      first,
-            last:       last,
-            born:       born,
-            isMale:     (isMaleStr.lowercased() == "true"),
-            cellNumber: cell,
-            email:      email,
-            cohort:     (cohortStr.lowercased() == "true"),
-            school:     school,
-            gradDate:   gradDate,
-            qrCode:     qrCode
-          )
-          parsed.append(student)
-        }
-        
-        
-        DispatchQueue.main.async {
-          self.students = parsed
-        }
-      }
-    
-    func handleFileImport(for result: Result<URL, Error>) {
-        switch result {
-        case .success(let url):
-            
-            readFile(url)
-            
-        case .failure(let error):
-            print("error loading file\(error)")
-        }
+            return parsed
+        }.value
     }
-    
-            func readFile(_ url: URL) {
-                guard url.startAccessingSecurityScopedResource() else {return}
-                do {
-                    let content = try String(contentsOf: url, encoding: .utf8)
-                    parseCSV(content: content)
-                } catch {
-                    print(error)
-                }
-                
-                url.stopAccessingSecurityScopedResource()
-            }
-    
+
+
     func generateCSV(students: [Student]) -> URL {
         
         var fileURL: URL!
@@ -117,5 +57,39 @@ class CSVManager: ObservableObject {
         return fileURL
     }
 
-    
+    private func parseStudents(_ content: String) throws -> [Student] {
+        let csv = try CSV<Named>(string: content, delimiter: .comma)
+
+        return csv.rows.compactMap { rawRow in
+           
+            let row = Dictionary(uniqueKeysWithValues:
+                rawRow.map { ($0.key.lowercased(), $0.value) })
+
+            guard
+                let first = row["first"], !first.isEmpty,
+                let last  = row["last"],  !last.isEmpty,
+                let born  = row["born"],
+                let cell  = row["cellnumber"],
+                let email = row["email"],
+                let school = row["school"],
+                let gradDate = row["graddate"]
+            else { return nil }
+            let id = row["id"] ?? UUID().uuidString
+            let isMale = row["ismale"]?.lowercased() == "true"
+            let cohort = row["cohort"]?.lowercased() == "true"
+            let qrText = row["qrcode"] ?? (first + last)
+
+            return Student(id: id,
+                           first: first,
+                           last: last,
+                           born: born,
+                           isMale: isMale,
+                           cellNumber: cell,
+                           email: email,
+                           cohort: cohort,
+                           school: school,
+                           gradDate: gradDate,
+                           qrCode: qrText)
+        }
+    }
 }

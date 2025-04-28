@@ -15,12 +15,23 @@ struct CSVImportButton: View {
     
     var body: some View {
         Button {
-            
+            isPresented = true
         } label: {
             Label("Import CSV", systemImage: "square.and.arrow.down")
         }
-        .fileImporter(isPresented: $isPresented, allowedContentTypes: [UTType.commaSeparatedText]) { result in
-            viewModel.csvMnager.handleFileImport(for: result)
+        .fileImporter(isPresented: $isPresented,
+                      allowedContentTypes: [.commaSeparatedText]) { result in
+            switch result {
+            case .success(let url):
+       
+                Task {
+                    await viewModel.importStudents(from: url)
+                }
+                print("got url:", url)
+
+            case .failure(let error):
+                print("File importer error:", error)
+            }
         }
     }
 }
