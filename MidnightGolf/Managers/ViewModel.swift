@@ -12,12 +12,18 @@ class ViewModel: ObservableObject {
     @Published var students: [Student] = []
     @Published var attendance: [Attendance] = []
     @Published var names: [String] = []
+    @Published var adminPin: [Int] = []
     
     init() {
         Task {
             await loadAllStudents()
             await loadAllAttendance()
         }
+        adminPin = [3, 2, 9, 8]
+    }
+    
+    func updateAdminPin(newPin: [Int]) {
+        adminPin = newPin
     }
     
     func updateLateThreshold(hour: Int, minute: Int) {
