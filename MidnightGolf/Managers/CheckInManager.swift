@@ -16,6 +16,10 @@ class CheckInManager: ObservableObject {
     var lateThresholdHour = 17
     var lateThresholdMinute = 30
     
+    @Published var absences: [Attendance] = []
+    @Published var tardies: [Attendance] = []
+    
+    
     func handleCheckInOut(for student: Student, openAttendance: Attendance?) throws -> (Attendance, Bool) {
         
         if let openAttendance = openAttendance {
@@ -30,12 +34,30 @@ class CheckInManager: ObservableObject {
         lateThresholdHour = hour
     }
     
+    func studentIsRequiredToday(_ student: Student, on date: Date = Date()) -> Bool {
+        let weekday = Calendar.current.component(.weekday, from: date)   
+        switch student.cohort {
+        case true:   return weekday == 2 || weekday == 4      // M / W
+        case false:  return weekday == 3 || weekday == 5      // T / Th
+        }
+    }
+
+  
+    private let sessionEndHour   = 19
+    private let sessionEndMinute = 30
+
+    func dayIsOver(for date: Date = Date()) -> Bool {
+        let c = Calendar.current.dateComponents([.hour, .minute], from: date)
+        guard let h = c.hour, let m = c.minute else { return false }
+        return h > sessionEndHour || (h == sessionEndHour && m >= sessionEndMinute)
+    }
+    
     
     private func handleCheckIn(student: Student) -> (Attendance, Bool) {
         
         
         let newAttendance = Attendance(
-            id: UUID().uuidString, // You can override later with Firestore docID if needed
+            id: UUID().uuidString,
             studentID: student.id,
             timeIn: Date(),
             timeOut: nil,
@@ -83,5 +105,8 @@ class CheckInManager: ObservableObject {
         } else {
             return false
         }
-    }
+    } // End of isLate
+    
+
+    
 }

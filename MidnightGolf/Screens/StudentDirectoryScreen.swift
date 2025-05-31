@@ -14,6 +14,7 @@ struct StudentDirectoryScreen: View {
                 
                 VStack(alignment: .leading) {
                     StudentDirectoryHeaderView()
+                        .environmentObject(viewModel)
                         .padding(.leading)
                         .padding(.top, 20)
                     
@@ -21,7 +22,7 @@ struct StudentDirectoryScreen: View {
                     
                     List(viewModel.students) { student in
                         NavigationLink {
-                            AttendanceTabScreen(student: student)
+                            AttendanceTabScreen(student: student, filters: ["Today", "Weekly", "Monthly"])
                                 .environmentObject(viewModel)
                         } label: {
                             StudentRow(student: student)
@@ -41,12 +42,45 @@ struct StudentDirectoryScreen: View {
 }
 
 struct StudentDirectoryHeaderView: View {
+    @EnvironmentObject var viewModel: ViewModel
     var body: some View {
         HStack {
             Text("Student Directory")
                 .font(.largeTitle)
                 .fontWeight(.bold)
                 .foregroundColor(.black)
+            Spacer()
+//            Text("Records")
+//                .font(.title3)
+//                .fontWeight(.semibold)
+//                .foregroundStyle(Color("MGPnavy"))
+//            
+//            ShareLink(item: viewModel.generateCSVFile()) {
+//                Label("Attendance Records", systemImage: "list.bullet.rectangle.portrait")
+//                    .fontWeight(.semibold)
+//            }
+            
+          
+            NavigationLink {
+                RecordsTabScreen()
+                    .environmentObject(viewModel)
+            } label: {
+                
+                HStack {
+                    Text("Records Log")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color("MGPnavy"))
+                    
+                    Image(systemName: "list.bullet.rectangle.portrait")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Color("MGPnavy"))
+                        .padding(.trailing)
+                }
+                
+            }
+
             
             Spacer()
             

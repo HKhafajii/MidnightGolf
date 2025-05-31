@@ -19,7 +19,7 @@ struct AttendanceTabScreen: View {
     @State private var monthlyAttendance: [Attendance] = []
     
     @State private var selectedFilter = 0
-    let filters = ["Daily", "Weekly", "Monthly"]
+    let filters: [String]
     
     var body: some View {
         GeometryReader { geometry in
@@ -129,7 +129,7 @@ struct AttendanceListView: View {
     let selectedFilter: Int
     let todayAttendance: [Attendance]
     let weeklyAttendance: [Attendance]
-    let monthlyAttendance: [Attendance]
+    let monthlyAttendance: [Attendance]?
     
     var body: some View {
         ScrollView {
@@ -143,9 +143,12 @@ struct AttendanceListView: View {
                         AttendanceRowView(attendance: attendance)
                     }
                 } else {
-                    ForEach(monthlyAttendance) { attendance in
-                        AttendanceRowView(attendance: attendance)
+                    if let monthAttend = monthlyAttendance {
+                        ForEach(monthAttend) { attendance in
+                            AttendanceRowView(attendance: attendance)
+                        }
                     }
+                    
                 }
             }
             .padding(.vertical)
@@ -154,6 +157,6 @@ struct AttendanceListView: View {
 }
 
 #Preview {
-    AttendanceTabScreen(student: Student(id: "234", first: "234", last: "234", born: "234", isMale: true, cellNumber: "asdas", email: "asdasd", cohort: false, school: "asd", gradDate: "asd", qrCode: "asd"))
+    AttendanceTabScreen(student: Student(id: "234", first: "234", last: "234", born: "234", isMale: true, cellNumber: "asdas", email: "asdasd", cohort: false, school: "asd", gradDate: "asd", qrCode: "asd"), filters: ["Today", "Weekly", "Monthly"])
         .environmentObject(ViewModel())
 }

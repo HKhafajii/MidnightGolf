@@ -5,15 +5,11 @@ import Firebase
 struct MidnightGolfApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
-    
-    
-    
     var body: some Scene {
         WindowGroup {
-//            CheckInScreen()
-//                .environmentObject(ViewModel())
-            CSVImportButton()
+            CheckInScreen()
                 .environmentObject(ViewModel())
+      
         }
     }
 }

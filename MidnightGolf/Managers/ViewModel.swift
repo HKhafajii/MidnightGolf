@@ -8,6 +8,7 @@ class ViewModel: ObservableObject {
      var mailManager = MailManager()
      var qrManager = QRCodeManager()
      var csvManager = CSVManager()
+
     
     @Published var students: [Student] = []
     @Published var attendance: [Attendance] = []
@@ -137,6 +138,23 @@ class ViewModel: ObservableObject {
         }
     } // End of loadAllAttendance
     
+    func isAbsentToday(_ student: Student) -> Bool {
+        
+        guard checkInManager.studentIsRequiredToday(student) else { return false }
+
+
+        guard checkInManager.dayIsOver() else { return false }
+
+      
+        let today = Calendar.current.startOfDay(for: Date())
+        let hasRecord = attendance.contains { att in
+            att.studentID == student.id &&
+            att.timeIn.map { Calendar.current.isDate($0, inSameDayAs: today) } == true
+        }
+
+        return !hasRecord
+    }
+    
     @MainActor
     func checkInOutStudent(_ student: Student) async {
         do {
@@ -165,7 +183,7 @@ class ViewModel: ObservableObject {
                 print("Successfully updated student isCheckedIn status to false")
 
             } else {
-                // Student is checking in
+                
                 print("Checking in, creating a new attendance record")
 
                 let newAttendance = Attendance(

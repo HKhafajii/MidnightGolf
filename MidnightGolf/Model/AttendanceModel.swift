@@ -17,4 +17,5 @@ struct Attendance: Codable, Identifiable {
     var isCheckedIn: Bool = false
     var isLate: Bool = false
     var totalTime: Double = 0
+    var isAbsent: Bool = false
 }

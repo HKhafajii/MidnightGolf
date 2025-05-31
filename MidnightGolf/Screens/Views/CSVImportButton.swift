@@ -18,6 +18,9 @@ struct CSVImportButton: View {
             isPresented = true
         } label: {
             Label("Import CSV", systemImage: "square.and.arrow.down")
+                .font(.title3)
+                .foregroundStyle(Color("MGPnavy"))
+                .fontWeight(.semibold)
         }
         .fileImporter(isPresented: $isPresented,
                       allowedContentTypes: [.commaSeparatedText]) { result in

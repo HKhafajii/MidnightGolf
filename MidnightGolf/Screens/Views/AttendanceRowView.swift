@@ -68,7 +68,7 @@ struct PageIndicatorView: View {
                     .frame(width: screenWidth * 0.01, height: screenHeight * 0.01)
                     .foregroundColor(selectedFilter == index ? .black : .gray)
                     .scaleEffect(selectedFilter == index ? 1.2 : 1.0)
-                    .animation(.smooth, value: selectedFilter)
+                    .animation(.easeIn(duration: 0.3), value: selectedFilter)
             }
         }
         .padding(.top, screenHeight * 0.06)
@@ -98,7 +98,7 @@ struct CustomSegmentedPicker: View {
                     )
                     .foregroundColor(.black)
                     .onTapGesture {
-                        withAnimation(.smooth) {
+                        withAnimation(.smooth(duration: 0.2)) {
                             selectedIndex = index
                         }
                     }
@@ -113,23 +113,5 @@ struct CustomSegmentedPicker: View {
     @Namespace private var animation
 }
 
-#Preview {
-    AttendanceTabScreen(
-        student: Student(
-            id: "test-id",
-            first: "Test",
-            last: "User",
-            born: "2002",
-            isMale: false,
-            cellNumber: "1234567890",
-            email: "Test-Email",
-            cohort: false,
-            school: "Test School",
-            gradDate: "2020",
-            qrCode: "",
-            isCheckedIn: false
-        )
-    )
-    .environmentObject(ViewModel())
-}
+
 

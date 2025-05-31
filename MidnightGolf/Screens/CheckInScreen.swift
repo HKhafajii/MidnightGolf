@@ -115,7 +115,8 @@ struct CheckInScreen: View {
                             }
                         }
                     
-                    NavigationLink(destination: AdminScreen().environmentObject(viewModel), isActive: $navigateToNextScreen) {
+                    NavigationLink(destination: AdminScreen()
+                        .environmentObject(viewModel), isActive: $navigateToNextScreen) {
                         EmptyView()
                     }
                 }

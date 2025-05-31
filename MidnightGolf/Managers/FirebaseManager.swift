@@ -88,21 +88,11 @@ class FirestoreManager: ObservableObject {
                 print("Error adding document: \(error)")
             }
         } else {
-            print("❌ Failed to generate QR code or convert it to PNG data.")
+            print("Failed to generate QR code or convert it to PNG data.")
         }
     } // End of Post request
     
-//    @MainActor
-//    func fetchStudentCheckedInStatus(for studentId: String) async throws -> Bool {
-//        let document = try await userCollection.document(studentId).getDocument()
-//            guard let data = document.data() else {
-//                print("Problem parsing document data")
-//            }
-//            guard let isCheckedIn = data["isCheckedIn"] as? Bool else {
-//                print("Problem parsing document data")
-//            }
-//            return isCheckedIn
-//    }
+
     
     
     @MainActor

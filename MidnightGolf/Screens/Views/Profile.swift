@@ -103,12 +103,7 @@ struct Profile: View {
                                     .font(.custom("NeueMontreal-Regular", size: smallTextSize))
                                     .frame(maxWidth: screenWidth * 0.6)
                                     .padding(5)
-                                
-//                                TextField("Enter Interest...", text: $interestField, axis: .vertical)
-//                                    .font(.custom("NeueMontreal-Regular", size: smallTextSize))
-//                                    .frame(maxWidth: screenWidth * 0.6)
-//                                    .lineLimit(6...)
-//                                    .padding(5)
+
                             }
                         }
                         .padding(.top, screenHeight * 0.03)
