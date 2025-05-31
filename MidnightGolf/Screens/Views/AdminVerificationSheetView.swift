@@ -2,7 +2,7 @@ import SwiftUI
 
 struct AdminVerificationSheetView: View {
     @State private var pin: [Int] = []
-    let adminPin = [3, 2, 9, 8]
+    @EnvironmentObject var viewModel: ViewModel
     let maxDigits = 4
     @State private var showError = false
     @Binding  var navigateToNextScreen: Bool
@@ -101,7 +101,7 @@ struct AdminVerificationSheetView: View {
     }
 
     private func verifyPin() {
-        if pin == adminPin {
+        if pin == viewModel.adminPin {
             navigateToNextScreen = true
             showAdminSheet = false
             
@@ -136,4 +136,5 @@ struct SuccessView: View {
 
 #Preview {
     AdminVerificationSheetView(navigateToNextScreen: .constant(false), showAdminSheet: .constant(true))
+        .environmentObject(ViewModel())
 }
