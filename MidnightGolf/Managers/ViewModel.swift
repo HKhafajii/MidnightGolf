@@ -122,6 +122,15 @@ class ViewModel: ObservableObject {
         return tempAttendance
     } // End of getAttendanceHistory
     
+    func getStudentName(by id: String) -> String {
+        if let student = students.first(where: { $0.id == id }) {
+            return "\(student.first) \(student.last)"
+        } else {
+            return "Unknown Student"
+        }
+    }
+
+    
     @MainActor
     func loadAllStudents() async {
         do {

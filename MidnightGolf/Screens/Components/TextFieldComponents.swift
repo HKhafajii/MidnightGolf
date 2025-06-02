@@ -78,7 +78,7 @@ struct NumberFieldComponent: View {
         VStack {
             Text(title)
                 .font(.headline)
-            TextField("title", value: $intValue, format: .number)
+            TextField(description, value: $intValue, format: .number)
                 .padding()
                 .keyboardType(.numberPad)
                 .frame(maxWidth: CheckInScreen.deviceWidth / 2)
@@ -89,3 +89,4 @@ struct NumberFieldComponent: View {
         
     }
 }
+
